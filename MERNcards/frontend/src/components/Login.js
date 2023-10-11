@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 function Login()
 {
     var loginName;
     var loginPassword;
     const [message,setMessage] = useState('');
+    
 
     const doLogin = async event =>
     {
@@ -42,6 +44,7 @@ function Login()
             return;
         }
     };
+
     return(
         <div id="loginDiv">
         <form onSubmit={doLogin}>
