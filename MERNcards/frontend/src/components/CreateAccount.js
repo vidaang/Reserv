@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button } from 'react-bootstrap';
 
 function CreateAccount()
 {
@@ -51,7 +52,7 @@ function CreateAccount()
                 <input type="password" class="textForm" id="createAccountPassword" placeholder="Password" ref={(c) => createAccountPassword = c} /><br />
                 <input type="text" class="textForm" id="createAccountFirstName" placeholder="First Name" ref={(c) => createAccountFirstName = c} /><br />
                 <input type="text" class="textForm" id="createAccountLastName" placeholder="Last Name" ref={(c) => createAccountLastName = c} /><br />
-                <input type="submit" id="loginButton" class="buttons" value = "Create Account" onClick={doCreateAccount} />
+                <input type="submit" id="loginButton" class="buttons" value="Create Account" onClick={doCreateAccount} />
             </form>
             <span id="loginResult">{message}</span>
         </div>

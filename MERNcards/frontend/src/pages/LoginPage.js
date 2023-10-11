@@ -9,9 +9,11 @@ const LoginPage = () =>
     return(
         <div id="LoginPageDiv">
             <div id="LoginInternalElements">
-            <PageTitle />
-            <Login />
-            <CreateAccount />
+                <PageTitle />
+                <Login />
+            </div>
+            <div id="CreateAccountDiv" class="">
+                <CreateAccount />
             </div>
         </div>
     );
