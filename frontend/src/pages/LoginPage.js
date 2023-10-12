@@ -15,14 +15,14 @@ const LoginPage = () =>
             {
                 show? 
                     <div>
-                    <PageTitle />
-                    <Login />
-                    <Link onClick={()=>setShow(false)}>No Account? Create One!</Link>
+                        <PageTitle />
+                        <Login />
+                        <Link onClick={()=>setShow(false)}>No Account? Create One!</Link>
                     </div>:
                     <div>
                         <PageTitle />
                         <CreateAccount />
-                        <Link onClick={()=>setShow(true)}>No Account? Create One!</Link>
+                        <Link onClick={()=>setShow(true)}>Already have an Account? Sign In!</Link>
                     </div>
                     
             }     
