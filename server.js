@@ -21,7 +21,12 @@ app.use(bodyParser.json());
 //     next();
 // });
 
-app.listen(5000); // start Node + Express server on port 5000
+// app.listen(5000); // start Node + Express server on port 5000
+
+const port = process.env.PORT || 5000;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
 
 const MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb+srv://BenjaminCarmenate:ELZ8g67YlurlpbRd@cardsdbcluster.zx4onxi.mongodb.net/?retryWrites=true&w=majority';
