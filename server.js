@@ -7,19 +7,19 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use((req, res, next) =>
-{
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader(
-        'Access-Control-Allow-Headers',
-        'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-    );
-    res.setHeader(
-        'Access-Control-Allow-Methods',
-        'GET, POST, PATCH, DELETE, OPTIONS'
-    );
-    next();
-});
+// app.use((req, res, next) =>
+// {
+//     res.setHeader('Access-Control-Allow-Origin', '*');
+//     res.setHeader(
+//         'Access-Control-Allow-Headers',
+//         'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+//     );
+//     res.setHeader(
+//         'Access-Control-Allow-Methods',
+//         'GET, POST, PATCH, DELETE, OPTIONS'
+//     );
+//     next();
+// });
 
 app.listen(5000); // start Node + Express server on port 5000
 
@@ -142,7 +142,7 @@ app.post('/api/addcard', async (req, res, next) =>
     try
     {
         const db = client.db('COP4331Cards');
-        const result = db.collection('Cards').insertOne(newCard);
+        const result = await db.collection('Cards').insertOne(newCard);
     }
     catch(e)
     {
@@ -165,7 +165,7 @@ app.post('/api/createAccount', async (req, res, next) =>
     try
     {
         const db = client.db('COP4331Cards');
-        const result = db.collection('Users').insertOne(newUser);
+        const result = await db.collection('Users').insertOne(newUser);
     }
     catch(e)
     {
