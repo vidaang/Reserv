@@ -1,21 +1,22 @@
 .navbar {
-    background-color: #1c1018;
+    background-color: white;
     padding: 15px 20px;
+    height: 65px;
     color:#61ff7e;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
+img {
+    width: 12%;
+    height: 12%;   
+}
+
 .container {
     display: flex;
     justify-content: space-between;
-    align-items: right;
-}
-
-.brand {
-    font-size: 28px;
-    margin-right: 20px;
+    align-items: center;
 }
 
 .nav-links {
@@ -27,35 +28,36 @@
 }
 
 .sign-in {
-    margin-left: 15px;
+    margin-right: 0;
 }
 
-.nav-link {
-    text-decoration: none;
+.signin-button {
+    padding: 7px 17px;
     color: #61ff7e;
-    font: 16px;
+    border: transparent;
+    border-radius: 50px;
+    background-color: transparent;
     transition: all 0.3s ease-in-out;
 }
 
-.nav-link:hover {
-    color: white;
+.signin-button:hover {
+    background-color: #D5D0CD50;
 }
 
 .sign-up {
     margin-left: 15px;
 }
 
-.nav-button {
-    padding: 5px 20px;
+.signup-button {
+    padding: 5px 13px;
     background-color: transparent;
-    border: 5px #2ecc71;
-    border-radius: 30px;
+    border: 1px solid #2ecc71;
+    border-radius: 50px;
     color: #2ecc71;
     cursor: pointer;
-    transition: all 0.3s ease-in-out;
+    transition: all 0.2s ease-in-out;
 }
 
-.nav-button:hover {
-    background-color: white;
-    color: #2ecc71;
+.signup-button:hover {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
