@@ -1,12 +1,12 @@
 import React from 'react';
-import PageTitle from '../components/PageTitle';
+import NavBar from '../components/NavBar';
 
 function LandingPage()
 {
     return (
         <div id="LandingPageDiv">
             <div id="NavBar">
-                <PageTitle/>
+                <NavBar />
             </div>
         </div>
     );
