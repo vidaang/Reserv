@@ -78,15 +78,15 @@ function CardUI()
     return(
         <div id="cardUIDiv">
             <br />
-            <input type="text" id="searchText" class="textForm" placeholder="Card To Search For"
+            <input type="text" id="searchText" class="user-authentication-text-form" placeholder="Card To Search For"
             ref={(c) => search = c} />
-            <button type="button" id="searchCardButton" class="buttons"
+            <button type="button" id="searchCardButton" class="user-authentication-buttons"
             onClick={searchCard}> Search Card</button><br />
             <span id="cardSearchResult">{searchResults}</span>
             <p id="cardList">{cardList}</p><br /><br />
-            <input type="text" class="textForm" id="cardText" placeholder="Card To Add"
+            <input type="text" class="user-authentication-text-form" id="cardText" placeholder="Card To Add"
             ref={(c) => card = c} />
-            <button type="button" id="addCardButton" class="buttons"
+            <button type="button" id="addCardButton" class="user-authentication-buttons"
             onClick={addCard}> Add Card </button><br />
             <span id="cardAddResult">{message}</span>
         </div>

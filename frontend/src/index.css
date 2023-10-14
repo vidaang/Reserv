@@ -1,3 +1,25 @@
+/* WEB APP COLOR SCHEMA */
+:root {
+  --primary-green-color: #61ff7e;
+  --white-color: #FAF3DD;
+  --dark-gray-border-color: #8e8a8850;
+}
+
+/* MAIN PAGES COMPONENTS */
+#page-container{
+  background-color: #ffffff;
+  max-height: 100%;
+}
+
+#LandingPageDiv{
+  justify-content: center;
+}
+
+/* MAIN TEXT STYLING */
+h1 {
+  font-size: 200px;
+  font-weight: bold;
+}
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,36 +27,20 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url('88280.jpg');
-  background-size: 50%;
   color: #2A1316;
 }
 
-.textForm{
-  background-color: #FAF3DD;
-  border: none;
-  color: #0F1A12;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 16px;
-}
-
-#LoginPageDiv{
-  margin-inline-start: 40%;
-  margin-top: 10%;
-  background-color: #C8D5B9;
-  width: fit-content;
+/* SIGN IN & SIGN UP MODAL */
+#user-authentication-container{
+  margin: 0 auto;
+  margin-top: 5%;
+  background-color: white;
+  width: 50%;
   border-radius: 5%;
-  border-style: double;
-  border-width: 10px;
-  border-color: #2A1316;
+  border: 3px solid var(--dark-gray-border-color);
 }
 
-#LoginInternalElements{
+#user-authentication-container-elements{
   margin: auto;
   padding: 5%;
   text-align: center;
@@ -42,20 +48,106 @@ body {
   font-size: larger;
 }
 
-.buttons{
-  background-color: #3F4531;
-  border: none;
-  color: #FAF3DD;
+.user-authetication-title{
+  font-size: 200px;
+  font-weight: bold;
+}
+
+.user-authentication-text-form{
+  border: 2px solid var(--dark-gray-border-color);
+  background-color: #ffffff;
+  color: #0F1A12;
   padding: 10px 20px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   margin: 4px 2px;
   cursor: pointer;
-  border-radius: 16px;
+  border-radius: 25px;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.user-authentication-buttons{
+  background-color: var(--primary-green-color);
+  border: none;
+  color: #000000;
+  padding: 10px 20px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 25px;
+}
+
+/* NAVIGATION BAR STYLING */
+.navbar-container {
+  background-color: white;
+  height: 65px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--dark-gray-border-color);
+}
+
+.navbar-left-align {
+  margin-left: 5%;
+  flex: start;
+}
+
+.navbar-right-align {
+  margin-right: 5%;
+  flex: end;
+}
+
+.navbar-logo {
+  width: 35%;
+  height: 15%;
+}
+
+.navbar-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-button{
+  justify-content: space-between;
+}
+
+.navbar-sign-in-button {
+  max-height: 40px;
+  max-width: 100px;
+  font-weight: bold;
+  padding: 6px 17px;
+  color: var(--primary-green-color);
+  border: 2px solid var(--primary-green-color);
+  border-radius: 50px;
+  background-color: transparent;
+  transition: all 0.3s ease-in-out;
+  margin-right: 10px;
+}
+
+.navbar-sign-in-button:hover {
+  background-color: var(--dark-gray-border-color);
+}
+
+.navbar-sign-up-button {
+  max-height: 40px;
+  max-width: 100px;
+  font-weight: bold;
+  color: white;
+  padding: 5px 13px;
+  background-color: var(--primary-green-color);
+  border: 2px solid var(--primary-green-color);
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.navbar-sign-up-button:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }

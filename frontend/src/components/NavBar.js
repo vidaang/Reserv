@@ -1,26 +1,26 @@
 import React from 'react';
-import '../css/NavBar.css';
+import '../index.css';
 import Logo from '../images/reserv-logo.png';
 import { Link } from 'react-router-dom';
 
 const NavBar = () => {
     return (
-      <nav className="navbar">
-        <div className="left-container">
+      <nav className="navbar-container">
+        <div className="navbar-left-align">
           <a href="/">
-            <img className="brand" href="/" src={ Logo } alt="Logo"/>
+            <img className="navbar-logo" href="/" src={ Logo } alt="Logo"/>
           </a>
         </div>
-        <div className="right-container">
-          <ul className="nav-links">
-            <li className="sign-in">
+        <div className="navbar-right-align">
+          <ul className="navbar-links">
+            <li className="navbar-button">
               <Link to="/Login">
-                <button className="signin-button">Sign In</button>
+                <button className="navbar-sign-in-button">Sign In</button>
               </Link>
             </li>
-            <li className="sign-up">
-                <Link to="/Login">
-                  <button className="signup-button">Sign Up</button>
+            <li className="navbar-button">
+                <Link to="/CreateAccount">
+                  <button className="navbar-sign-up-button">Sign Up</button>
                 </Link>
             </li>
           </ul>
