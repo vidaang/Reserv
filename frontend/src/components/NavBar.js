@@ -6,6 +6,9 @@ import { Link } from 'react-router-dom';
 const NavBar = () => {
     return (
       <nav className="navbar-container">
+        <link rel="preconnect" href="https://fonts.googleapis.com"/>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+        <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700&display=swap" rel="stylesheet"></link>
         <div className="navbar-left-align">
           <a href="/">
             <img className="navbar-logo" href="/" src={ Logo } alt="Logo"/>
