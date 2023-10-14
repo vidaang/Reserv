@@ -1,21 +1,22 @@
-html {
-    background-color: white;
-}
-
 .navbar {
     background-color: white;
     height: 65px;
     display: flex;
-    justify-content: flex-start;
     align-items: center;
     border-bottom: 1px solid #D5D0CD50;
+}
+
+.left-container {
+    margin-left: 40px;
+}
+
+.right-container {
+    margin-right: 40px;
 }
 
 img {
     width: 12%;
     height: 12%;
-    border: 3px solid black;
-    margin-left: -150px;   
 }
 
 .nav-links {
@@ -26,8 +27,8 @@ img {
     align-items: center;
 }
 
-.sign-in {
-    margin-right: 0;
+.sign-in{
+    margin-right: 10px;
 }
 
 .signin-button {
@@ -41,11 +42,6 @@ img {
 
 .signin-button:hover {
     background-color: #D5D0CD50;
-}
-
-.sign-up {
-    margin-left: 12px;
-    margin-right: -1520px
 }
 
 .signup-button {
