@@ -1,8 +1,10 @@
 /* WEB APP COLOR SCHEMA */
 :root {
   --primary-green-color: #61ff7e;
-  --white-color: #FAF3DD;
+  --white-color: #F0E9D390;
   --dark-gray-border-color: #8e8a8850;
+  --sage-color: #526760;
+  --dark-sage: #374B4A;
 }
 
 /* MAIN PAGES COMPONENTS */
@@ -122,9 +124,10 @@ body {
   max-height: 40px;
   max-width: 100px;
   font-weight: bold;
+  font-family: 'Gabarito', sans-serif;
   padding: 6px 17px;
-  color: var(--primary-green-color);
-  border: 2px solid var(--primary-green-color);
+  color: var(--sage-color);
+  border: 2px solid var(--sage-color);
   border-radius: 50px;
   background-color: transparent;
   transition: all 0.3s ease-in-out;
@@ -138,11 +141,12 @@ body {
 .navbar-sign-up-button {
   max-height: 40px;
   max-width: 100px;
+  font-family: 'Gabarito', sans-serif;
   font-weight: bold;
   color: white;
   padding: 5px 13px;
-  background-color: var(--primary-green-color);
-  border: 2px solid var(--primary-green-color);
+  background-color: var(--sage-color);
+  border: 2px solid var(--sage-color);
   border-radius: 50px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
@@ -150,4 +154,68 @@ body {
 
 .navbar-sign-up-button:hover {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+#LandingPageDiv {
+  background-color: var(--white-color);
+}
+
+#landing-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 175px;
+}
+
+#main-title {
+  font-size: 72px;
+  font-weight: bold;
+  font-family: 'Gabarito', sans-serif;
+}
+
+#sub-title {
+  font-size: 42px;
+  font-family: 'Gabarito', sans-serif;
+  margin: 8px;
+}
+
+#landing-button-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px; 
+}
+
+#landing-button-container button {
+  margin: 0 15px;
+  border-radius: 5px;
+  padding: 18px 50px;
+}
+
+#landing-reserve-button {
+  color: white;
+  font-family: 'Gabarito', sans-serif;
+  border: 2px solid var(--sage-color);
+  background-color: var(--sage-color);
+  transition: 0.3s;
+}
+
+#landing-reserve-button:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+#landing-university-button {
+  color: var(--sage-color);
+  font-family: 'Gabarito', sans-serif;
+  font-weight: bold;
+  border: 2px solid var(--sage-color);
+  background-color: transparent;
+  transition: 0.3s;
+}
+
+#landing-university-button:hover {
+  background-color: var(--sage-color);
+  color: white;
 }
