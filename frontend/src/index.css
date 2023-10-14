@@ -191,12 +191,13 @@ body {
 #landing-button-container button {
   margin: 0 15px;
   border-radius: 5px;
-  padding: 18px 50px;
+  padding: 16px 43px;
 }
 
 #landing-reserve-button {
   color: white;
   font-family: 'Gabarito', sans-serif;
+  font-size: 18px;
   border: 2px solid var(--sage-color);
   background-color: var(--sage-color);
   transition: 0.3s;
@@ -210,6 +211,7 @@ body {
   color: var(--sage-color);
   font-family: 'Gabarito', sans-serif;
   font-weight: bold;
+  font-size: 18px;
   border: 2px solid var(--sage-color);
   background-color: transparent;
   transition: 0.3s;
