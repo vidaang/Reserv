@@ -1,5 +1,4 @@
 import React from 'react';
-import {Navbar, Nav, Button} from 'react-bootstrap';
 import '../css/NavBar.css';
 import Logo from '../images/reserv-logo.png';
 import { Link } from 'react-router-dom';
@@ -9,7 +8,7 @@ const NavBar = () => {
       <nav className="navbar">
         <div className="container">
           <a href="/">
-            <img className="brand" href="/" src={ Logo }/>
+            <img className="brand" href="/" src={ Logo } alt="Logo"/>
           </a>
           <ul className="nav-links">
             <li className="sign-in">
