@@ -28,6 +28,16 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
+if (process.env.NODE_ENV === 'production')
+{
+// Set static folder
+app.use(express.static('frontend/build'));
+app.get('*', (req, res) =>
+{
+    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
+});
+}
+
 const MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb+srv://BenjaminCarmenate:ELZ8g67YlurlpbRd@cardsdbcluster.zx4onxi.mongodb.net/?retryWrites=true&w=majority';
 const client = new MongoClient(url);
