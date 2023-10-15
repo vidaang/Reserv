@@ -4,14 +4,20 @@
     "description": "",
     "main": "server.js",
     "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "nodemon": "nodemon",
+        "postinstall": "npm install -g nodemon",
+        "start": "nodemon server.js"
     },
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "body-parser": "^1.19.0",
-        "express": "^4.17.1",
+        "body-parser": "^1.20.2",
+        "cors": "^2.8.5",
+        "express": "^4.18.2",
+        "mongodb": "^6.1.0"
+    },
+    "devDependencies": {
         "nodemon": "^3.0.1"
     }
 }

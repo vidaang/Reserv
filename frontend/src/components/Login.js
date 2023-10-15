@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import '../index.css'
 
 function Login()
 {
@@ -35,7 +36,7 @@ function Login()
                 localStorage.setItem('user_data', JSON.stringify(user));
                 alert(localStorage.id);
                 setMessage('');
-                window.location.href = '/cards';
+                window.location.href = '/OrgHomePage';
             }
         }
         catch(e)
@@ -47,13 +48,16 @@ function Login()
 
     return(
         <div id="loginDiv">
-        <form onSubmit={doLogin}>
-        <span id="inner-title">Please Log In</span><br />
-        <input type="text" class="textForm" id="loginName" placeholder="Username"ref={(c) => loginName = c} required/><br />
-        <input type="password" class="textForm" id="loginPassword" placeholder="Password" ref={(c) => loginPassword = c} required /><br />
-        <input type="submit" id="loginButton" class="buttons" value = "Login" onClick={doLogin} />
-        </form>
-        <span id="loginResult">{message}</span>
+            <link rel="preconnect" href="https://fonts.googleapis.com"/>
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+            <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700&display=swap" rel="stylesheet"></link>
+            <form onSubmit={doLogin}>
+            <span id="inner-title">Please Log In</span><br />
+            <input type="text" class="user-authentication-text-form" id="loginName" placeholder="Username"ref={(c) => loginName = c} required/><br />
+            <input type="password" class="user-authentication-text-form" id="loginPassword" placeholder="Password" ref={(c) => loginPassword = c} required /><br />
+            <input type="submit" id="loginButton" class="user-authentication-buttons" value = "Login" onClick={doLogin} />
+            </form>
+            <span id="loginResult">{message}</span>
         </div>
     );
 };

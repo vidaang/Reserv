@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
+import Hall from '../images/lecture-hall.jpg';
 
 function CreateAccount()
 {
@@ -48,13 +49,16 @@ function CreateAccount()
         <div id="loginDiv">
             <form onSubmit={doCreateAccount}>
                 <span id="inner-title">Create an account</span><br />
-                <input type="text" class="textForm" id="createAccountName" placeholder="Username"ref={(c) => createAccountName = c} /><br />
-                <input type="password" class="textForm" id="createAccountPassword" placeholder="Password" ref={(c) => createAccountPassword = c} /><br />
-                <input type="text" class="textForm" id="createAccountFirstName" placeholder="First Name" ref={(c) => createAccountFirstName = c} /><br />
-                <input type="text" class="textForm" id="createAccountLastName" placeholder="Last Name" ref={(c) => createAccountLastName = c} /><br />
-                <input type="submit" id="loginButton" class="buttons" value="Create Account" onClick={doCreateAccount} />
+                <input type="text" class="user-authentication-text-form" id="createAccountName" placeholder="Username"ref={(c) => createAccountName = c} /><br />
+                <input type="password" class="user-authentication-text-form" id="createAccountPassword" placeholder="Password" ref={(c) => createAccountPassword = c} /><br />
+                <input type="text" class="user-authentication-text-form" id="createAccountFirstName" placeholder="First Name" ref={(c) => createAccountFirstName = c} /><br />
+                <input type="text" class="user-authentication-text-form" id="createAccountLastName" placeholder="Last Name" ref={(c) => createAccountLastName = c} /><br />
+                <input type="submit" id="loginButton" class="user-authentication-buttons" value="Create Account" onClick={doCreateAccount} />
             </form>
             <span id="loginResult">{message}</span>
+            <div id='side-image-container'>
+                <img id='login-side-image' src={ Hall } />
+            </div>
         </div>
     );
 };
