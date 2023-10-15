@@ -1,5 +1,6 @@
 import React from 'react';
 import NavBar from '../components/NavBar';
+import OrgSearchRoomsForm from '../components/OrgSearchRoomsForm';
 import '../index.css';
 
 function OrgHomePage()
@@ -12,21 +13,23 @@ function OrgHomePage()
             <div id="NavBar">
                 <NavBar />
             </div>
-            <div id="org-home-top-container">
-                <header id="landing-header">
+            <div id="org-home-page-div">
+                <div id="org-home-container">
                     <h2 id="sub-title">Current Reservations</h2>
-                </header>
-                <div id="org-home-box">
-
-                </div>
-            </div>
-            
-            <div id="org-home-bottom-container">
-                <header id="landing-header">
-                    <h2 id="sub-title">Search for Rooms</h2>
-                </header>
-                <div id="org-home-box">
                     
+                    <div className="org-home-box">
+                        <h3>No current reservations!</h3>
+                    </div>
+                </div>
+                
+                <div id="org-home-container">
+                    <h2 id="sub-title">Search for Rooms</h2>
+                    
+                    <div className="org-home-box">
+                        <form className="entry-form">
+                            <OrgSearchRoomsForm />
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

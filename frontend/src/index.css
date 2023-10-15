@@ -126,7 +126,7 @@ body {
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid var(--dark-gray-border-color);
-  z-index: 2;
+  z-index: 100;
 }
 
 .navbar-left-align {
@@ -259,23 +259,103 @@ body {
 
 /* ORG HOME PAGE */
 #OrgHomePageDiv {
-  background-color: #ffffff;
   max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
-.org-home-top-container {
-  max-width: 70%;
-  margin-top: 200px;
-}
-
-.org-home-bottom-container {
-  max-width: 70%;
+#org-home-page-div {
   margin-top: 50px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 50px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#org-home-container {
+  margin-top: 100px;
+  width: 600px;
 }
 
 .org-home-box {
-  border: 3px solid black;
+  border: 3px solid var(--dark-gray-border-color);
   border-radius: 15px;
-  width: 400px;
-  height: 400px;
+  height: fit-content;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* ENTRY FORM */
+.entry-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.entry-form-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+entry-form-row-label {
+  flex: 1;
+  text-align: left;
+}
+
+.entry-form-input {
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
+  align-items:first baseline;
+}
+
+input {
+  color: var(--charcoal);
+  font-family: 'Gabarito', sans-serif;
+  font-weight: bold;
+  font-size: 18px;
+  border: 2px solid var(--sage-color);
+  border-radius: 20px;
+  background-color: transparent;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  transition: 0.3s;
+}
+
+input[type="range"] {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  appearance: none;
+  height: 4px; 
+  background-color: var(--dark-gray-border-color); 
+  border: none;
+  border-radius: 4px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background-color: var(--sage-color);
+  border: 2px solid var(--sage-color);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Style the output element */
+output[for="timeRange"] {
+  font-size: 16px;
+  color: #333;
+  margin-left: 10px;
 }
