@@ -36,7 +36,7 @@ function Login()
                 localStorage.setItem('user_data', JSON.stringify(user));
                 alert(localStorage.id);
                 setMessage('');
-                window.location.href = '/cards';
+                window.location.href = '/OrgHomePage';
             }
         }
         catch(e)
