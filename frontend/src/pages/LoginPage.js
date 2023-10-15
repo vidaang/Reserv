@@ -4,6 +4,7 @@ import Login from '../components/Login';
 import CreateAccount from '../components/CreateAccount';
 import NavBar from '../components/NavBar';
 import { Link } from 'react-router-dom';
+import Hall from '../images/lecture-hall.jpg';
 
 const LoginPage = () =>
 {
@@ -11,6 +12,9 @@ const LoginPage = () =>
 
     return(
         <div id="page-container">
+            <link rel="preconnect" href="https://fonts.googleapis.com"/>
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+            <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700&display=swap" rel="stylesheet"></link>
             <div id="NavBar">
                     <NavBar />
             </div>
@@ -29,9 +33,11 @@ const LoginPage = () =>
                             <CreateAccount />
                             {/* <Link onClick={()=>setShow(true)}>Already have an Account? Sign In!</Link> */}
                         </div>
-                        
                 }     
                 </div>              
+            </div>
+            <div id='side-image-container'>
+                <img id='login-side-image' src={ Hall } />
             </div>
         </div>
     );

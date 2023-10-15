@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
+import Hall from '../images/lecture-hall.jpg';
 
 function CreateAccount()
 {
@@ -55,6 +56,9 @@ function CreateAccount()
                 <input type="submit" id="loginButton" class="user-authentication-buttons" value="Create Account" onClick={doCreateAccount} />
             </form>
             <span id="loginResult">{message}</span>
+            <div id='side-image-container'>
+                <img id='login-side-image' src={ Hall } />
+            </div>
         </div>
     );
 };

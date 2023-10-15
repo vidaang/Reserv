@@ -5,6 +5,7 @@
   --dark-gray-border-color: #8e8a8850;
   --sage-color: #526760;
   --dark-sage: #374B4A;
+  --charcoal: #1C1018;
 }
 
 /* MAIN PAGES COMPONENTS */
@@ -21,12 +22,11 @@
 h1 {
   font-size: 200px;
   font-weight: bold;
+  font-family: 'Gabarito', sans-serif;
 }
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Gabarito', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2A1316;
@@ -34,33 +34,38 @@ body {
 
 /* SIGN IN & SIGN UP MODAL */
 #user-authentication-container{
-  margin: 0 auto;
-  margin-top: 5%;
-  background-color: white;
+  display: flex;
+  flex-direction: column;
   width: 50%;
-  border-radius: 5%;
-  border: 3px solid var(--dark-gray-border-color);
+  background-color: var(--white-color);
+  border: none;
+  padding-block-end: 21.5%;
 }
 
 #user-authentication-container-elements{
   margin: auto;
+  margin-top: 20%;
   padding: 5%;
   text-align: center;
   width: fit-content;
   font-size: larger;
+  font-family: 'Gabarito', sans-serif;
 }
 
-.user-authetication-title{
-  font-size: 200px;
+#user-authetication-title{
+  font-size: 36px;
   font-weight: bold;
+  font-family: 'Gabarito', sans-serif;
 }
 
 .user-authentication-text-form{
+  font-family: 'Gabarito', sans-serif;
+  font-size: 16px;
   border: 2px solid var(--dark-gray-border-color);
   background-color: #ffffff;
   color: #0F1A12;
   padding: 10px 20px;
-  text-align: center;
+  text-align: left;
   text-decoration: none;
   display: inline-block;
   margin: 4px 2px;
@@ -69,10 +74,10 @@ body {
 }
 
 .user-authentication-buttons{
-  background-color: var(--primary-green-color);
+  background-color: var(--sage-color);
   border: none;
-  color: #000000;
-  padding: 10px 20px;
+  color: rgb(255, 255, 255);
+  padding: 10px 88px;
   font-weight: bold;
   text-align: center;
   text-decoration: none;
@@ -82,15 +87,39 @@ body {
   border-radius: 25px;
 }
 
+#login-side-image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin-top: 65px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#side-image-container {
+  top: 0;
+  right: 0;
+  width: 951px;
+  height: 950px;
+  overflow: hidden;
+  position:absolute;
+}
+
 /* NAVIGATION BAR STYLING */
 .navbar-container {
-  background-color: white;
+  position: fixed;
+  background-color: whitesmoke;
+  top: 0;
+  left: 0;
   height: 65px;
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid var(--dark-gray-border-color);
+  z-index: 2;
 }
 
 .navbar-left-align {
@@ -156,8 +185,13 @@ body {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
+
+/* LANDING PAGE STYLING */
+
 #LandingPageDiv {
   background-color: var(--white-color);
+  padding-block-end: 50%;
+  padding-block-start: 5%;
 }
 
 #landing-header {
