@@ -12,26 +12,15 @@ const LoginPage = () =>
     return(
         <div id="page-container">
             <div id="NavBar">
-                    <NavBar />
+                <NavBar />
             </div>
             <div id="user-authentication-container">
-                
                 <div id="user-authentication-container-elements">
-                {
-                    show? 
-                        <div>
-                            <h1 id="user-authetication-title">Sign Up</h1>
-                            <Login />
-                            {/* <Link onClick={()=>setShow(false)}>No Account? Create One!</Link> */}
-                        </div>:
-                        <div>
-                            <h1 id="user-authetication-title">Sign Up</h1>
-                            <CreateAccount />
-                            {/* <Link onClick={()=>setShow(true)}>Already have an Account? Sign In!</Link> */}
-                        </div>
-                        
-                }     
-                </div>              
+                    <h1 id="user-authetication-title">Sign Up</h1>
+                    <CreateAccount />
+                </div> 
+
+                <div className='side-image-container'></div>            
             </div>
         </div>
     );

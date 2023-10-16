@@ -1,23 +1,35 @@
+
 /* WEB APP COLOR SCHEMA */
+
+
 :root {
-  --primary-green-color: #61ff7e;
-  --white-color: #F0E9D390;
-  --dark-gray-border-color: #8e8a8850;
-  --sage-color: #526760;
-  --dark-sage: #374B4A;
-  --charcoal: #1C1018;
+  --color-1: #61ff7e;
+  --color-2: #F0E9D390;
+  --color-3: #8e8a8850;
+  --color-4: #526760;
+  --color-5: #95d07d;
+  --color-6: #1C1018;
 }
 
+
 /* MAIN PAGES COMPONENTS */
+
+
 #page-container{
   background-color: #ffffff;
   max-height: 100%;
 }
 
+
 /* MAIN TEXT STYLING */
+
+
 h1 {
   font-size: 200px;
   font-weight: bold;
+  font-family: 'Gabarito', sans-serif;
+}
+p1 {
   font-family: 'Gabarito', sans-serif;
 }
 body {
@@ -39,81 +51,10 @@ body {
   margin: 12px;
 }
 
-/* SIGN IN & SIGN UP */
-#user-authentication-container{
-  display: flex;
-  flex-direction: column;
-  width: 50%;
-  background-color: var(--white-color);
-  border: none;
-  padding-block-end: 21.5%;
-}
-
-#user-authentication-container-elements{
-  margin: auto;
-  margin-top: 20%;
-  padding: 5%;
-  text-align: center;
-  width: fit-content;
-  font-size: larger;
-  font-family: 'Gabarito', sans-serif;
-}
-
-#user-authetication-title{
-  font-size: 36px;
-  font-weight: bold;
-  font-family: 'Gabarito', sans-serif;
-}
-
-.user-authentication-text-form{
-  font-family: 'Gabarito', sans-serif;
-  font-size: 16px;
-  border: 2px solid var(--dark-gray-border-color);
-  background-color: #ffffff;
-  color: #0F1A12;
-  padding: 10px 20px;
-  text-align: left;
-  text-decoration: none;
-  display: inline-block;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 25px;
-}
-
-.user-authentication-buttons{
-  background-color: var(--sage-color);
-  border: none;
-  color: rgb(255, 255, 255);
-  padding: 10px 88px;
-  font-weight: bold;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 25px;
-}
-
-#login-side-image {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  margin-top: 65px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#side-image-container {
-  top: 0;
-  right: 0;
-  width: 951px;
-  height: 950px;
-  overflow: hidden;
-  position:absolute;
-}
 
 /* NAVIGATION BAR STYLING */
+
+
 .navbar-container {
   position: fixed;
   background-color: whitesmoke;
@@ -125,7 +66,7 @@ body {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid var(--dark-gray-border-color);
+  border-bottom: 1px solid var(--color-3);
   z-index: 100;
 }
 
@@ -168,8 +109,8 @@ body {
   font-weight: bold;
   font-family: 'Gabarito', sans-serif;
   padding: 6px 17px;
-  color: var(--sage-color);
-  border: 2px solid var(--sage-color);
+  color: var(--color-4);
+  border: 2px solid var(--color-4);
   border-radius: 50px;
   background-color: transparent;
   transition: all 0.3s ease-in-out;
@@ -177,7 +118,7 @@ body {
 }
 
 .navbar-sign-in-button:hover {
-  background-color: var(--dark-gray-border-color);
+  background-color: var(--color-3);
 }
 
 .navbar-sign-up-button {
@@ -187,8 +128,8 @@ body {
   font-weight: bold;
   color: white;
   padding: 5px 13px;
-  background-color: var(--sage-color);
-  border: 2px solid var(--sage-color);
+  background-color: var(--color-4);
+  border: 2px solid var(--color-4);
   border-radius: 50px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
@@ -199,10 +140,74 @@ body {
 }
 
 
+/* SIGN IN & SIGN UP */
+
+
+#user-authentication-container{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  background-color: var(--color-2);
+  border: none;
+}
+
+#user-authentication-container-elements{
+  margin: auto;
+  padding: 5%;
+  text-align: center;
+  width: 100%;
+  font-size: larger;
+  font-family: 'Gabarito', sans-serif;
+}
+
+#user-authetication-title{
+  font-size: 36px;
+  font-weight: bold;
+  font-family: 'Gabarito', sans-serif;
+}
+
+.user-authentication-text-form{
+  font-family: 'Gabarito', sans-serif;
+  font-size: 16px;
+  border: 2px solid var(--color-3);
+  background-color: #ffffff;
+  color: #0F1A12;
+  padding: 10px 20px;
+  text-align: left;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 25px;
+}
+
+.user-authentication-buttons{
+  background-color: var(--color-4);
+  border: none;
+  color: rgb(255, 255, 255);
+  padding: 10px 88px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 25px;
+}
+
+.side-image-container {
+  background-image: url(images/lecture-hall.jpg);
+  background-size: cover;
+  height: 100vh;
+  width: 100%;
+}
+
+
 /* LANDING PAGE STYLING */
 
+
 #LandingPageDiv {
-  background-color: var(--white-color);
+  background-color: var(--color-2);
   padding-block-end: 50%;
   padding-block-start: 5%;
 }
@@ -233,8 +238,8 @@ body {
   color: white;
   font-family: 'Gabarito', sans-serif;
   font-size: 18px;
-  border: 2px solid var(--sage-color);
-  background-color: var(--sage-color);
+  border: 2px solid var(--color-4);
+  background-color: var(--color-4);
   transition: 0.3s;
 }
 
@@ -243,21 +248,24 @@ body {
 }
 
 #landing-university-button {
-  color: var(--sage-color);
+  color: var(--color-4);
   font-family: 'Gabarito', sans-serif;
   font-weight: bold;
   font-size: 18px;
-  border: 2px solid var(--sage-color);
+  border: 2px solid var(--color-4);
   background-color: transparent;
   transition: 0.3s;
 }
 
 #landing-university-button:hover {
-  background-color: var(--sage-color);
+  background-color: var(--color-4);
   color: white;
 }
 
+
 /* ORG HOME PAGE */
+
+
 #OrgHomePageDiv {
   max-height: 100%;
   display: flex;
@@ -276,69 +284,138 @@ body {
   flex-direction: column;
 }
 
-#org-home-container {
-  margin-top: 100px;
-  width: 600px;
-}
-
-.org-home-box {
-  border: 3px solid var(--dark-gray-border-color);
-  border-radius: 15px;
-  height: fit-content;
-  padding: 20px;
+#org-top-container {
+  padding-top: 100px;
+  padding-bottom: 15px;
+  width: 100%;
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  background-color: var(--color-5);
+  font-family: 'Gabarito', sans-serif;
+  color: white
 }
 
-/* ENTRY FORM */
-.entry-form {
+#org-bottom-container {
+  padding-top: 20px;
+  width: 70%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.org-home-box {
+  border: 3px solid var(--color-3);
+  background-color: white;
+  border-radius: 15px;
+  height: fit-content;
+  padding: 30px;
+  width: 95%;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.org-home-card-container {
+  display: flex;
+}
+
+.org-home-card {
+  width: 235px;
+  height: 200px;
+  margin: 0 10px;
+  background-color: #fff;
+  text-align: center;
   display: flex;
   flex-direction: column;
+  border: white;
+}
+
+.org-home-card-img {
+  max-width: 100%;
+  max-height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.org-home-card-arrow {
+  font-size: 24px;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.org-home-card-prev {
+  transform: rotate(180deg);
+}
+
+
+/* SEARCH(AKA ENTRY) FORM FOR ORG HOME PAGE*/
+
+
+.entry-form {
+  display: flex;
+  color: black;
   width: 100%;
+  justify-content: center;
+}
+
+.entry-form-container {
+  display: flex;
 }
 
 .entry-form-row {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin: 10px;
+
 }
 
 entry-form-row-label {
-  flex: 1;
-  text-align: left;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .entry-form-input {
-  width: 70%;
+  width: 100%;
   display: flex;
-  justify-content: space-between;
-  align-items:first baseline;
+  align-items:center;
 }
 
 input {
-  color: var(--charcoal);
+  color: black;
   font-family: 'Gabarito', sans-serif;
   font-weight: bold;
   font-size: 18px;
-  border: 2px solid var(--sage-color);
+  border: 2px solid var(--color-5);
   border-radius: 20px;
   background-color: transparent;
   padding: 5px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 8px;
   transition: 0.3s;
 }
 
+input[type="submit"] {
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  width: fit-content;
+  border: 2px solid transparent;
+  border-radius: 30px;
+  color: black;
+  background-color: var(--color-5);
+}
+
 input[type="range"] {
-  width: 100%;
+  width:100%;
   padding: 0;
   margin: 0;
   appearance: none;
   height: 4px; 
-  background-color: var(--dark-gray-border-color); 
+  background-color: var(--color-3); 
   border: none;
   border-radius: 4px;
 }
@@ -347,15 +424,18 @@ input[type="range"]::-webkit-slider-thumb {
   appearance: none;
   width: 20px;
   height: 20px;
-  background-color: var(--sage-color);
-  border: 2px solid var(--sage-color);
+  background-color: var(--color-5);
+  border: 2px solid var(--color-5);
   border-radius: 50%;
   cursor: pointer;
 }
 
-/* Style the output element */
 output[for="timeRange"] {
   font-size: 16px;
-  color: #333;
+  color: black;
   margin-left: 10px;
+}
+
+#timeRangeOutput{
+  width: 100%;
 }
