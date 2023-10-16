@@ -488,3 +488,56 @@ output[for="timeRange"] {
 #timeRangeOutput{
   width: 100%;
 }
+
+/* RESERVATIONS PAGE */
+
+#reservations-page {
+  background-color: var(--color-2);
+  padding-block-end: 50%;
+  padding-block-start: 2%;
+}
+
+#reservations-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Gabarito', sans-serif;
+  margin-bottom: 2%;
+}
+
+#reservations-header h1{
+  font-size: 44px;
+  font-weight: bold;
+}
+
+#reservations-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'Gabarito', sans-serif;
+  font-size: 20px;
+}
+
+#reservations-left-content {
+  flex: 0 0 auto;
+  margin-left: 2%;
+}
+
+#reservations-center-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  margin-right: 6.5%;
+}
+
+#reservations-center-content button{
+  margin: 0 20px;
+  padding: 3px 25px;
+  border-radius: 8px;
+}
+
+#reservations-back-button {
+  padding: 5px 18px;
+  border-radius: 25px;
+}
