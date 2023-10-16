@@ -9,6 +9,8 @@
   --color-4: #526760;
   --color-5: #95d07d;
   --color-6: #1C1018;
+  --color-7: #eaeaea;
+  --color-8: #5c8a99;
 }
 
 
@@ -31,6 +33,9 @@ h1 {
 }
 p1 {
   font-family: 'Gabarito', sans-serif;
+  overflow: hidden;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 body {
   margin: 0;
@@ -57,10 +62,10 @@ body {
 
 .navbar-container {
   position: fixed;
-  background-color: whitesmoke;
+  background-color: white;
   top: 0;
   left: 0;
-  height: 65px;
+  height: 60px;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -86,8 +91,7 @@ body {
 }
 
 .navbar-icon {
-  max-width: 100px;
-  max-height: 40px;
+  height: 30px;
   margin: 10px;
 }
 
@@ -100,7 +104,8 @@ body {
 }
 
 .navbar-button{
-  justify-content: space-between;
+  background-color: transparent;
+  border: none;
 }
 
 .navbar-sign-in-button {
@@ -139,6 +144,50 @@ body {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
+.navbar-menu-container {
+  position: relative;
+}
+
+.navbar-menu-button, .navbar-menu-text {
+  background-color: transparent;
+  border: none;
+}
+
+.navbar-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: absolute;
+  top: 70px;
+  right: 8.5%;
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  border: 1px var(--color-7);
+  border-radius: 5px;
+  width: 15%;
+  height: fit-content;
+  padding: 10px;
+}
+
+.navbar-menu-text {
+  font-family: 'Gabarito', sans-serif;
+  font-weight: bold;
+  font-size: large;
+  width: 100%;
+  padding-left: 10px;
+  margin-bottom: 5px;
+}
+
+.navbar-menu-text:hover {
+  padding: 5px;
+  width: 90%;
+  border-radius: 20px;
+  font-size: larger;
+  background-color: var(--color-8);
+  color: white;
+  transition: 0.5s;
+}
+
 
 /* SIGN IN & SIGN UP */
 
@@ -174,20 +223,6 @@ body {
   color: #0F1A12;
   padding: 10px 20px;
   text-align: left;
-  text-decoration: none;
-  display: inline-block;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 25px;
-}
-
-.user-authentication-buttons{
-  background-color: var(--color-4);
-  border: none;
-  color: rgb(255, 255, 255);
-  padding: 10px 88px;
-  font-weight: bold;
-  text-align: center;
   text-decoration: none;
   display: inline-block;
   margin: 4px 2px;
@@ -299,7 +334,7 @@ body {
 
 #org-bottom-container {
   padding-top: 20px;
-  width: 70%;
+  width: fit-content;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -307,39 +342,46 @@ body {
 }
 
 .org-home-box {
-  border: 3px solid var(--color-3);
   background-color: white;
   border-radius: 15px;
   height: fit-content;
-  padding: 30px;
-  width: 95%;
+  padding: 20px;
   margin-top: 10px;
   margin-bottom: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: auto;
 }
 
 .org-home-card-container {
   display: flex;
+  height: fit-content;
 }
 
 .org-home-card {
-  width: 235px;
-  height: 200px;
+  width: fit-content;
+  height: fit-content;
   margin: 0 10px;
   background-color: #fff;
   text-align: center;
   display: flex;
   flex-direction: column;
-  border: white;
+  border: 1px solid var(--color-3);
+  border-radius: 10px;
+}
+
+.org-home-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .org-home-card-img {
   max-width: 100%;
   max-height: 150px;
   object-fit: cover;
-  border-radius: 10px;
+  padding-bottom: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 
 .org-home-card-arrow {
@@ -361,6 +403,7 @@ body {
   color: black;
   width: 100%;
   justify-content: center;
+  overflow: auto;
 }
 
 .entry-form-container {
@@ -390,7 +433,7 @@ input {
   font-family: 'Gabarito', sans-serif;
   font-weight: bold;
   font-size: 18px;
-  border: 2px solid var(--color-5);
+  border: 2px solid var(--color-3);
   border-radius: 20px;
   background-color: transparent;
   padding: 5px;
@@ -399,7 +442,6 @@ input {
 }
 
 input[type="submit"] {
-  padding: 10px;
   padding-left: 20px;
   padding-right: 20px;
   width: fit-content;
@@ -407,6 +449,13 @@ input[type="submit"] {
   border-radius: 30px;
   color: black;
   background-color: var(--color-5);
+}
+
+input[type="submit"]:hover {
+  color: black;
+  background-color: white;
+  border-color: var(--color-5);
+  transition: 0.3s
 }
 
 input[type="range"] {

@@ -40,12 +40,12 @@ function OrgSearchRoomsForm() {
                     </div>
                 </div>
 
-                <div className="entry-form-row">
+                {/* <div className="entry-form-row">
                     <entry-form-row-label htmlFor="attendees">Number of Attendees:</entry-form-row-label>
                     <div className="entry-form-input">
                         <input type="number" id="attendees" name="attendees" min="1" />
                     </div>
-                </div>
+                </div> */}
             </div>
         
             <input type="submit" value="Search" />

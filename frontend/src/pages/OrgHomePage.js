@@ -20,7 +20,7 @@ function OrgHomePage()
             <div id="org-home-page-div">
                 
                 <div id="org-top-container">
-                    <h2 id="sub-title">Search for Rooms</h2>
+                    <h1 id="main-title">Search for Rooms</h1>
                     
                     <div className="org-home-box">
                         <form className="entry-form">

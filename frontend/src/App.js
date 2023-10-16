@@ -6,7 +6,9 @@ import LoginPage from './pages/LoginPage';
 import CardPage from './pages/CardPage';
 import SignUpPage from './pages/SignUpPage';
 import OrgHomePage from './pages/OrgHomePage';
-import OrgProfilePage from './pages/OrgHomePage';
+import OrgSearchPage from './pages/OrgSearchPage';
+import OrgReservationsPage from './pages/OrgReservationsPage';
+import OrgProfilePage from './pages/OrgProfilePage';
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
         <Route path="/CreateAccount" element={<SignUpPage />} />
         <Route path="/cards" element={<CardPage />} />
         <Route path="/OrgHomePage" element={<OrgHomePage/>}/>
+        <Route path="/OrgSearchPage" element={<OrgSearchPage/>}/>
+        <Route path="/OrgReservationsPage" element={<OrgReservationsPage/>}/>
         <Route path="/OrgProfilePage" element={<OrgProfilePage/>}/>
       </Routes>
     </BrowserRouter>
