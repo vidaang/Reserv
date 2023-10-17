@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import NavBar from '../components/NavBar';
 import '../index.css';
-import PendingReservations from '../components/PendingReservations';
-import ApprovedReservations from '../components/ApprovedReservations';
-import DeniedReservations from '../components/DeniedReservations';
+import PendingReservations from '../components/Org/OrgHomePage/PendingReservations';
+import ApprovedReservations from '../components/Org/OrgHomePage/ApprovedReservations';
+import DeniedReservations from '../components/Org/OrgHomePage/DeniedReservations';
 
 function OrgReservationsPage()
 {
