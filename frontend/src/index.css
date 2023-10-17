@@ -491,7 +491,7 @@ output[for="timeRange"] {
 
 /* RESERVATIONS PAGE */
 
-#reservations-page {
+#OrgReservationsPageDiv {
   background-color: white;
   padding-block-end: 50%;
   padding-block-start: 2%;

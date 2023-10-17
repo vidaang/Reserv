@@ -9,7 +9,7 @@ import OrgHomePage from './pages/OrgHomePage';
 import OrgSearchPage from './pages/OrgSearchPage';
 import OrgReservationsPage from './pages/OrgReservationsPage';
 import OrgProfilePage from './pages/OrgProfilePage';
-import CurrentReservations from './pages/CurrentReservations';
+
 
 function App() {
   return (
@@ -23,7 +23,6 @@ function App() {
         <Route path="/OrgSearchPage" element={<OrgSearchPage/>}/>
         <Route path="/OrgReservationsPage" element={<OrgReservationsPage/>}/>
         <Route path="/OrgProfilePage" element={<OrgProfilePage/>}/>
-        <Route path="/Reservations" element={<CurrentReservations />}/>
       </Routes>
     </BrowserRouter>
   );
