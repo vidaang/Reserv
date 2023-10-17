@@ -492,52 +492,74 @@ output[for="timeRange"] {
 /* RESERVATIONS PAGE */
 
 #reservations-page {
-  background-color: var(--color-2);
+  background-color: white;
   padding-block-end: 50%;
   padding-block-start: 2%;
 }
 
-#reservations-header {
+#reservations-navbar {
+  font-family: 'Gabarito', sans-serif;
+  position: fixed;
+  background-color: white;
+  margin-top: 1%;
+  height: 60px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  overflow: hidden;
+}
+
+#reservations-navbar label {
+  margin: 0 25px;
+}
+
+#reservations-navbar label:hover {
+  cursor: pointer;
+}
+
+#reservations-navbar input{
+  position: absolute;
+  opacity: 100%;
+  width: 0;
+  height: 0;
+}
+
+.reservation-select-bar {
+  height: 2px;
+  width: 100%;
+  background-color: transparent;
+  transition: background-color 0.3s ease;
+}
+
+#reservations-navbar label input[value="pending"]:checked + .reservation-select-bar {
+  background-color: gold;
+}
+
+#reservations-navbar label input[value="approved"]:checked + .reservation-select-bar {
+  background-color: var(--color-5);
+}
+
+#reservations-navbar label input[value="denied"]:checked + .reservation-select-bar {
+  background-color: red;
+}
+
+#reservations-list-div {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-family: 'Gabarito', sans-serif;
-  margin-bottom: 2%;
-}
-
-#reservations-header h1{
-  font-size: 44px;
-  font-weight: bold;
-}
-
-#reservations-navbar {
-  display: flex;
   align-items: center;
-  justify-content: space-between;
-  font-family: 'Gabarito', sans-serif;
-  font-size: 20px;
+  margin-top: 10%;
 }
 
-#reservations-left-content {
-  flex: 0 0 auto;
-  margin-left: 2%;
-}
+/* PENDING RESERVATIONS STYLING */
 
-#reservations-center-content {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  margin-right: 6.5%;
-}
 
-#reservations-center-content button{
-  margin: 0 20px;
-  padding: 3px 25px;
-  border-radius: 8px;
-}
+/* APPROVED RESERVATIONS STYLING */
 
-#reservations-back-button {
-  padding: 5px 18px;
-  border-radius: 25px;
-}
+
+/* DENIED RESERVATIONS STYLING */
+
+
