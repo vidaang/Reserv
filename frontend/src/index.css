@@ -554,6 +554,22 @@ output[for="timeRange"] {
   margin-top: 10%;
 }
 
+.map-container {
+  height: 100%;
+  width: 100%;
+}
+
+.MapDiv{
+  height: 100vh;
+}
+
+#MapSection{
+  width: 80%;
+}
+#ListSection{
+  width: 20%;
+}
+
 /* PENDING RESERVATIONS STYLING */
 
 

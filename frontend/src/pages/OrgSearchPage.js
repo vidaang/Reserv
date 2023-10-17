@@ -1,5 +1,6 @@
 import React from 'react';
 import NavBar from '../components/NavBar';
+import Map from '../components/Org/OrgSearchPage/Map'
 import '../index.css';
 
 function OrgSearchPage()
@@ -16,10 +17,14 @@ function OrgSearchPage()
             <div id="NavBar">
                 <NavBar />
             </div>
-            <header id="landing-header">
-                <h1 id="main-title">Search Page</h1>
-                <h2 id="sub-title">Currently in Progress!</h2>
-            </header>
+            
+            <div id='MapSection'>
+                <Map />
+            </div>
+            <div id="ListSection">
+                <h1>Hello</h1>
+            </div>
+            
         </div>
     );
 }
