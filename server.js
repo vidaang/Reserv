@@ -9,9 +9,14 @@ const { MongoClient, ServerApiVersion } = require("mongodb");
 
 // Setting up express.
 const app = express();
+
+// Use cors middleware for handling Cross-Origin Resource Sharing.
 app.use(cors());
+
+// Body parser middleware to handle JSON payloads.
 app.use(bodyParser.json());
 
+// Custom middleware for setting headers.
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -23,6 +28,14 @@ app.use((req, res, next) => {
     "GET, POST, PATCH, DELETE, OPTIONS"
   );
   next();
+});
+
+// Other routes and middleware would go here...
+
+// Start the server.
+const port = process.env.PORT || 5000;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
 
 // Mongo DB URI
@@ -126,6 +139,11 @@ app.post("/api/login", async (req, res) => {
     return res.status(400).json({ error: "Email not found" });
   }
 
+  // Checking if the provided password matches the stored password
+  if (user.Password !== password) {
+    return res.status(400).json({ error: "Incorrect password" });
+  }
+
   // [Commented Out] Checking if the provided password matches the stored hashed password
   // const passwordMatches = await bcrypt.compare(password, user.Password);
 
@@ -138,9 +156,19 @@ app.post("/api/login", async (req, res) => {
   // using a library like jsonwebtoken or express-session.
   // For now, we are just sending a success message.
 
-  res.status(200).json({ message: "Logged in successfully" });
+  res
+    .status(200)
+    .json({ message: "Logged in successfully", rsoName: user.RSOName });
 });
 
+// This needs to be the last get request.
+if (process.env.NODE_ENV === "production") {
+  // Set static folder
+  app.use(express.static("frontend/build"));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
+  });
+}
 // -------------- Boiler Plate Code from MERN Stack Demo--------------- //
 
 var cardList = [
@@ -285,6 +313,8 @@ app.post("/api/searchcards", async (req, res) => {
   var ret = { results: _ret, error: error };
   res.status(200).json(ret);
 });
+
+//----------------------------------------------
 
 app.listen(4000, () => {
   console.log("Server has started!");
