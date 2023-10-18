@@ -1,12 +1,14 @@
+// Dependencies
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 require("dotenv").config();
 
+// Connecting to database.
 const { MongoClient, ServerApiVersion } = require("mongodb");
 
+// Setting up express.
 const app = express();
-
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -23,6 +25,7 @@ app.use((req, res, next) => {
   next();
 });
 
+// Mongo DB URI
 const uri = process.env.MONGO_URI;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -34,6 +37,7 @@ const client = new MongoClient(uri, {
   },
 });
 
+// Connecting to DB.
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
@@ -48,7 +52,96 @@ async function run() {
     //await client.close();
   }
 }
+
+// Running connection function.
 run().catch(console.dir);
+
+// This is equivalent to a sign up / register API endpoint
+app.post("/api/createRSO", async (req, res) => {
+  // incoming: userId, color
+  // outgoing: error
+  const {
+    yo1,
+    yo2,
+    rsoName,
+    officerFirstName,
+    officerLastName,
+    password,
+    email,
+    phone,
+    advisorName,
+    advisorEmail,
+    secondaryContactName,
+    secondaryContactEmail,
+    secondaryContactPhone,
+    uniID,
+  } = req.body;
+
+  console.log(req.body);
+
+  const newRSO = {
+    RSOName: req.body.RSOName,
+    OfficerFirstName: req.body.OfficerFirstName,
+    OfficerLastName: req.body.OfficerLastName,
+    Password: req.body.Password,
+    Email: req.body.Email,
+    Phone: req.body.Phone,
+    AdvisorName: req.body.AdvisorName,
+    AdvisorEmail: req.body.AdvisorEmail,
+    SecondaryContactName: req.body.SecondaryContactName,
+    SecondaryContactEmail: req.body.SecondaryContactEmail,
+    SecondaryContactPhone: req.body.SecondaryContactPhone,
+    UniID: req.body.UniID,
+  };
+
+  var error = "";
+
+  try {
+    const db = client.db("Reserv");
+    const result = db.collection("RSO").insertOne(newRSO);
+  } catch (e) {
+    error = e.toString();
+  }
+
+  var ret = { error: error };
+  res.status(200).json(ret);
+});
+
+// Importing the bcrypt library for password hashing
+const bcrypt = require("bcrypt");
+
+// Setting up an endpoint for user login
+app.post("/api/login", async (req, res) => {
+  // Destructuring the email and password from the request body
+  const { email, password } = req.body;
+
+  // Connecting to the "Reserv" database
+  const db = client.db("Reserv");
+
+  // Attempting to find a user in the "RSO" collection with the provided email
+  const user = await db.collection("RSO").findOne({ Email: email });
+
+  // If no user is found with the provided email, return an error
+  if (!user) {
+    return res.status(400).json({ error: "Email not found" });
+  }
+
+  // [Commented Out] Checking if the provided password matches the stored hashed password
+  // const passwordMatches = await bcrypt.compare(password, user.Password);
+
+  // [Commented Out] If the passwords don't match, return an error
+  // if (!passwordMatches) {
+  //   return res.status(400).json({ error: "Incorrect password" });
+  // }
+
+  // [Placeholder] In a complete implementation, you would generate an authentication token or session here
+  // using a library like jsonwebtoken or express-session.
+  // For now, we are just sending a success message.
+
+  res.status(200).json({ message: "Logged in successfully" });
+});
+
+// -------------- Boiler Plate Code from MERN Stack Demo--------------- //
 
 var cardList = [
   "Roy Campanella",
@@ -169,84 +262,6 @@ app.post("/api/addcard", async (req, res, next) => {
   cardList.push(card);
   var ret = { error: error };
   res.status(200).json(ret);
-});
-
-app.post("/api/createRSO", async (req, res) => {
-  // incoming: userId, color
-  // outgoing: error
-  const {
-    yo1,
-    yo2,
-    rsoName,
-    officerFirstName,
-    officerLastName,
-    password,
-    email,
-    phone,
-    advisorName,
-    advisorEmail,
-    secondaryContactName,
-    secondaryContactEmail,
-    secondaryContactPhone,
-    uniID,
-  } = req.body;
-
-  console.log(req.body);
-
-  const newRSO = {
-    RSOName: req.body.RSOName,
-    OfficerFirstName: req.body.OfficerFirstName,
-    OfficerLastName: req.body.OfficerLastName,
-    Password: req.body.Password,
-    Email: req.body.Email,
-    Phone: req.body.Phone,
-    AdvisorName: req.body.AdvisorName,
-    AdvisorEmail: req.body.AdvisorEmail,
-    SecondaryContactName: req.body.SecondaryContactName,
-    SecondaryContactEmail: req.body.SecondaryContactEmail,
-    SecondaryContactPhone: req.body.SecondaryContactPhone,
-    UniID: req.body.UniID,
-  };
-
-  var error = "";
-
-  try {
-    const db = client.db("Reserv");
-    const result = db.collection("RSO").insertOne(newRSO);
-  } catch (e) {
-    error = e.toString();
-  }
-
-  var ret = { error: error };
-  res.status(200).json(ret);
-});
-
-const bcrypt = require("bcrypt"); // Assuming you're using bcrypt for hashing passwords
-
-app.post("/api/login", async (req, res) => {
-  // incoming: email, password
-  // outgoing: error, token or session information
-
-  const { email, password } = req.body;
-
-  const db = client.db("Reserv");
-  const user = await db.collection("RSO").findOne({ Email: email });
-
-  if (!user) {
-    return res.status(400).json({ error: "Email not found" });
-  }
-
-  // For when passwords are encrypted.
-  //   const passwordMatches = await bcrypt.compare(password, user.Password); // Assuming the stored password is hashed using bcrypt
-
-  //   if (!passwordMatches) {
-  //     return res.status(400).json({ error: "Incorrect password" });
-  //   }
-
-  // Here you'd create a token or session for the user.
-  // This can be done using libraries like jsonwebtoken or setting up a session in Express.
-  // For simplicity's sake, let's just send a success message.
-  res.status(200).json({ message: "Logged in successfully" });
 });
 
 app.post("/api/searchcards", async (req, res) => {
