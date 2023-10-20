@@ -1,36 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import NavBar from '../components/NavBar';
 import '../styles/index.css';
-import PendingReservations from '../components/Org/OrgHomePage/PendingReservations';
-import ApprovedReservations from '../components/Org/OrgHomePage/ApprovedReservations';
-import DeniedReservations from '../components/Org/OrgHomePage/DeniedReservations';
+import LargeCalendar from '../components/Org/OrgHomePage/LargeCalendar';
+
 
 function OrgReservationsPage()
 {
     const handleClick = () => {
         alert("Button clicked!");
-    }
-
-    const [selectedOption, setSelectedOption] = useState(null);
-      
-    const handleOptionChange = (event) => {
-        setSelectedOption(event.target.value);
-    };
-
-    let selectedComponent;
-
-    switch (selectedOption) {
-        case 'pending':
-            selectedComponent = <PendingReservations />;
-            break;
-        case 'denied':
-            selectedComponent = <DeniedReservations />;
-            break;
-        case 'approved':
-            selectedComponent = <ApprovedReservations />;
-            break;
-        default:
-            selectedComponent = null;
     }
 
     return (
@@ -41,26 +18,8 @@ function OrgReservationsPage()
             <div id="NavBar">
                 <NavBar />
             </div>
-            <nav id="reservations-navbar">
-                <label>
-                    <input type="radio" value="pending" checked={selectedOption === 'pending'} onChange={handleOptionChange}/>
-                    Pending
-                    <div className="reservation-select-bar"></div> 
-                </label>
-                <label>
-                    <input type="radio" value="approved" checked={selectedOption === 'approved'} onChange={handleOptionChange}/>
-                    Approved
-                    <div className="reservation-select-bar"></div> 
-                </label>
-                <label>
-                    <input type="radio" value="denied" checked={selectedOption === 'denied'} onChange={handleOptionChange}/>
-                    Denied
-                    <div className="reservation-select-bar"></div> 
-                </label>                  
-            </nav>
-            <div className="reservation-select-bar"></div> 
-            <div id="reservations-list-div">
-                {selectedComponent}
+            <div id="CalendarDiv">
+                <LargeCalendar />
             </div>
         </div>
     );

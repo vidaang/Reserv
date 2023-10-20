@@ -532,63 +532,17 @@ output[for="timeRange"] {
   text-align: center;
 }
 
-#reservations-navbar {
+#CalendarDiv {
   font-family: 'Gabarito', sans-serif;
-  position: fixed;
-  background-color: white;
-  margin-top: 1%;
-  height: 60px;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  font-size: 24px;
-  overflow: hidden;
+  height: 80vh;
+  width: 90%;
+  margin: 50px;
 }
+/* LARGE CALENDAR */
 
-#reservations-navbar label {
-  margin: 0 25px;
+#LargeCalendar {
+ 
 }
-
-#reservations-navbar label:hover {
-  cursor: pointer;
-}
-
-#reservations-navbar input{
-  position: absolute;
-  opacity: 100%;
-  width: 0;
-  height: 0;
-}
-
-.reservation-select-bar {
-  height: 2px;
-  width: 100%;
-  background-color: transparent;
-  transition: background-color 0.3s ease;
-}
-
-#reservations-navbar label input[value="pending"]:checked + .reservation-select-bar {
-  background-color: gold;
-}
-
-#reservations-navbar label input[value="approved"]:checked + .reservation-select-bar {
-  background-color: var(--color-5);
-}
-
-#reservations-navbar label input[value="denied"]:checked + .reservation-select-bar {
-  background-color: red;
-}
-
-#reservations-list-div {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 10%;
-}
-
 
 /* ORG SETTINGS PAGE */
 
