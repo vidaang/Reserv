@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import NavBar from '../components/NavBar';
-import '../index.css';
+import '../styles/index.css';
 import PendingReservations from '../components/Org/OrgHomePage/PendingReservations';
 import ApprovedReservations from '../components/Org/OrgHomePage/ApprovedReservations';
 import DeniedReservations from '../components/Org/OrgHomePage/DeniedReservations';

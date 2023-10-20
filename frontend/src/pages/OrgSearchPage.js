@@ -1,7 +1,7 @@
 import React from 'react';
 import NavBar from '../components/NavBar';
 import Map from '../components/Org/OrgSearchPage/Map'
-import '../index.css';
+import '../styles/index.css';
 
 function OrgSearchPage()
 {

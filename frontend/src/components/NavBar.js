@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import '../index.css';
+import '../styles/index.css'
 import Logo from '../images/reserv-logo.png';
 import MenuIcon from '../images/menu.png';
 import ProfileIcon from '../images/profile-icon.png';
@@ -8,7 +8,9 @@ import ProfileIcon from '../images/profile-icon.png';
 const NavBar = () => {
     const location = useLocation();
 
-    const showIcons = location.pathname === '/' || location.pathname === '/Login' || location.pathname === '/CreateAccount';
+    const showIcons = location.pathname === '/' || 
+          location.pathname === '/Login' || 
+          location.pathname === '/CreateAccount';
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const menuRef = useRef(null);
@@ -22,16 +24,13 @@ const NavBar = () => {
     };
 
     useEffect(() => {
-      // Add event listener to the document body to close the menu when a click occurs outside the menu
       document.body.addEventListener('click', closeMenu);
 
-      // Cleanup the event listener when the component unmounts
       return () => {
         document.body.removeEventListener('click', closeMenu);
       };
     }, []);
 
-    // Prevent the click event from propagating to the body and closing the menu
     const stopPropagation = (e) => {
       e.stopPropagation();
     };
@@ -68,9 +67,9 @@ const NavBar = () => {
                 </button>
               </div>
               
-              <li className="navbar-button">
+              {/* <li className="navbar-button">
                 <img src={ProfileIcon} alt="Profile" className="navbar-icon"/>
-              </li>
+              </li> */}
             </ul>
           )}
           {isMenuOpen && (
@@ -83,10 +82,10 @@ const NavBar = () => {
                 <button className="navbar-menu-text" onClick={toggleMenu}>Search for Rooms</button>
               </Link>
               <Link to="/OrgReservationsPage">
-                <button className="navbar-menu-text" onClick={toggleMenu}>Manage Reservation</button>
+                <button className="navbar-menu-text" onClick={toggleMenu}>Manage Reservations</button>
               </Link>
-              <Link to="/OrgProfilePage">
-                <button className="navbar-menu-text" onClick={toggleMenu}>View Profile</button>
+              <Link to="/OrgSettingsPage">
+                <button className="navbar-menu-text" onClick={toggleMenu}>Settings</button>
               </Link>
               <Link to="/">
                 <button className="navbar-menu-text" onClick={toggleMenu}>Log Out</button>

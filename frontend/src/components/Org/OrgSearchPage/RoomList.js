@@ -1,4 +1,4 @@
 import React from 'react';
 import NavBar from '../components/NavBar';
 import Room from './Room'
-import '../index.css';
+import '../../../styles/index.css';
