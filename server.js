@@ -135,13 +135,9 @@ app.post("/api/login", async (req, res) => {
   const user = await db.collection("RSO").findOne({ Email: email });
 
   // If no user is found with the provided email, return an error
-  if (!user) {
-    return res.status(400).json({ error: "Email not found" });
-  }
-
   // Checking if the provided password matches the stored password
-  if (user.Password !== password) {
-    return res.status(400).json({ error: "Incorrect password" });
+  if (!user || user.Password !== password) {
+    return res.status(400).json({ error: "Incorrect email or password" });
   }
 
   // [Commented Out] Checking if the provided password matches the stored hashed password
