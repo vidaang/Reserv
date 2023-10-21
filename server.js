@@ -120,41 +120,46 @@ app.post("/api/createRSO", async (req, res) => {
   res.status(200).json(ret);
 });
 
-// Importing the bcrypt library for password hashing
-const bcrypt = require("bcrypt");
+// Encryption library needs to be added
+// const jwt = require("jsonwebtoken");
 
-// Setting up an endpoint for user login
 app.post("/api/login", async (req, res) => {
-  // Destructuring the email and password from the request body
   const { email, password } = req.body;
 
-  // Connecting to the "Reserv" database
   const db = client.db("Reserv");
+  const rso = await db.collection("RSO").findOne({ Email: email });
 
-  // Attempting to find a user in the "RSO" collection with the provided email
-  const user = await db.collection("RSO").findOne({ Email: email });
-
-  // If no user is found with the provided email, return an error
-  // Checking if the provided password matches the stored password
-  if (!user || user.Password !== password) {
+  if (!rso || rso.Password !== password) {
+    // Remember to eventually hash and securely compare passwords!
     return res.status(400).json({ error: "Incorrect email or password" });
   }
 
-  // [Commented Out] Checking if the provided password matches the stored hashed password
-  // const passwordMatches = await bcrypt.compare(password, user.Password);
+  // Payload for JWT
+  const jwtPayload = {
+    RSOID: rso.RSOID,
+    Email: rso.Email,
+    AdminID: rso.AdminID,
+  };
 
-  // [Commented Out] If the passwords don't match, return an error
-  // if (!passwordMatches) {
-  //   return res.status(400).json({ error: "Incorrect password" });
-  // }
+  // Secret key (this should be a long, unguessable string stored in a secure way, not hard-coded!)
+  //const secretKey = "your_very_secret_key_here";
 
-  // [Placeholder] In a complete implementation, you would generate an authentication token or session here
-  // using a library like jsonwebtoken or express-session.
-  // For now, we are just sending a success message.
+  // // Generate JWT
+  //const token = jwt.sign(jwtPayload, secretKey, { expiresIn: "1h" }); // Token expires in 1 hour
 
-  res
-    .status(200)
-    .json({ message: "Logged in successfully", rsoName: user.RSOName });
+  // Construct response JSON object
+  const responseObject = {
+    // token: token, // remeber to add JWT
+    RSOName: rso.RSOName,
+    Email: rso.Email,
+    Phone: rso.Phone,
+    AdvisorName: rso.AdvisorName,
+    AdvisorEmail: rso.AdvisorEmail,
+    UniID: rso.UniID,
+    AdminID: rso.AdminID,
+  };
+
+  res.status(200).json(responseObject);
 });
 
 // This needs to be the last get request.
