@@ -523,7 +523,7 @@ output[for="timeRange"] {
 
 #OrgReservationsPageDiv {
   background-color: white;
-  padding-block-end: 50%;
+  padding-block-end: 100hv;
   padding-block-start: 2%;
   max-height: 100%;
   display: flex;
@@ -533,15 +533,62 @@ output[for="timeRange"] {
 }
 
 #CalendarDiv {
-  font-family: 'Gabarito', sans-serif;
   height: 80vh;
-  width: 90%;
-  margin: 50px;
+  width: 95%;
+  padding-top: 2%;
+  margin: 0 auto;
 }
 /* LARGE CALENDAR */
 
-#LargeCalendar {
- 
+.rbc-calendar {
+  min-height: 580px;
+}
+
+/* RESERVATION PAGE POPUP / EDIT RESERVATION */
+
+#reservation-popup-content {
+  font-family: 'Gabarito', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10%;
+}
+
+#reservation-popup-button-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+#reservation-popup-button-container button {
+  margin: 0 10px;
+  border-radius: 25px;
+  padding: 7px 15px;
+}
+
+#popup-edit-button {
+  border: 2px solid gold;
+  background-color: transparent;
+  transition: 0.2s;
+}
+
+#popup-edit-button:hover {
+  border: 2px solid gold;
+  background-color: gold;
+  color: white;
+}
+
+#popup-cancel-button {
+  border: 2px solid rgb(255, 61, 61);
+  background-color: rgb(255, 61, 61);
+  color: white;
+  transition: 0.3s;
+}
+
+#popup-cancel-button:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
 }
 
 /* ORG SETTINGS PAGE */
