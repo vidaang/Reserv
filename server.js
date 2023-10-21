@@ -165,56 +165,62 @@ app.post("/api/login", async (req, res) => {
 // PUT NEW APIs AFTER HERE
 
 app.post("/api/createEvent", async (req, res) => {
-  // Destructure fields from request body
   const { RSOID, EventName, Description, StartEnd } = req.body;
+
+  // Validate the StartEnd array
+  if (!Array.isArray(StartEnd) || StartEnd.length !== 2) {
+    return res.status(400).json({ error: "Invalid StartEnd format" });
+  }
+
+  const [startTime, endTime] = StartEnd;
+
+  // Check if both startTime and endTime are within the valid range
+  if (
+    typeof startTime !== "number" ||
+    typeof endTime !== "number" ||
+    startTime < 0 ||
+    startTime > 24 ||
+    endTime < 0 ||
+    endTime > 24
+  ) {
+    return res.status(400).json({ error: "Invalid time values provided" });
+  }
+
+  // Ensure start time is before end time
+  if (startTime >= endTime) {
+    return res
+      .status(400)
+      .json({ error: "Start time must be before end time" });
+  }
 
   const db = client.db("Reserv");
 
-  // Check if the RSO with the given RSOID exists
+  // Check if RSOID exists
   const rsoExists = await db.collection("RSO").findOne({ RSOID: RSOID });
-
   if (!rsoExists) {
-    return res.status(400).json({
-      status: "error",
-      message: "The provided RSOID does not correspond to any existing RSO.",
-    });
+    return res.status(400).json({ error: "Invalid RSOID" });
   }
 
-  // Need to further define how start end is going to be made, this is WIP
-  // Split StartEnd string into two separate datetime strings
-  //const [startDate, endDate] = StartEnd.split(" - ");
-
-  // Construct the event object
+  // If all checks pass, insert the event
   const newEvent = {
-    RSOID: RSOID,
-    EventName: EventName,
-    Description: Description,
-    StartEnd: StartEnd,
+    RSOID,
+    EventName,
+    Description,
+    StartEnd,
   };
 
-  let response = {};
-
   try {
-    const result = await db.collection("Event").insertOne(newEvent);
-    response = {
-      status: "success",
-      message: "Event successfully created",
-      eventId: result.insertedId, // Return the ID of the created event
-    };
+    const result = await db.collection("Events").insertOne(newEvent);
+    return res.status(200).json({ success: true, eventId: result.insertedId });
   } catch (e) {
-    response = {
-      status: "error",
-      message: e.toString(),
-    };
+    return res.status(500).json({ error: e.toString() });
   }
-
-  // Send the response
-  res.status(200).json(response);
 });
 
 // PUT NEW APIs BEFORE HERE
 
 // This needs to be the last get request.
+// Remember to set this variable in heroku
 if (process.env.NODE_ENV === "production") {
   // Set static folder
   app.use(express.static("frontend/build"));
