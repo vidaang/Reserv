@@ -162,6 +162,58 @@ app.post("/api/login", async (req, res) => {
   res.status(200).json(responseObject);
 });
 
+// PUT NEW APIs AFTER HERE
+
+app.post("/api/createEvent", async (req, res) => {
+  // Destructure fields from request body
+  const { RSOID, EventName, Description, StartEnd } = req.body;
+
+  const db = client.db("Reserv");
+
+  // Check if the RSO with the given RSOID exists
+  const rsoExists = await db.collection("RSO").findOne({ RSOID: RSOID });
+
+  if (!rsoExists) {
+    return res.status(400).json({
+      status: "error",
+      message: "The provided RSOID does not correspond to any existing RSO.",
+    });
+  }
+
+  // Need to further define how start end is going to be made, this is WIP
+  // Split StartEnd string into two separate datetime strings
+  //const [startDate, endDate] = StartEnd.split(" - ");
+
+  // Construct the event object
+  const newEvent = {
+    RSOID: RSOID,
+    EventName: EventName,
+    Description: Description,
+    StartEnd: StartEnd,
+  };
+
+  let response = {};
+
+  try {
+    const result = await db.collection("Event").insertOne(newEvent);
+    response = {
+      status: "success",
+      message: "Event successfully created",
+      eventId: result.insertedId, // Return the ID of the created event
+    };
+  } catch (e) {
+    response = {
+      status: "error",
+      message: e.toString(),
+    };
+  }
+
+  // Send the response
+  res.status(200).json(response);
+});
+
+// PUT NEW APIs BEFORE HERE
+
 // This needs to be the last get request.
 if (process.env.NODE_ENV === "production") {
   // Set static folder
