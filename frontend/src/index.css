@@ -569,6 +569,9 @@ output[for="timeRange"] {
 #ListSection{
   width: 20%;
 }
+#RoomDiv{
+  min-height: 10px;
+}
 
 /* PENDING RESERVATIONS STYLING */
 
