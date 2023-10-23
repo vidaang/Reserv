@@ -120,48 +120,107 @@ app.post("/api/createRSO", async (req, res) => {
   res.status(200).json(ret);
 });
 
-// Importing the bcrypt library for password hashing
-const bcrypt = require("bcrypt");
+// Encryption library needs to be added
+// const jwt = require("jsonwebtoken");
 
-// Setting up an endpoint for user login
 app.post("/api/login", async (req, res) => {
-  // Destructuring the email and password from the request body
   const { email, password } = req.body;
 
-  // Connecting to the "Reserv" database
   const db = client.db("Reserv");
+  const rso = await db.collection("RSO").findOne({ Email: email });
 
-  // Attempting to find a user in the "RSO" collection with the provided email
-  const user = await db.collection("RSO").findOne({ Email: email });
-
-  // If no user is found with the provided email, return an error
-  if (!user) {
-    return res.status(400).json({ error: "Email not found" });
+  if (!rso || rso.Password !== password) {
+    // Remember to eventually hash and securely compare passwords!
+    return res.status(400).json({ error: "Incorrect email or password" });
   }
 
-  // Checking if the provided password matches the stored password
-  if (user.Password !== password) {
-    return res.status(400).json({ error: "Incorrect password" });
-  }
+  // // Payload for JWT
+  // const jwtPayload = {
+  //   RSOID: rso.RSOID,
+  //   Email: rso.Email,
+  //   AdminID: rso.AdminID,
+  // };
 
-  // [Commented Out] Checking if the provided password matches the stored hashed password
-  // const passwordMatches = await bcrypt.compare(password, user.Password);
+  // Secret key (this should be a long, unguessable string stored in a secure way, not hard-coded!)
+  //const secretKey = "your_very_secret_key_here";
 
-  // [Commented Out] If the passwords don't match, return an error
-  // if (!passwordMatches) {
-  //   return res.status(400).json({ error: "Incorrect password" });
-  // }
+  // // Generate JWT
+  //const token = jwt.sign(jwtPayload, secretKey, { expiresIn: "1h" }); // Token expires in 1 hour
 
-  // [Placeholder] In a complete implementation, you would generate an authentication token or session here
-  // using a library like jsonwebtoken or express-session.
-  // For now, we are just sending a success message.
+  // Construct response JSON object
+  const responseObject = {
+    // token: token, // remeber to add JWT
+    RSOName: rso.RSOName,
+    Email: rso.Email,
+    Phone: rso.Phone,
+    AdvisorName: rso.AdvisorName,
+    AdvisorEmail: rso.AdvisorEmail,
+    UniID: rso.UniID,
+    AdminID: rso.AdminID,
+  };
 
-  res
-    .status(200)
-    .json({ message: "Logged in successfully", rsoName: user.RSOName });
+  res.status(200).json(responseObject);
 });
 
+// PUT NEW APIs AFTER HERE
+
+app.post("/api/createEvent", async (req, res) => {
+  const { RSOID, EventName, Description, StartEnd } = req.body;
+
+  // Validate the StartEnd array
+  if (!Array.isArray(StartEnd) || StartEnd.length !== 2) {
+    return res.status(400).json({ error: "Invalid StartEnd format" });
+  }
+
+  const [startTime, endTime] = StartEnd;
+
+  // Check if both startTime and endTime are within the valid range
+  if (
+    typeof startTime !== "number" ||
+    typeof endTime !== "number" ||
+    startTime < 0 ||
+    startTime > 24 ||
+    endTime < 0 ||
+    endTime > 24
+  ) {
+    return res.status(400).json({ error: "Invalid time values provided" });
+  }
+
+  // Ensure start time is before end time
+  if (startTime >= endTime) {
+    return res
+      .status(400)
+      .json({ error: "Start time must be before end time" });
+  }
+
+  const db = client.db("Reserv");
+
+  // Check if RSOID exists
+  const rsoExists = await db.collection("RSO").findOne({ RSOID: RSOID });
+  if (!rsoExists) {
+    return res.status(400).json({ error: "Invalid RSOID" });
+  }
+
+  // If all checks pass, insert the event
+  const newEvent = {
+    RSOID,
+    EventName,
+    Description,
+    StartEnd,
+  };
+
+  try {
+    const result = await db.collection("Events").insertOne(newEvent);
+    return res.status(200).json({ success: true, eventId: result.insertedId });
+  } catch (e) {
+    return res.status(500).json({ error: e.toString() });
+  }
+});
+
+// PUT NEW APIs BEFORE HERE
+
 // This needs to be the last get request.
+// Remember to set this variable in heroku
 if (process.env.NODE_ENV === "production") {
   // Set static folder
   app.use(express.static("frontend/build"));
