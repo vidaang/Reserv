@@ -134,12 +134,12 @@ app.post("/api/login", async (req, res) => {
     return res.status(400).json({ error: "Incorrect email or password" });
   }
 
-  // Payload for JWT
-  const jwtPayload = {
-    RSOID: rso.RSOID,
-    Email: rso.Email,
-    AdminID: rso.AdminID,
-  };
+  // // Payload for JWT
+  // const jwtPayload = {
+  //   RSOID: rso.RSOID,
+  //   Email: rso.Email,
+  //   AdminID: rso.AdminID,
+  // };
 
   // Secret key (this should be a long, unguessable string stored in a secure way, not hard-coded!)
   //const secretKey = "your_very_secret_key_here";
