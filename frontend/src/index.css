@@ -573,6 +573,62 @@ output[for="timeRange"] {
   min-height: 10px;
 }
 
+#timePeriodSelector{
+  text-align: end;
+}
+
+.availableTimeDayButton{
+  background-color: #eaeaea !important;
+  border: none!important;
+  color: #0F1A12 !important;
+  padding: 10px 20px !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  display: inline-block !important;
+  margin: 4px 2px !important;
+  cursor: pointer !important;
+  border-radius: 16px !important;
+}
+
+.availableTimeDayButton{
+  background-color: #eaeaea !important;
+  border: none!important;
+  color: #0F1A12 !important;
+  padding: 10px 20px !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  display: inline-block !important;
+  margin: 4px 2px !important;
+  cursor: pointer !important;
+  border-radius: 16px !important;
+}
+
+.availableTimeDayButton:hover{
+  background-color: #b4b4b4 !important;
+  border: none!important;
+  color: #0F1A12 !important;
+  padding: 10px 20px !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  display: inline-block !important;
+  margin: 4px 2px !important;
+  cursor: pointer !important;
+  border-radius: 16px !important;
+}
+
+.availableTimeDayButton:focus{
+  background-color: #61ff7e !important;
+  border: none!important;
+  color: #0F1A12 !important;
+  padding: 10px 20px !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  display: inline-block !important;
+  margin: 4px 2px !important;
+  cursor: pointer !important;
+  border-radius: 16px !important;
+}
+
 /* PENDING RESERVATIONS STYLING */
 
 

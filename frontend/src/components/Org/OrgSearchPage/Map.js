@@ -1,5 +1,5 @@
 import React from 'react';
-import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
+import { GoogleMap, useLoadScript } from "@react-google-maps/api";
 import { useMemo } from "react";
 
 function Map()
@@ -35,10 +35,10 @@ function Map()
             ) : (
                 <GoogleMap
                 mapContainerClassName="map-container"
-                center={myLatLng}
+                center= {myLatLng}
                 zoom={17}
-                fullscreenControl={false}
-                streetView={false}
+                fullScreenControl={false}
+                streetView={null}
                 options={{mapId: '3b7df45197247861'}}
                 onClick={handleClickedMap }
                 />

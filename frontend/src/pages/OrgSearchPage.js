@@ -5,6 +5,7 @@ import '../index.css';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import RoomList from "../components/Org/OrgSearchPage/RoomList"
+import RoomDetails from '../components/Org/OrgSearchPage/RoomDetails';
 
 function OrgSearchPage()
 {
@@ -40,6 +41,9 @@ function OrgSearchPage()
                 </Row>
             </div>
             
+            <div>
+                <RoomDetails/>
+            </div>
             
             
             
