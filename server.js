@@ -150,6 +150,7 @@ app.post("/api/login", async (req, res) => {
   // Construct response JSON object
   const responseObject = {
     // token: token, // remeber to add JWT
+    RSOID: rso.RSOID,
     RSOName: rso.RSOName,
     Email: rso.Email,
     Phone: rso.Phone,
