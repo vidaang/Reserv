@@ -164,6 +164,7 @@ app.post("/api/login", async (req, res) => {
 });
 
 // PUT NEW APIs AFTER HERE
+const { ObjectId } = require("mongodb"); // at the top of your file
 
 app.post("/api/createEvent", async (req, res) => {
   const { RSOID, EventName, Description, StartEnd } = req.body;
@@ -196,8 +197,16 @@ app.post("/api/createEvent", async (req, res) => {
 
   const db = client.db("Reserv");
 
+  // Check if RSOID is a valid ObjectId string
+  if (!ObjectId.isValid(RSOID)) {
+    return res.status(400).json({ error: "Invalid RSOID format" });
+  }
+
+  // Convert RSOID string to ObjectId
+  const objectId = new ObjectId(RSOID);
+
   // Check if RSOID exists
-  const rsoExists = await db.collection("RSO").findOne({ RSOID: RSOID });
+  const rsoExists = await db.collection("RSO").findOne({ RSOID: objectId });
   if (!rsoExists) {
     return res.status(400).json({ error: "Invalid RSOID" });
   }
