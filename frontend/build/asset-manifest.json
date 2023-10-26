@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.7ab6eeb2.css",
-    "main.js": "/static/js/main.d5b565a1.js",
+    "main.js": "/static/js/main.b71ea92f.js",
     "static/js/787.cda612ba.chunk.js": "/static/js/787.cda612ba.chunk.js",
     "static/media/lecture-hall.jpg": "/static/media/lecture-hall.29831faf652fd45bbd60.jpg",
     "static/media/lecture-hall-4.jpg": "/static/media/lecture-hall-4.eb493ddb124ae6efdbbb.jpg",
@@ -10,11 +10,11 @@
     "static/media/lecture-hall-1.jpg": "/static/media/lecture-hall-1.09e55ba0a43f8da49efc.jpg",
     "index.html": "/index.html",
     "main.7ab6eeb2.css.map": "/static/css/main.7ab6eeb2.css.map",
-    "main.d5b565a1.js.map": "/static/js/main.d5b565a1.js.map",
+    "main.b71ea92f.js.map": "/static/js/main.b71ea92f.js.map",
     "787.cda612ba.chunk.js.map": "/static/js/787.cda612ba.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.7ab6eeb2.css",
-    "static/js/main.d5b565a1.js"
+    "static/js/main.b71ea92f.js"
   ]
 }
