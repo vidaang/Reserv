@@ -1,14 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import '../index.css';
+import '../styles/index.css'
 import Logo from '../images/reserv-logo.png';
-import MenuIcon from '../images/menu.png'; // Import the menu icon image
+import MenuIcon from '../images/menu.png';
 import ProfileIcon from '../images/profile-icon.png';
 
 const NavBar = () => {
     const location = useLocation();
 
-    const showIcons = location.pathname === '/' || location.pathname === '/Login' || location.pathname === '/CreateAccount';
+    const showIcons = location.pathname === '/' || 
+          location.pathname === '/Login' || 
+          location.pathname === '/CreateAccount';
+
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const menuRef = useRef(null);
+
+    const toggleMenu = () => {
+      setIsMenuOpen(!isMenuOpen);
+    };
+
+    const closeMenu = () => {
+      setIsMenuOpen(false);
+    };
+
+    useEffect(() => {
+      document.body.addEventListener('click', closeMenu);
+
+      return () => {
+        document.body.removeEventListener('click', closeMenu);
+      };
+    }, []);
+
+    const stopPropagation = (e) => {
+      e.stopPropagation();
+    };
 
     return (
       <nav className="navbar-container">
@@ -21,7 +46,7 @@ const NavBar = () => {
           </a>
         </div>
         <div className="navbar-right-align">
-        { showIcons ? (
+          { showIcons ? (
             <ul className="navbar-links">
               <li className="navbar-button">
                 <Link to="/Login">
@@ -34,28 +59,40 @@ const NavBar = () => {
                   </Link>
               </li>
             </ul>
-        ):(
-            <ul className="navbar-links">
-              <li className="navbar-button">
-                <Link to="/Menu">
-                  <img
-                    src={MenuIcon}
-                    alt="Menu"
-                    className="navbar-icon"
-                  />
-                </Link>
-              </li>
-              <li className="navbar-button">
-                  <Link to="/ProfilePage">
-                    <img
-                      src={ProfileIcon}
-                      alt="Profile"
-                      className="navbar-icon"
-                    />
-                  </Link>
-              </li>
+          ):(
+            <ul className="navbar-links" onClick={stopPropagation} ref={menuRef}>
+              <div className="navbar-menu-container">
+                <button className="navbar-menu-button" onClick={toggleMenu}>
+                  <img src={MenuIcon} alt="Menu" className="navbar-icon"/>
+                </button>
+              </div>
+              
+              {/* <li className="navbar-button">
+                <img src={ProfileIcon} alt="Profile" className="navbar-icon"/>
+              </li> */}
             </ul>
-        )}
+          )}
+          {isMenuOpen && (
+            <div className="navbar-menu">
+
+              <Link to="/OrgHomePage">
+                <button className="navbar-menu-text" onClick={toggleMenu}>Home</button>
+              </Link>
+              <Link to="/OrgSearchPage">
+                <button className="navbar-menu-text" onClick={toggleMenu}>Search for Rooms</button>
+              </Link>
+              <Link to="/OrgReservationsPage">
+                <button className="navbar-menu-text" onClick={toggleMenu}>Manage Reservations</button>
+              </Link>
+              <Link to="/OrgSettingsPage">
+                <button className="navbar-menu-text" onClick={toggleMenu}>Settings</button>
+              </Link>
+              <Link to="/">
+                <button className="navbar-menu-text" onClick={toggleMenu}>Log Out</button>
+              </Link>
+
+            </div>
+          )}
         </div>
       </nav>
     );

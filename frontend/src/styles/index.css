@@ -1,0 +1,601 @@
+
+/* WEB APP COLOR SCHEMA */
+
+
+:root {
+  --color-1: #61ff7e;
+  --color-2: #F0E9D390;
+  --color-3: #8e8a8850;
+  --color-4: #526760;
+  --color-5: #95d07d;
+  --color-6: #1C1018;
+  --color-7: #eaeaea;
+  --color-8: #5c8a99;
+}
+
+
+/* MAIN PAGES COMPONENTS */
+
+
+#page-container{
+  background-color: #ffffff;
+  max-height: 100%;
+}
+
+
+/* MAIN TEXT STYLING */
+
+
+h1 {
+  font-size: 200px;
+  font-weight: bold;
+  font-family: 'Gabarito', sans-serif;
+}
+p1 {
+  font-family: 'Gabarito', sans-serif;
+  overflow: hidden;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+body {
+  margin: 0;
+  font-family: 'Gabarito', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2A1316;
+}
+#main-title {
+  font-size: 72px;
+  font-weight: bold;
+  font-family: 'Gabarito', sans-serif;
+}
+
+#sub-title {
+  font-size: 40px;
+  font-family: 'Gabarito', sans-serif;
+  margin: 12px;
+}
+
+
+/* NAVIGATION BAR STYLING */
+
+
+.navbar-container {
+  position: fixed;
+  background-color: white;
+  top: 0;
+  left: 0;
+  height: 60px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--color-3);
+  z-index: 100;
+}
+
+.navbar-left-align {
+  margin-left: 5%;
+  flex: start;
+}
+
+.navbar-right-align {
+  margin-right: 5%;
+  flex: end;
+}
+
+.navbar-logo {
+  width: 35%;
+  height: 15%;
+}
+
+.navbar-icon {
+  height: 30px;
+  margin: 10px;
+}
+
+.navbar-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-button{
+  background-color: transparent;
+  border: none;
+}
+
+.navbar-sign-in-button {
+  max-height: 40px;
+  max-width: 100px;
+  font-weight: bold;
+  font-family: 'Gabarito', sans-serif;
+  padding: 6px 17px;
+  color: var(--color-4);
+  border: 2px solid var(--color-4);
+  border-radius: 50px;
+  background-color: transparent;
+  transition: all 0.3s ease-in-out;
+  margin-right: 10px;
+}
+
+.navbar-sign-in-button:hover {
+  background-color: var(--color-3);
+}
+
+.navbar-sign-up-button {
+  max-height: 40px;
+  max-width: 100px;
+  font-family: 'Gabarito', sans-serif;
+  font-weight: bold;
+  color: white;
+  padding: 5px 13px;
+  background-color: var(--color-4);
+  border: 2px solid var(--color-4);
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.navbar-sign-up-button:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.navbar-menu-container {
+  position: relative;
+}
+
+.navbar-menu-button, .navbar-menu-text {
+  background-color: transparent;
+  border: none;
+}
+
+.navbar-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: absolute;
+  top: 70px;
+  right: 5.8%;
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  border: 1px var(--color-7);
+  border-radius: 5px;
+  width: 270px;
+  height: fit-content;
+  padding: 10px;
+}
+
+.navbar-menu-text {
+  font-family: 'Gabarito', sans-serif;
+  font-weight: bold;
+  font-size: large;
+  width: 100%;
+  padding-left: 10px;
+  margin-bottom: 5px;
+}
+
+.navbar-menu-text:hover {
+  padding: 5px;
+  width: 90%;
+  border-radius: 20px;
+  font-size: larger;
+  background-color: var(--color-8);
+  color: white;
+  transition: 0.5s;
+}
+
+
+/* SIGN IN & SIGN UP */
+
+
+#user-authentication-container{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  background-color: var(--color-2);
+  border: none;
+}
+
+#user-authentication-container-elements{
+  margin: auto;
+  padding: 5%;
+  text-align: center;
+  width: 100%;
+  font-size: larger;
+  font-family: 'Gabarito', sans-serif;
+}
+
+#user-authetication-title{
+  font-size: 36px;
+  font-weight: bold;
+  font-family: 'Gabarito', sans-serif;
+}
+
+.user-authentication-text-form{
+  font-family: 'Gabarito', sans-serif;
+  font-size: 16px;
+  border: 2px solid var(--color-3);
+  background-color: #ffffff;
+  color: #0F1A12;
+  padding: 10px 20px;
+  text-align: left;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 25px;
+}
+
+.side-image-container {
+  background-image: url(../images/lecture-hall.jpg);
+  background-size: cover;
+  height: 100vh;
+  width: 100%;
+}
+
+
+/* LANDING PAGE STYLING */
+
+
+#LandingPageDiv {
+  background-color: var(--color-2);
+  padding-block-end: 50%;
+  padding-block-start: 5%;
+}
+
+#landing-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 175px;
+}
+
+#landing-button-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px; 
+}
+
+#landing-button-container button {
+  margin: 0 15px;
+  border-radius: 5px;
+  padding: 16px 43px;
+}
+
+#landing-reserve-button {
+  color: white;
+  font-family: 'Gabarito', sans-serif;
+  font-size: 18px;
+  border: 2px solid var(--color-4);
+  background-color: var(--color-4);
+  transition: 0.3s;
+}
+
+#landing-reserve-button:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+#landing-university-button {
+  color: var(--color-4);
+  font-family: 'Gabarito', sans-serif;
+  font-weight: bold;
+  font-size: 18px;
+  border: 2px solid var(--color-4);
+  background-color: transparent;
+  transition: 0.3s;
+}
+
+#landing-university-button:hover {
+  background-color: var(--color-4);
+  color: white;
+}
+
+
+/* ORG HOME PAGE */
+
+
+#OrgHomePageDiv {
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+#org-home-page-div {
+  margin-top: 50px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 50px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#org-top-container {
+  padding-top: 100px;
+  padding-bottom: 15px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  background-image: linear-gradient(to right, var(--color-5), var(--color-8));
+  font-family: 'Gabarito', sans-serif;
+  color: white
+}
+
+#org-bottom-container {
+  padding-top: 20px;
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.org-home-box {
+  background-color: white;
+  border-radius: 15px;
+  height: fit-content;
+  padding: 20px;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+}
+
+.org-home-card-container {
+  display: flex;
+  height: fit-content;
+}
+
+.org-home-card {
+  width: fit-content;
+  height: fit-content;
+  margin: 0 10px;
+  background-color: #fff;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-3);
+  border-radius: 10px;
+}
+
+.org-home-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.org-home-card-img {
+  max-width: 100%;
+  max-height: 150px;
+  object-fit: cover;
+  padding-bottom: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.org-home-card-arrow {
+  font-size: 24px;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.org-home-card-prev {
+  transform: rotate(180deg);
+}
+
+
+/* SEARCH(AKA ENTRY) FORM FOR ORG HOME PAGE*/
+
+
+.entry-form {
+  display: flex;
+  color: black;
+  width: 100%;
+  justify-content: center;
+  overflow: auto;
+}
+
+.entry-form-container {
+  display: flex;
+}
+
+.entry-form-row {
+  display: flex;
+  align-items: center;
+  margin: 10px;
+
+}
+
+entry-form-row-label {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.entry-form-input {
+  width: 100%;
+  display: flex;
+  align-items:center;
+}
+
+input {
+  color: black;
+  font-family: 'Gabarito', sans-serif;
+  font-weight: bold;
+  font-size: 18px;
+  border: 2px solid var(--color-3);
+  border-radius: 20px;
+  background-color: transparent;
+  padding: 5px;
+  padding-left: 8px;
+  transition: 0.3s;
+}
+
+input[type="submit"] {
+  padding-left: 20px;
+  padding-right: 20px;
+  width: fit-content;
+  border: 2px solid transparent;
+  border-radius: 30px;
+  color: black;
+  background-color: var(--color-5);
+}
+
+input[type="submit"]:hover {
+  color: black;
+  background-color: white;
+  border-color: var(--color-5);
+  transition: 0.3s
+}
+
+input[type="range"] {
+  width:100%;
+  padding: 0;
+  margin: 0;
+  appearance: none;
+  height: 4px; 
+  background-color: var(--color-3); 
+  border: none;
+  border-radius: 4px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background-color: var(--color-5);
+  border: 2px solid var(--color-5);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+output[for="timeRange"] {
+  font-size: 16px;
+  color: black;
+  margin-left: 10px;
+}
+
+#timeRangeOutput{
+  width: 100%;
+}
+
+
+/* ORG SEARCH PAGE */
+
+
+#OrgSearchPageDiv {
+  max-height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
+}
+
+.map-container {
+  height: 100%;
+  width: 100%;
+}
+
+.MapDiv{
+  height: 100vh;
+}
+
+#MapSection{
+  width: 80%;
+}
+#ListSection{
+  width: 20%;
+}
+
+
+/* ORD RESERVATIONS PAGE */
+
+
+#OrgReservationsPageDiv {
+  background-color: white;
+  padding-block-end: 100hv;
+  padding-block-start: 2%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+#CalendarDiv {
+  height: 80vh;
+  width: 95%;
+  padding-top: 2%;
+  margin: 0 auto;
+}
+/* LARGE CALENDAR */
+
+.rbc-calendar {
+  min-height: 580px;
+}
+
+/* RESERVATION PAGE POPUP / EDIT RESERVATION */
+
+#reservation-popup-content {
+  font-family: 'Gabarito', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10%;
+}
+
+#reservation-popup-button-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+#reservation-popup-button-container button {
+  margin: 0 10px;
+  border-radius: 25px;
+  padding: 7px 15px;
+}
+
+#popup-edit-button {
+  border: 2px solid gold;
+  background-color: transparent;
+  transition: 0.2s;
+}
+
+#popup-edit-button:hover {
+  border: 2px solid gold;
+  background-color: gold;
+  color: white;
+}
+
+#popup-cancel-button {
+  border: 2px solid rgb(255, 61, 61);
+  background-color: rgb(255, 61, 61);
+  color: white;
+  transition: 0.3s;
+}
+
+#popup-cancel-button:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* ORG SETTINGS PAGE */
+
+
+#OrgProfilePageDiv {
+  align-items: center;
+  justify-content: center;
+}
+
