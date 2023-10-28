@@ -629,6 +629,10 @@ output[for="timeRange"] {
   border-radius: 16px !important;
 }
 
+.roomDetailsModal{
+  min-width:50%!important;
+}
+
 /* PENDING RESERVATIONS STYLING */
 
 

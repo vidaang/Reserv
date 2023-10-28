@@ -11,8 +11,8 @@ function RoomDetails(){
     }
 
     return(    
-        <div id="RoomDetailsModal">
-            <Modal centered show={showModal} onHide={handleCloseModal}>
+        <div>
+            <Modal dialogClassName="roomDetailsModal" centered show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
                     <Modal.Title>Room Details</Modal.Title>
                 </Modal.Header>
