@@ -121,7 +121,7 @@ app.post("/api/createRSO", async (req, res) => {
 });
 
 // Encryption library needs to be added
-// const jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 
 app.post("/api/login", async (req, res) => {
   const { email, password } = req.body;
@@ -134,22 +134,23 @@ app.post("/api/login", async (req, res) => {
     return res.status(400).json({ error: "Incorrect email or password" });
   }
 
-  // // Payload for JWT
-  // const jwtPayload = {
-  //   RSOID: rso.RSOID,
-  //   Email: rso.Email,
-  //   AdminID: rso.AdminID,
-  // };
+  // Payload for JWT
+  const jwtPayload = {
+    RSOID: rso.RSOID,
+    Email: rso.Email,
+    AdminID: rso.AdminID,
+  };
 
   // Secret key (this should be a long, unguessable string stored in a secure way, not hard-coded!)
-  //const secretKey = "your_very_secret_key_here";
+  const secretKey =
+    "7d4c5e4023a7f91857c1b7ad8c6286a7e5b2c0d8e1f8b2c7e3a9d4e5f6b7c8d9";
 
-  // // Generate JWT
-  //const token = jwt.sign(jwtPayload, secretKey, { expiresIn: "1h" }); // Token expires in 1 hour
+  // Generate JWT
+  const token = jwt.sign(jwtPayload, secretKey, { expiresIn: "1h" }); // Token expires in 1 hour
 
   // Construct response JSON object
   const responseObject = {
-    // token: token, // remeber to add JWT
+    token: token, // remeber to add JWT
     RSOID: rso.RSOID,
     RSOName: rso.RSOName,
     Email: rso.Email,
