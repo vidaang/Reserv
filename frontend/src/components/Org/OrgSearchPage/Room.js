@@ -1,3 +1,14 @@
-import React from 'react';
-import NavBar from '../components/NavBar';
-import '../index.css';
+import React, { Component } from 'react';
+
+
+class Room extends Component{
+    render(){
+        return(
+            <div id="RoomDiv">
+                <h1>Room1</h1>
+            </div>
+        )
+    }
+}
+
+export default Room
