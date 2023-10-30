@@ -11,6 +11,7 @@ import OrgHomePage from './pages/OrgHomePage';
 import OrgSearchPage from './pages/OrgSearchPage';
 import OrgReservationsPage from './pages/OrgReservationsPage';
 import OrgSettingsPage from './pages/OrgSettingsPage';
+import UniProfilePage from './pages/UniProfilePage';
 
 const theme = createTheme({
   /** Put your mantine theme override here */
@@ -28,10 +29,10 @@ function App() {
           <Route path="/OrgSearchPage" element={<OrgSearchPage/>}/>
           <Route path="/OrgReservationsPage" element={<OrgReservationsPage/>}/>
           <Route path="/OrgSettingsPage" element={<OrgSettingsPage/>}/>
+          <Route path="/UniProfilePage" element={<UniProfilePage/>}/>
         </Routes>
       </BrowserRouter>
     </MantineProvider>
-    
   );
 }
 
