@@ -1,6 +1,6 @@
 import React from 'react';
-import UniCompleteProfile from '../components/Uni/UniCompleteProfile';
-import NavBar from '../components/NavBar';
+import UniCompleteProfile from '../../components/Uni/UniCompleteProfile';
+import NavBar from '../../components/NavBar';
 import "../styles/index.css";
 
 
