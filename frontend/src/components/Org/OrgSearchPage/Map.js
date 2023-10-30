@@ -1,5 +1,5 @@
 import React from 'react';
-import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
+import { GoogleMap, useLoadScript } from "@react-google-maps/api";
 import { useMemo } from "react";
 
 function Map()
@@ -14,6 +14,20 @@ function Map()
         lng: -81.20020294189453
       };
 
+      let buildingLatLng = {
+        lat: 28.602333068847656,
+        lng: -81.20020294189453
+      };
+    
+    const handleClickedMap = (e) => {
+        let latitude = e.latLng.lat()
+        let longtitude  = e.latLng.lng()
+        buildingLatLng.lat = latitude
+        buildingLatLng.lng = longtitude
+        alert("latitude:"  + buildingLatLng.lat + " longitude:" + buildingLatLng.lng)
+    };
+
+
     return(
         <div className="MapDiv">
             {!isLoaded ? (
@@ -21,11 +35,12 @@ function Map()
             ) : (
                 <GoogleMap
                 mapContainerClassName="map-container"
-                center={myLatLng}
-                zoom={14}
-                fullscreenControl={false}
-                streetView={false}
+                center= {myLatLng}
+                zoom={17}
+                fullScreenControl={false}
+                streetView={null}
                 options={{mapId: '3b7df45197247861'}}
+                onClick={handleClickedMap }
                 />
             )}
         </div>
