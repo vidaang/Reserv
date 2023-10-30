@@ -1,7 +1,7 @@
 import React, {Component, useState} from 'react';
 import {Row, Col, Dropdown, DropdownButton, } from "react-bootstrap";
 import { Modal, Button } from 'react-bootstrap';
-import "../../../index.css";
+import "../../../styles/index.css";
 
 function RoomDetails(){
     const [showModal, setShowModal] = useState(true);

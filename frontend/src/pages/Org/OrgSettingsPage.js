@@ -1,11 +1,10 @@
 import React from 'react';
 import NavBar from '../../components/NavBar';
-import { SettingsNavigation } from '../../components/Org/OrgSettingsPage/SettingsNavigation';
-// frontend\src\components\Org\OrgSettingsPage\SettingsNavigation.tsx
+import { SettingsNavigation } from '../../components/Org/OrgSettingsPage/SettingsNavigation.tsx';
 import { Text, Container } from '@mantine/core';
 
-import '../styles/SettingsNavigation.module.css';
-import '../styles/index.css';
+import '../../styles/SettingsNavigation.module.css';
+import '../../styles/index.css';
 
 function OrgSettingsPage()
 {

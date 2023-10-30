@@ -1,11 +1,11 @@
 import React from 'react';
 import NavBar from '../../components/NavBar';
 import OrgSearchRoomsForm from '../../components/Org/OrgHomePage/OrgSearchRoomsForm';
-import Lecture1 from '../images/lecture-hall-1.jpg';
-import Lecture2 from '../images/lecture-hall-2.jpg';
-import Lecture3 from '../images/lecture-hall-3.jpg';
-import Lecture4 from '../images/lecture-hall-4.jpg';
-import '../styles/index.css';
+import Lecture1 from '../../images/lecture-hall-1.jpg';
+import Lecture2 from '../../images/lecture-hall-2.jpg';
+import Lecture3 from '../../images/lecture-hall-3.jpg';
+import Lecture4 from '../../images/lecture-hall-4.jpg';
+import '../../styles/index.css';
 
 function OrgHomePage()
 {

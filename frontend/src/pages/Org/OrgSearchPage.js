@@ -1,7 +1,7 @@
 import React from 'react';
 import NavBar from '../../components/NavBar';
 import Map from '../../components/Org/OrgSearchPage/Map'
-import '../index.css';
+import '../../styles/index.css';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import RoomList from "../../components/Org/OrgSearchPage/RoomList"

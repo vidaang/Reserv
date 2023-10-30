@@ -7,11 +7,11 @@ import './styles/App.css';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
-import OrgHomePage from './pages/OrgHomePage';
-import OrgSearchPage from './pages/OrgSearchPage';
-import OrgReservationsPage from './pages/OrgReservationsPage';
-import OrgSettingsPage from './pages/OrgSettingsPage';
-import UniProfilePage from './pages/UniProfilePage';
+import OrgHomePage from './pages/Org/OrgHomePage';
+import OrgSearchPage from './pages/Org/OrgSearchPage';
+import OrgReservationsPage from './pages/Org/OrgReservationsPage';
+import OrgSettingsPage from './pages/Org/OrgSettingsPage';
+import UniProfilePage from './pages/Uni/UniProfilePage';
 
 const theme = createTheme({
   /** Put your mantine theme override here */
