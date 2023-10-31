@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 /frontend/node_modules/.cache
+/frontend/node_modules/.cache/.eslintcache
 /frontend/node_modules/.cache/default-development
 # testing
 /coverage

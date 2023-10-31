@@ -15,7 +15,7 @@ function ChangeViewButton({ toggleList }) {
                 className="change-view-button"
                 onClick={handleButtonClick}
             >
-                {isMapView ? 'List View' : 'Map View'}
+                {isMapView ? 'Map View' : 'List View'}
             </button>
         </div>
 
