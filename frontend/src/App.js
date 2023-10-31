@@ -14,6 +14,7 @@ import OrgReservationsPage from './pages/Org/OrgReservationsPage';
 import OrgSettingsPage from './pages/Org/OrgSettingsPage';
 import UniProfilePage from './pages/Uni/UniProfilePage';
 import UniHomePage from './pages/Uni/UniHomePage';
+import UniReservationsPage from './pages/Uni/UniReservationsPage';
 import UniOrganizationsPage from './pages/Uni/UniOrganizationsPage';
 import UniSettingsPage from './pages/Uni/UniSettingsPage';
 
@@ -39,6 +40,7 @@ function App() {
           <Route path="/UniProfilePage" element={<UniProfilePage/>}/>
           <Route path="/UniHomePage" element={<UniHomePage/>}/>
           <Route path="/UniOrganizationsPage" element={<UniOrganizationsPage/>}/>
+          <Route path="/UniReservationsPage" element={<UniReservationsPage/>}/>
           <Route path="/UniSettingsPage" element={<UniSettingsPage/>}/>
         </Routes>
       </BrowserRouter>

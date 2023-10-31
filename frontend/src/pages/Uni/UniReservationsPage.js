@@ -1,9 +1,15 @@
 import React from 'react';
 import NavBar from '../../components/NavBar';
 import '../../styles/index.css';
+import LargeCalendar from '../../components/Org/OrgReservationsPage/LargeCalendar';
 
-function UniOrganizationsPage()
+
+function UniReservationsPage()
 {
+    const handleClick = () => {
+        alert("Button clicked!");
+    }
+
     return (
         <div id="OrgHomePageDiv">
             <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -12,8 +18,11 @@ function UniOrganizationsPage()
             <div id="NavBar">
                 <NavBar />
             </div>
+            <div id="CalendarDiv">
+                <LargeCalendar />
+            </div>
         </div>
     );
 }
 
-export default UniOrganizationsPage;
+export default UniReservationsPage;

@@ -12,10 +12,22 @@ const NavBar = () => {
           location.pathname === '/Login' || 
           location.pathname === '/CreateAccount';
 
-    const containsSubword = (subword) => location.pathname.includes(subword);
+    // const containsSubword = (subword) => location.pathname.includes(subword);
 
-    const showOrgNav = containsSubword('Org');
-    const showUniNav = containsSubword('Uni');
+    // const showOrgNav = containsSubword('Org');
+    // const showUniNav = containsSubword('Uni');
+
+    const showOrgNav = 
+          location.pathname === '/OrgHomePage' || 
+          location.pathname === '/OrgSearchPage' || 
+          location.pathname === '/OrgReservationsPage' ||
+          location.pathname === '/OrgSettingsPage';
+
+    const showUniNav = 
+          location.pathname === '/UniHomePage' || 
+          location.pathname === '/UniReservationsPage' ||
+          location.pathname === '/UniOrganizationsPage' ||
+          location.pathname === '/UniSettingsPage';
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const menuRef = useRef(null);
@@ -103,6 +115,9 @@ const NavBar = () => {
               </Link>
               <Link to="/UniOrganizationsPage">
                 <button className="navbar-menu-text" onClick={toggleMenu}>Manage Organizations</button>
+              </Link>
+              <Link to="/UniReservationsPage">
+                <button className="navbar-menu-text" onClick={toggleMenu}>Manage Reservations</button>
               </Link>
               <Link to="/UniSettingsPage">
                 <button className="navbar-menu-text" onClick={toggleMenu}>Settings</button>
