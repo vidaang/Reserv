@@ -230,7 +230,7 @@ app.post("/api/createEvent", async (req, res) => {
 
 app.get("/api/availability/:roomID/:date/:intervals", async (req, res) => {
   // Convert RoomID to integer
-  const roomID = parseInt(req.params.roomID);
+  const roomID = req.params.roomID;
   // Format: MM-DD-YYYY
   const day = req.params.date;
   // 1 = 30 minutes, 2 = 60 minutes, ...
@@ -244,6 +244,8 @@ app.get("/api/availability/:roomID/:date/:intervals", async (req, res) => {
     .find({ RoomID: roomID, Date: day })
     .toArray();
 
+  // res.status(200).json({ eventsOnDay: eventsOnDay });
+
   // Initialize availability array with all true values
   // availability[0] being true means 9:00am to 9:30am is available.
   const availability = new Array(24).fill(true);
@@ -254,10 +256,12 @@ app.get("/api/availability/:roomID/:date/:intervals", async (req, res) => {
     const endIndex = (event.StartEnd[1] - 9.0) * 2;
 
     // Mark the hours between start and end times as false (unavailable)
-    for (let i = startIndex; i <= endIndex; i++) {
+    for (let i = startIndex; i < endIndex; i++) {
       availability[i] = false;
     }
   });
+
+  // res.status(200).json({ availability: availability });
 
   // Calculate continuous availability slots using the provided function
   const continuousAvailabilitySlots = findContinuousAvailability(
@@ -275,7 +279,7 @@ function findContinuousAvailability(availability, intervalsRequired) {
     if (availability.slice(i, i + intervalsRequired).every((val) => val)) {
       availableSlots.push({
         start: i / 2 + 9.0, // Convert index to hours
-        end: (i + intervalsRequired) / 2 + 9.0 - 0.5, // Convert index to hours
+        end: (i + intervalsRequired) / 2 + 9.0, // Convert index to hours
       });
     }
   }
