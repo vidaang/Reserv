@@ -1,17 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import NavBar from '../../components/NavBar';
 import Map from '../../components/Org/OrgSearchPage/Map'
-import '../../styles/index.css';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import RoomList from "../../components/Org/OrgSearchPage/RoomList"
-import RoomDetails from '../../components/Org/OrgSearchPage/RoomDetails';
+import ChangeViewButton from "../../components/Org/OrgSearchPage/ChangeViewButton";
+import RoomList from "../../components/Org/OrgSearchPage/RoomList";
+
+
+import '../../styles/index.css';
 
 function OrgSearchPage()
 {
-    const handleClick = () => {
-        alert("Button clicked!");
-    }
+    const [isMapView, setIsMapView] = useState(true);
+    const [isListOpen, setListOpen] = useState(false);
+  
+    const toggleList = () => {
+        setListOpen(!isListOpen);
+    };
+
+    const mapContainerClass = `map-container${isListOpen ? ' slide-right' : ''}`;
+    const listClass = `list${isListOpen ? ' slide-right' : ''}`;
 
     return (
         <div id="OrgSearchPageDiv">
@@ -25,8 +33,25 @@ function OrgSearchPage()
                     </div>  
                 </Row>
             </div>
+
+            <div id='MapView'>
+                <div className={mapContainerClass}>
+                    <Map />
+                </div>
+                <ChangeViewButton
+                    toggleList={toggleList}
+                    isMapView={isMapView}
+                />
+                {isListOpen && (
+                    <div className={listClass}>
+                        <div className="list-container">
+                            <RoomList /> 
+                        </div>
+                    </div>
+                )}
+            </div>
             
-            <div>
+            {/* <div>
                 <Row>
                     <Col lg={{ span: 2 }}>
                         <div id="RoomList">
@@ -34,7 +59,7 @@ function OrgSearchPage()
                         </div>                   
                     </Col>
                     <Col lg={{ span: 10 }}>
-                        <div id=".map-container">
+                        <div id="map-container">
                             <Map/>
                         </div>
                     </Col>
@@ -43,7 +68,7 @@ function OrgSearchPage()
             
             <div>
                 <RoomDetails/>
-            </div>
+            </div> */}
             
             
             

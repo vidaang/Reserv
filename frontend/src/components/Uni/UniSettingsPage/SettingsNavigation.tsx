@@ -75,7 +75,7 @@ function OtherSettings() {
   );
 }
 export function SettingsNavigation() {
-  const [active, setActive] = useState('Organization Info');
+  const [active, setActive] = useState('University Info');
 
   const components = {
     'University Info': <UniversityInfo />,
