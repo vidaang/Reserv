@@ -198,7 +198,7 @@ app.post("/api/createEvent", async (req, res) => {
 
   const db = client.db("Reserv");
 
-  // Check if RSOID is a valid ObjectId string
+  // Check if RSOID is a valid ObjectId string, this could be changed to not use the object ID
   if (!ObjectId.isValid(RSOID)) {
     return res.status(400).json({ error: "Invalid RSOID format" });
   }
@@ -228,10 +228,13 @@ app.post("/api/createEvent", async (req, res) => {
   }
 });
 
-// Example code for how to return availbility, need to see how to use this URL endpoint
-app.get("/api/availability/:roomID/:date", async (req, res) => {
-  const roomID = parseInt(req.params.roomID); // Convert RoomID to integer
-  const day = req.params.date; // Date in "YYYY-MM-DD" format
+app.get("/api/availability/:roomID/:date/:intervals", async (req, res) => {
+  // Convert RoomID to integer
+  const roomID = parseInt(req.params.roomID);
+  // Format: MM-DD-YYYY
+  const day = req.params.date;
+  // 1 = 30 minutes, 2 = 60 minutes, ...
+  const intervalsRequired = parseInt(req.params.intervals);
 
   const db = client.db("Reserv");
 
@@ -256,8 +259,29 @@ app.get("/api/availability/:roomID/:date", async (req, res) => {
     }
   });
 
-  res.status(200).json({ availability: availability });
+  // Calculate continuous availability slots using the provided function
+  const continuousAvailabilitySlots = findContinuousAvailability(
+    availability,
+    intervalsRequired
+  );
+
+  res.status(200).json({ continuousAvailability: continuousAvailabilitySlots });
 });
+
+function findContinuousAvailability(availability, intervalsRequired) {
+  const availableSlots = [];
+
+  for (let i = 0; i <= availability.length - intervalsRequired; i++) {
+    if (availability.slice(i, i + intervalsRequired).every((val) => val)) {
+      availableSlots.push({
+        start: i / 2 + 9.0, // Convert index to hours
+        end: (i + intervalsRequired) / 2 + 9.0 - 0.5, // Convert index to hours
+      });
+    }
+  }
+
+  return availableSlots;
+}
 
 // PUT NEW APIs BEFORE HERE
 
