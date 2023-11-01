@@ -15,9 +15,8 @@ import OrgSettingsPage from './pages/Org/OrgSettingsPage';
 import UniProfilePage from './pages/Uni/UniProfilePage';
 import UniHomePage from './pages/Uni/UniHomePage';
 import UniReservationsPage from './pages/Uni/UniReservationsPage';
-import UniOrganizationsPage from './pages/Uni/UniOrganizationsPage';
-import UniSettingsPage from './pages/Uni/UniSettingsPage';
 import UniVerificationPage from './pages/Uni/UniVerificationPage';
+import UniSettingsPage from './pages/Uni/UniSettingsPage';
 
 const theme = createTheme({
   /** Put your mantine theme override here */
@@ -39,11 +38,11 @@ function App() {
           <Route path="/OrgSettingsPage" element={<OrgSettingsPage/>}/>
 
           <Route path="/UniProfilePage" element={<UniProfilePage/>}/>
-          <Route path="/UniHomePage" element={<UniHomePage/>}/>
-          <Route path="/UniOrganizationsPage" element={<UniOrganizationsPage/>}/>
+          <Route path="/UniHomePage" element={<UniHomePage/>}/>       
+          <Route path="/UniVerificationPage" element={<UniVerificationPage/>}/>
           <Route path="/UniReservationsPage" element={<UniReservationsPage/>}/>
           <Route path="/UniSettingsPage" element={<UniSettingsPage/>}/>
-          <Route path="/UniVerificationPage" element={<UniVerificationPage/>}/>
+
         </Routes>
       </BrowserRouter>
     </MantineProvider>

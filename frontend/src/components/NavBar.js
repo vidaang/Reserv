@@ -12,11 +12,6 @@ const NavBar = () => {
           location.pathname === '/Login' || 
           location.pathname === '/CreateAccount';
 
-    // const containsSubword = (subword) => location.pathname.includes(subword);
-
-    // const showOrgNav = containsSubword('Org');
-    // const showUniNav = containsSubword('Uni');
-
     const showOrgNav = 
           location.pathname === '/OrgHomePage' || 
           location.pathname === '/OrgSearchPage' || 
@@ -26,7 +21,7 @@ const NavBar = () => {
     const showUniNav = 
           location.pathname === '/UniHomePage' || 
           location.pathname === '/UniReservationsPage' ||
-          location.pathname === '/UniOrganizationsPage' ||
+          location.pathname === '/UniVerificationPage' ||
           location.pathname === '/UniSettingsPage';
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -113,7 +108,7 @@ const NavBar = () => {
               <Link to="/UniHomePage">
                 <button className="navbar-menu-text" onClick={toggleMenu}>Home</button>
               </Link>
-              <Link to="/UniOrganizationsPage">
+              <Link to="/UniVerificationPage">
                 <button className="navbar-menu-text" onClick={toggleMenu}>Manage Organizations</button>
               </Link>
               <Link to="/UniReservationsPage">
