@@ -137,8 +137,6 @@ app.post("/api/login", async (req, res) => {
   // Payload for JWT
   const jwtPayload = {
     RSOID: rso.RSOID,
-    Email: rso.Email,
-    AdminID: rso.AdminID,
   };
 
   // Secret key (this should be a long, unguessable string stored in a secure way, not hard-coded!)
@@ -164,10 +162,32 @@ app.post("/api/login", async (req, res) => {
   res.status(200).json(responseObject);
 });
 
+function authenticateJWT(req, res, next) {
+  const authHeader = req.headers.authorization;
+
+  if (authHeader) {
+    const token = authHeader.split(" ")[1]; // Extract the token from Bearer
+
+    const secretKey =
+      "7d4c5e4023a7f91857c1b7ad8c6286a7e5b2c0d8e1f8b2c7e3a9d4e5f6b7c8d9";
+
+    jwt.verify(token, secretKey, (err, user) => {
+      if (err) {
+        return res.sendStatus(403); // Forbidden
+      }
+
+      req.user = user; // Store user information from JWT to request object
+      next(); // Continue to the next middleware or route handler
+    });
+  } else {
+    res.sendStatus(401); // Unauthorized
+  }
+}
+
 // PUT NEW APIs AFTER HERE
 const { ObjectId } = require("mongodb"); // at the top of your file
 
-app.post("/api/createEvent", async (req, res) => {
+app.post("/api/createEvent", authenticateJWT, async (req, res) => {
   const { RSOID, EventName, Description, StartEnd } = req.body;
 
   // Validate the StartEnd array
@@ -248,12 +268,12 @@ app.get("/api/availability/:roomID/:date/:intervals", async (req, res) => {
 
   // Initialize availability array with all true values
   // availability[0] being true means 9:00am to 9:30am is available.
-  const availability = new Array(24).fill(true);
+  const availability = new Array(48).fill(true);
 
   eventsOnDay.forEach((event) => {
     // Calculate indices based on start and end times
-    const startIndex = (event.StartEnd[0] - 9.0) * 2; // *2 because we're considering half-hour intervals
-    const endIndex = (event.StartEnd[1] - 9.0) * 2;
+    const startIndex = event.StartEnd[0] * 2; // *2 because we're considering half-hour intervals
+    const endIndex = event.StartEnd[1] * 2;
 
     // Mark the hours between start and end times as false (unavailable)
     for (let i = startIndex; i < endIndex; i++) {
@@ -278,8 +298,8 @@ function findContinuousAvailability(availability, intervalsRequired) {
   for (let i = 0; i <= availability.length - intervalsRequired; i++) {
     if (availability.slice(i, i + intervalsRequired).every((val) => val)) {
       availableSlots.push({
-        start: i / 2 + 9.0, // Convert index to hours
-        end: (i + intervalsRequired) / 2 + 9.0, // Convert index to hours
+        start: i / 2, // Convert index to hours
+        end: (i + intervalsRequired) / 2, // Convert index to hours
       });
     }
   }
