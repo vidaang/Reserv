@@ -1,6 +1,7 @@
 import React from 'react';
 import VerificationComponent from './VerificationComponent';
 
+// 
 function VerificationList({ orgs })
 {
     return(

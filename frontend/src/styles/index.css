@@ -913,3 +913,11 @@ output[for="timeRange"] {
   background-color: red;
   color: white;
 }
+
+#verification-modal-container h1{
+  font-size: 30px;
+}
+
+#verification-modal-container h2{
+  font-size: 24px;
+}

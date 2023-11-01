@@ -17,10 +17,15 @@ function VerificationComponent({ org })
             <h2>{ org.officer }</h2>
             <h2>{ org.email }</h2>
             <span onClick={open}>View More Info</span>
-            <Modal opened={opened} onClose={close} title="Authentication">
-                <h1>{ org.name }</h1>
-                <h2>{ org.officer }</h2>
-                <h2>{ org.email }</h2>
+            <Modal id="verification-modal" opened={opened} onClose={close} title="Organization Information">
+                <div id="verification-modal-container">
+                    <h1>{ org.name }</h1>
+                    <h2>Officer Name: { org.officer }</h2>
+                    <h2>Email: { org.email }</h2>
+                    <h2>Phone: { org.phone }</h2>
+                    <h2>Advisor: { org.advisor }</h2>
+                    <h2>Advisor Email: { org.advisor_email }</h2>
+                </div>
             </Modal>
             <div id="verification-button-div">
                 <button id="verification-accept-button" onClick={handleClick}>Accept</button>

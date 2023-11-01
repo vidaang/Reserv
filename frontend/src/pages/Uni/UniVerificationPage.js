@@ -3,19 +3,25 @@ import VerificationList from '../../components/Uni/UniVerificationPage/Verificat
 import NavBar from '../../components/NavBar';
 import "../../styles/index.css";
 
-const orgs = [ // Change to Reservation
+const orgs = [ // Dummy Orgs
     {
         name: "IEEE",
         officer: "John Engineer",
-        email: "john@ucf.edu"
+        email: "john@ucf.edu",
+        phone: "111-111-1111",
+        advisor: "IEEE Advisor",
+        advisor_email: "advisor@ucf.edu"
     },
     {
         name: "Esports",
         officer: "James Esport",
-        email: "james@ucf.edu"
+        email: "james@ucf.edu",
+        phone: "111-111-1111",
+        advisor: "Esports Advisor",
+        advisor_email: "advisor@ucf.edu"
     }
 ]
-
+// Get orgs based on boolean database "verified" value, send list of orgs to VerificationList
 function UniVerificationPage()
 {
     return (
