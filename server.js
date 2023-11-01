@@ -184,7 +184,7 @@ function authenticateJWT(req, res, next) {
   }
 }
 
-// PUT NEW APIs AFTER HERE
+// PUT NEW APIs AFTER HERE, this first one has JWT but others don't yet.
 const { ObjectId } = require("mongodb"); // at the top of your file
 
 app.post("/api/createEvent", authenticateJWT, async (req, res) => {
@@ -248,6 +248,7 @@ app.post("/api/createEvent", authenticateJWT, async (req, res) => {
   }
 });
 
+// Other APIs still need JWT.
 app.get("/api/availability/:roomID/:date/:intervals", async (req, res) => {
   // Convert RoomID to integer
   const roomID = req.params.roomID;
