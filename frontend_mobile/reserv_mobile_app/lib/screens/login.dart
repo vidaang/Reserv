@@ -1,26 +1,23 @@
 import 'package:flutter/material.dart';
+import 'home.dart'; // Import the HomeScreen widget.
 
-void main() {
-  runApp(LoginApp());
-}
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
 
-class LoginApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Login Screen'),
-        ),
-        body: Center(
-          child: LoginForm(),
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Login'),
       ),
+      body: const LoginForm(),
     );
   }
 }
 
 class LoginForm extends StatelessWidget {
+  const LoginForm({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -40,6 +37,10 @@ class LoginForm extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               // Add your login logic here
+              // If login is successful, you can navigate to the HomeScreen.
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => const HomePage()),
+              );
             },
             child: const Text('Log In'),
           ),
