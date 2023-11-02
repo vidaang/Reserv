@@ -307,6 +307,78 @@ function findContinuousAvailability(availability, intervalsRequired) {
 
   return availableSlots;
 }
+app.put("/api/updateRSO", async (req, res) => {
+  // know what things we can change
+
+  const updatedRSO = {
+    RSOName: req.body.RSOName,
+    OfficerFirstName: req.body.OfficerFirstName,
+    OfficerLastName: req.body.OfficerLastName,
+    Password: req.body.Password,
+    Email: req.body.Email,
+    Phone: req.body.Phone,
+    AdvisorName: req.body.AdvisorName,
+    AdvisorEmail: req.body.AdvisorEmail,
+    SecondaryContactName: null,
+    SecondaryContactEmail: null,
+    SecondaryContactPhone: null,
+    UniID: null,
+    Verification: false
+  };
+
+  const db = client.db("Reserv");
+
+  try {
+    let result = db.collection("RSO").replaceOne({ RSOName: updatedRSO.RSOName }, updatedRSO)
+    return res.status(200).json({ success: true })
+
+  } catch (e) {
+    if (res.status(400))
+      return res.status(400).json({ error: e.toString() });
+    else
+      return res.status(500).json({ error: e.toString() });
+  }
+
+
+
+})
+
+app.delete("/api/deleteRSO", async (req, res) => {
+  RSOName = req.body.RSOName;
+  // define our db
+  db = client.db("Reserv")
+  // connect to a collection in the db
+  try {
+    let result = db.collection("RSO").deleteOne({ RSOName: RSOName })
+    res.status(200).json({ operation: "successful" })
+  } catch (err) {
+    console.log({ error: err.toString() });
+  }
+  // access the document we want to delete
+  // if the response status is 200, log a success
+
+  // other wise log an error
+})
+
+app.post("/api/getRoomDetails", async (req, res) => {
+
+  const roomID = req.body.RoomID;
+  const RoomNumber = req.body.RoomNumber;
+  console.log(RoomNumber);
+
+  let error = "";
+
+  try {
+    const db = client.db("Reserv");
+    let room = await db.collection("Room").findOne({ RoomNumber: RoomNumber });
+    return res.status(200).json(room);
+  } catch (e) {
+    error = e.toString();
+  }
+
+  return res.json({ error: error });
+
+})
 
 // PUT NEW APIs BEFORE HERE
 
