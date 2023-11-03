@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'reservations.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -23,6 +24,14 @@ class HomePage extends StatelessWidget {
                 // Add any action for the button, e.g., navigate to other screens.
               },
               child: const Text('Click Me'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const ReservationsPage()),
+                );
+              },
+              child: const Text('Reservations'),
             ),
           ],
         ),
