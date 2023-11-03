@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'login.dart'; 
 import 'signup.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
@@ -8,16 +9,23 @@ class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF0E9D3),
       appBar: AppBar(
         title: const Text('Reserv'),
+        backgroundColor: Color(0xFF526760)
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
+            Text(
               'Book Your Path to Knowledge: University Room Reservations',
-              style: TextStyle(fontSize: 24.0),
+              style: GoogleFonts.openSans(
+                fontSize: 24,
+                color: Colors.black,
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16.0),
             ElevatedButton(
@@ -28,6 +36,10 @@ class LandingPage extends StatelessWidget {
                 );
               },
               child: const Text('Login'),
+              style: ElevatedButton.styleFrom(
+                  primary: Color(0xFF526760), // Button color
+                  minimumSize: Size(200, 50), // Button size
+              ),
             ),
             const SizedBox(height: 16.0),
             ElevatedButton(
@@ -38,6 +50,10 @@ class LandingPage extends StatelessWidget {
                 );
               },
               child: const Text('Sign Up'),
+              style: ElevatedButton.styleFrom(
+                  primary: Color(0xFF526760), // Button color
+                  minimumSize: Size(200, 50), // Button size
+              ),
             ),
           ],
         ),
