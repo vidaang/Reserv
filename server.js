@@ -162,6 +162,42 @@ app.post("/api/login", async (req, res) => {
   res.status(200).json(responseObject);
 });
 
+app.get("/api/RetrieveEvents", async(req, res) => {
+  const { Latitude, Longitude } = req.body;
+  var roomListReturn = {};
+  console.log(Latitude);
+
+  const db = client.db("Reserv");
+  const returnArray = [];
+  const roomList = await db.collection("Room").find({ RSOID : RSOID }).toArray();
+
+  roomList.forEach(event => {
+    returnArray.push({
+      EventID: event.EventID,
+      Date: event.Date,
+      EventType: event.EventType,
+      NumAttendees: event.NumAttendees,
+      Description: event.Description,
+      AtriumOccupy: event.AtriumOccupy,
+      AtriumBuilding: event.AtriumBuilding,
+      StartEnd: event.StartEnd,
+      RSOID: event.RSOID,
+      RoomID: event.RoomID
+    });
+    
+    roomListReturn = {roomList:returnArray}
+  });
+
+  res.status(200).json(roomListReturn);
+});
+
+app.put("/api/UpdateEvent", async(req,res)=>{
+  const {EventID, EventName, Description}  = req.body;
+  const db = client.db("Reserv");
+  
+  const update = await db.collection("Event").updateOne({EventID:EventID},{EventName:EventName, Description:Description})
+});
+
 app.post("/api/RetrieveRooms", async (req, res) => {
   const { Latitude, Longitude } = req.body;
   var roomListReturn = {};
