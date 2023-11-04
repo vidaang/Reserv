@@ -164,14 +164,14 @@ app.post("/api/login", async (req, res) => {
 
 app.get("/api/RetrieveEvents", async(req, res) => {
   const { Latitude, Longitude } = req.body;
-  var roomListReturn = {};
+  var eventListReturn = {};
   console.log(Latitude);
 
   const db = client.db("Reserv");
   const returnArray = [];
-  const roomList = await db.collection("Room").find({ RSOID : RSOID }).toArray();
+  const eventList = await db.collection("Room").find({ RSOID : RSOID }).toArray();
 
-  roomList.forEach(event => {
+  eventList.forEach(event => {
     returnArray.push({
       EventID: event.EventID,
       Date: event.Date,
@@ -185,10 +185,10 @@ app.get("/api/RetrieveEvents", async(req, res) => {
       RoomID: event.RoomID
     });
     
-    roomListReturn = {roomList:returnArray}
+    eventListReturn = {eventList:returnArray}
   });
 
-  res.status(200).json(roomListReturn);
+  res.status(200).json(eventListReturn);
 });
 
 app.put("/api/UpdateEvent", async(req,res)=>{
@@ -196,6 +196,15 @@ app.put("/api/UpdateEvent", async(req,res)=>{
   const db = client.db("Reserv");
   
   const update = await db.collection("Event").updateOne({EventID:EventID},{EventName:EventName, Description:Description})
+  res.status(200).json(update);
+});
+
+app.delete("/api/DeleteEvent", async(req,res)=>{
+  const {EventID}  = req.body;
+  const db = client.db("Reserv");
+  
+  const update = await db.collection("Event").deleteOne({EventID:EventID});
+  res.status(200).json(update);
 });
 
 app.post("/api/RetrieveRooms", async (req, res) => {
