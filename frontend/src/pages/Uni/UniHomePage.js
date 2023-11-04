@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import NavBar from '../../components/NavBar';
 import OrgSearchRoomsForm from '../../components/Org/OrgHomePage/OrgSearchRoomsForm';
 import Lecture1 from '../../images/lecture-hall-1.jpg';
@@ -11,8 +11,71 @@ import Org3 from '../../images/org-3.jpg';
 import Org4 from '../../images/org-4.jpg';
 import '../../styles/index.css';
 
-function OrgHomePage()
-{
+function OrgHomePage() {
+    const [organizations, setOrganizations] = useState([]);
+    const [reservations, setReservations] = useState([]);
+
+    useEffect(() => {
+        // CALL API ENDPOINT HERE
+
+        const mockOrganizations = [
+            {
+                id: 1,
+                name: "POOSD",
+                image: Org1,
+            },
+            {
+                id: 2,
+                name: "POOSD",
+                image: Org2,
+            },
+            {
+                id: 3,
+                name: "POOSD",
+                image: Org3,
+            },
+            {
+                id: 4,
+                name: "POOSD",
+                image: Org4,
+            },
+        ];
+
+        const mockReservations = [
+            {
+                id: 1,
+                title: "Mock Foundation Exam",
+                location: "Classroom Building 1 Rm 101",
+                time: "1:30PM-4:30PM",
+                image: Lecture1,
+            },
+            {
+                id: 2,
+                title: "Mock Foundation Exam",
+                location: "Classroom Building 1 Rm 101",
+                time: "1:30PM-4:30PM",
+                image: Lecture2,
+            },
+            {
+                id: 3,
+                title: "Mock Foundation Exam",
+                location: "Classroom Building 1 Rm 101",
+                time: "1:30PM-4:30PM",
+                image: Lecture3,
+            },
+            {
+                id: 4,
+                title: "Mock Foundation Exam",
+                location: "Classroom Building 1 Rm 101",
+                time: "1:30PM-4:30PM",
+                image: Lecture4,
+            },
+        ];
+
+        setOrganizations(mockOrganizations);
+        setReservations(mockReservations);
+    }, []);
+
     return (
         <div id="OrgHomePageDiv">
             <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -29,23 +92,12 @@ function OrgHomePage()
                     <div className="org-home-box">
                         <div className="org-home-card-arrow" id="org-home-card-prev ">&#9664;</div>
                             <div className="org-home-card-container">
-                                <div className="org-home-card">
-                                    <img src={ Org1 } alt="Card 1"className="org-home-card-img"/>
-                                    <p1>Asian Student Association</p1>
+                            {organizations.map((organization) => (
+                                <div className="org-home-card" key={organization.id}>
+                                    <img src={organization.image} alt={organization.name} className="org-home-card-img" />
+                                    <p>{organization.name}</p>
                                 </div>
-                                <div className="org-home-card">
-                                    <img src={ Org2 } alt="Card 2"className="org-home-card-img"/>
-                                    <p1>Knight Hacks</p1>
-                                </div>
-                                <div class="org-home-card">
-                                    <img src={ Org3 } alt="Card 3"className="org-home-card-img"/>
-                                    <p1>UCF Student Government</p1>
-                                </div>
-                                <div className="org-home-card">
-                                    <img src={ Org4 } alt="Card 4"className="org-home-card-img"/>
-                                    <p1>Vietnamese American</p1>
-                                    <p1>Student Association</p1>
-                                </div>
+                            ))}
                             </div>
                         <div className="org-home-card-arrow" id="next">&#9654;</div>
                     </div>
@@ -55,30 +107,14 @@ function OrgHomePage()
                     <div className="org-home-box">
                         <div className="org-home-card-arrow" id="org-home-card-prev ">&#9664;</div>
                             <div className="org-home-card-container">
-                                <div className="org-home-card">
-                                    <img src={ Lecture1 } alt="Card 1"className="org-home-card-img"/>
-                                    <p1>Mock Foundation Exam</p1>
-                                    <p1>Classroom Building 1 Rm 101</p1>
-                                    <p1>1:30PM-4:30PM</p1>
-                                </div>
-                                <div className="org-home-card">
-                                    <img src={ Lecture2 } alt="Card 2"className="org-home-card-img"/>
-                                    <p1>Building MERN Stack Workshop</p1>
-                                    <p1>Classroom Building 1 Rm 101</p1>
-                                    <p1>9:00AM-2:00PM</p1>
-                                </div>
-                                <div class="org-home-card">
-                                    <img src={ Lecture3 } alt="Card 3"className="org-home-card-img"/>
-                                    <p1>Running a Ponzi Scheme 101</p1>
-                                    <p1>Classroom Building 2 Rm 201</p1>
-                                    <p1>3:15PM-5:00PM</p1>
-                                </div>
-                                <div className="org-home-card">
-                                    <img src={ Lecture4 } alt="Card 4"className="org-home-card-img"/>
-                                    <p1>Scooby Doo Movie Marathon</p1>
-                                    <p1>Classroom Building 2 Rm 201</p1>
-                                    <p1>8:30PM-11:30PM</p1>
-                                </div>
+                                {reservations.map((reservation) => (
+                                    <div className="org-home-card" key={reservation.id}>
+                                        <img src={reservation.image} alt={reservation.title} className="org-home-card-img" />
+                                        <p>{reservation.title}</p>
+                                        <p>{reservation.location}</p>
+                                        <p>{reservation.time}</p>
+                                    </div>
+                                ))}
                             </div>
                         <div className="org-home-card-arrow" id="next">&#9654;</div>
                     </div>
@@ -90,3 +126,4 @@ function OrgHomePage()
 }
 
 export default OrgHomePage;
+

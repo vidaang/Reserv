@@ -13,9 +13,9 @@ import classes from '../../../styles/SettingsNavigation.module.css';
 
 const data = [
   { link: '', label: 'University Info', icon: IconBuildingCommunity },
-  { link: '', label: 'Notifications', icon: IconBellRinging },
+  // { link: '', label: 'Notifications', icon: IconBellRinging },
   { link: '', label: 'Login Info', icon: IconKey },
-  { link: '', label: 'Other Settings', icon: IconSettings },
+  // { link: '', label: 'Other Settings', icon: IconSettings },
 ];
 
 function UniversityInfo() {
@@ -32,21 +32,21 @@ function UniversityInfo() {
   );
 }
 
-function Notifications() {
-  const [reminders, setReminders] = useState(true);
+// function Notifications() {
+//   const [reminders, setReminders] = useState(true);
 
-  const toggleReminders = () => {
-    setReminders(!reminders);
-  };
+//   const toggleReminders = () => {
+//     setReminders(!reminders);
+//   };
 
-  return (
-    <div>
-      <h2>Notifications</h2>
-      <label>Reminders for Upcoming Events:</label>
-      <input type="checkbox" checked={reminders} onChange={toggleReminders} />
-    </div>
-  );
-}
+//   return (
+//     <div>
+//       <h2>Notifications</h2>
+//       <label>Reminders for Upcoming Events:</label>
+//       <input type="checkbox" checked={reminders} onChange={toggleReminders} />
+//     </div>
+//   );
+// }
 
 function LoginInfo() {
   return (
@@ -79,7 +79,6 @@ export function SettingsNavigation() {
 
   const components = {
     'University Info': <UniversityInfo />,
-    'Notifications': <Notifications />,
     'Login Info': <LoginInfo />,
     'Other Settings': <OtherSettings />,
   };
