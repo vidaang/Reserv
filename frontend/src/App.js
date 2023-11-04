@@ -10,7 +10,9 @@ import SignUpPage from './pages/SignUpPage';
 import OrgProfilePage from './pages/Org/OrgProfilePage';
 import OrgHomePage from './pages/Org/OrgHomePage';
 import OrgSearchPage from './pages/Org/OrgSearchPage';
+import OrgCompleteReservationPage from './pages/Org/OrgCompleteReservationPage';
 import OrgReservationsPage from './pages/Org/OrgReservationsPage';
+import OrgEditReservationsPage from './pages/Org/OrgEditReservationsPage';
 import OrgSettingsPage from './pages/Org/OrgSettingsPage';
 import UniProfilePage from './pages/Uni/UniProfilePage';
 import UniHomePage from './pages/Uni/UniHomePage';
@@ -34,7 +36,9 @@ function App() {
           <Route path="/OrgProfilePage" element={<OrgProfilePage/>}/>
           <Route path="/OrgHomePage" element={<OrgHomePage/>}/>
           <Route path="/OrgSearchPage" element={<OrgSearchPage/>}/>
+          <Route path="/OrgCompleteReservationPage" element={<OrgCompleteReservationPage/>}/>
           <Route path="/OrgReservationsPage" element={<OrgReservationsPage/>}/>
+          <Route path="/OrgEditReservationsPage" element={<OrgEditReservationsPage/>}/>
           <Route path="/OrgSettingsPage" element={<OrgSettingsPage/>}/>
 
           <Route path="/UniProfilePage" element={<UniProfilePage/>}/>

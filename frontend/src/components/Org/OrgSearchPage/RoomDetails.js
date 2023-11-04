@@ -1,99 +1,124 @@
-import React, { useState } from 'react';
-import { Row, Dropdown, DropdownButton, Button } from 'react-bootstrap';
-import { Modal } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
+import moment from 'moment';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { DropdownButton, Dropdown, Modal, Button } from 'react-bootstrap';
 import '../../../styles/index.css';
+import {
+  IconUsers,
+  IconFriends,
+  IconDisabled,
+  IconSettings,
+  IconDeviceDesktop,
+} from '@tabler/icons-react';
+import { Link } from 'react-router-dom';
+import Lecture from '../../../images/lecture-hall-3.jpg';
 
-function RoomDetails() {
-  const [showModal, setShowModal] = useState(true);
+const localizer = momentLocalizer(moment);
 
-  function handleCloseModal() {
-    setShowModal(false);
-  }
+function RoomDetails(props) {
+  const { room, handleCloseModal } = props;
+
+  const [view, setView] = useState('month');
+  const [roomDetails, setRoomDetails] = useState(null);
+
+  const handleViewChange = (selectedView) => {
+    setView(selectedView);
+  };
+
+  // Simulated dummy data for room details
+  const dummyRoomData = {
+    buildingName: 'Classroom Building One',
+    roomNumber: 'Room 120',
+    capacity: 250,
+    availableTimes: [
+      {
+        date: 'Monday, October 2nd, 2023',
+        times: ['6:00am - 8:30am', '9:00am - 10:00am', '12:00pm - 1:30pm'],
+      },
+      {
+        date: 'Monday, October 3rd, 2023',
+        times: ['6:00am - 8:30am', '9:00am - 10:00am', '12:00pm - 1:30pm'],
+      },
+    ],
+  };
+
+  useEffect(() => {
+    setRoomDetails(dummyRoomData);
+  }, []);
 
   function handleCreateReservation() {
-    alert('Create Reservation button clicked');
+    // PASS IN ROOM INFORMATION
   }
 
   return (
-    <div>
-        <Modal
-        dialogClassName="roomDetailsModal"
-        centered
-        show={showModal}
-        onHide={handleCloseModal}
-        keyboard={false}
-        >
-        <Modal.Header closeButton>
-          <Modal.Title>Room Details</Modal.Title>
-        </Modal.Header>
-        <Modal.Body id="roomDetailsModalBody">
-          <div id="timePeriodSelector">
-            <DropdownButton title="Dropdown button" id="dropdown-basic-button">
-              <Dropdown.Item eventKey="X">View By Month</Dropdown.Item>
-              <Dropdown.Divider></Dropdown.Divider>
-              <Dropdown.Item eventKey="X">View By Week</Dropdown.Item>
-            </DropdownButton>
-          </div>
-          <div id="availableTimesSection">
-            <div id="availableTimesHeading">
-              <h1>Available Times</h1>
-            </div>
-            <hr />
-            <div id="availableTimesDay">
-              <div id="availableTimesDayHeading">
-                <h3>Monday October 2nd</h3>
-              </div>
+    <Modal show={room !== null} onHide={handleCloseModal} dialogClassName="roomDetailsModal">
 
-              <div id="availableTimesDayButton">
-                <Button
-                  id="timeButton1"
-                  className="availableTimeDayButton"
-                >
-                  6:00am - 8:30am
-                </Button>
-                <Button
-                  id="timeButton2"
-                  className="availableTimeDayButton"
-                >
-                  9:00am - 10:00am
-                </Button>
-                <Button
-                  id="timeButton3"
-                  className="availableTimeDayButton"
-                >
-                  12:00pm - 1:30pm
-                </Button>
-              </div>
-              <hr />
-              <div id="availableTimesDayHeading">
-                <h3>Monday October 3rd</h3>
-              </div>
+      <Modal.Header closeButton>
+        <Modal.Title>Room Details</Modal.Title>
+      </Modal.Header>
 
-              <div id="availableTimesDayButton">
-                <Button
-                  id="timeButton1"
-                  className="availableTimeDayButton"
-                >
-                  6:00am - 8:30am
-                </Button>
-                <Button
-                  id="timeButton2"
-                  className="availableTimeDayButton"
-                >
-                  9:00am - 10:00am
-                </Button>
-                <Button
-                  id="timeButton3"
-                  className="availableTimeDayButton"
-                >
-                  12:00pm - 1:30pm
-                </Button>
+      <Modal.Body id="roomDetailsModalBody">
+        {roomDetails && (
+          <>
+            {/* Room Description Section */}
+            <div className="roomDescription">
+              <div className="roomDescriptionLeft">
+                <img src={Lecture} alt="Room Image" className="search-page-modal-img" />
               </div>
-              <hr />
+              <div className="roomDescriptionRight">
+                <div className="location-container">
+                  <h5 className="location">LOCATION</h5>
+                  <h1 className="building-name">{roomDetails.buildingName}</h1>
+                  <div className="row-space">
+                    <h3>{roomDetails.roomNumber}</h3>
+                    <div className="capacity-space">
+                      <IconUsers size={30} color="blue" />
+                      <h5>{roomDetails.capacity}</h5>
+                    </div>
+                  </div>
+                </div>
+                <div className="ammenities-container">
+                  <h5 className="ammenities">AMENITIES</h5>
+                  <div className="row-space">
+                    <IconFriends size={50} color="black" />
+                    <IconDisabled size={50} color="black" />
+                    <IconDeviceDesktop size={50} color="black" />
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </Modal.Body>
-        <Modal.Footer>
+
+            {/* Available Times Section */}
+            <div className="availableTimesSection">
+              <div id="availableTimesHeading">
+                <h5 className="available-times">AVAILABLE TIMES</h5>
+              </div>
+              {roomDetails.availableTimes.map((day, index) => (
+                <div key={index}>
+                  <div id="availableTimesDayHeading">
+                    <h3>{day.date}</h3>
+                  </div>
+                  <div id="availableTimesDayButton">
+                    {day.times.map((time, timeIndex) => (
+                      <Button
+                        key={timeIndex}
+                        id={`timeButton${timeIndex}`}
+                        className="availableTimeDayButton"
+                      >
+                        {time}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+      </Modal.Body>
+
+      <Modal.Footer>
+        <Link to="/OrgCompleteReservationPage">
           <Button
             id="CreateReservationButton"
             variant="primary"
@@ -101,13 +126,9 @@ function RoomDetails() {
           >
             Create Reservation
           </Button>
-
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </div>
+        </Link>
+      </Modal.Footer>
+    </Modal>
   );
 }
 

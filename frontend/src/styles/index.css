@@ -86,8 +86,9 @@ body {
 }
 
 .navbar-logo {
-  width: 35%;
-  height: 15%;
+  position: fixed;
+  top: 17px;
+  width: 100px;
 }
 
 .navbar-icon {
@@ -148,18 +149,25 @@ body {
   position: relative;
 }
 
+.navbar-menu-button {
+  position: fixed;
+  top: 5px;
+  right: 70px;
+}
+
 .navbar-menu-button, .navbar-menu-text {
   background-color: transparent;
   border: none;
 }
 
 .navbar-menu {
+  text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
   position: absolute;
   top: 70px;
-  right: 5.8%;
+  right: 85px;
   background-color: white;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   border: 1px var(--color-7);
@@ -395,6 +403,7 @@ body {
 }
 
 
+
 /* SEARCH(AKA ENTRY) FORM FOR ORG HOME PAGE*/
 
 
@@ -495,46 +504,36 @@ output[for="timeRange"] {
 
 
 #OrgSearchPageDiv {
-  max-height: 100%;
+  max-height: 100vh;
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   text-align: center;
 }
 
-.MapDiv{
-  height: 100vh;
-  justify-content: center;
-}
-
-#MapView{
+#MapView {
   width: 100%;
-}
-#ListSection{
-  width: 20%;
-}
-#RoomDiv{
-  min-height: 10px;
-}
-
-#timePeriodSelector{
-  text-align: end;
+  position: relative;
 }
 
 .map-container {
+  position: relative;
   height: 100vh;
   width: 100%;
-  transition: transform 0.3s ease;
+  transition: transform 0.5s ease;
   transform: translateX(0);
   width: 100%;
 }
 
 .slide-right {
-  transform: translateX(20%); 
+  transform: translateX(20%);
   width: 83.3%;
 }
 
 .change-view-button {
   position: absolute;
-  right:47%;
+  right: 47%;
   bottom: 20px;
   height: 40px;
   width: fit-content;
@@ -544,7 +543,7 @@ output[for="timeRange"] {
   padding-left: 30px;
   padding-right: 30px;
   font-weight: bold;
-  font-size:large;
+  font-size: large;
   border: 2 var(--color-3);
   justify-self: center;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 1);
@@ -555,6 +554,26 @@ output[for="timeRange"] {
   background-color: black;
   transition: 0.3s;
   color: white;
+}
+
+.searchBarContainer {
+  font-weight: bold;
+  position: absolute;
+  top: 70px;
+  right: 27%;
+  z-index: 2;
+  background-color: white;
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 1);
+}
+
+.search-bar-submit {
+  height: 40px !important;
+}
+.slide-right-search {
+  transform: translateX(20%);
+  transition: all .5s ease;
 }
 
 .list {
@@ -581,7 +600,7 @@ output[for="timeRange"] {
   height: 93.5vh;
   overflow-y: scroll;
   overflow-x: hidden;
-  transition: left 0.3s ease; /* Add left transition for sliding effect */
+  transition: left 0.3s ease;
   padding: 10px;
 }
 
@@ -594,69 +613,117 @@ output[for="timeRange"] {
 
 .room-item:hover {
   background-color: #f5f5f5;
+  cursor: pointer;
 }
 
-.room.description {
+/* SEARCH PAGE MODAL */
+.roomDetailsModal{
+  min-width: max-content;
+  max-height: 90%;
+  overflow-y: scroll;
+  background-color: transparent;
+}
+
+.roomDescription {
   margin: 10px 0;
   padding: 5px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+}
+
+.roomDescriptionLeft {
+  margin-right: 30px;
+}
+
+.location-container {
+  border: 1px solid #e1e1e1;
+  border-radius: 10px;
+  background-color: white;
+  margin-bottom: 10px;
+  width: 100%;
+  padding: 10px;
+}
+
+.ammenities-container {
+  border: 1px solid #e1e1e1;
+  border-radius: 10px;
+  background-color: white;
+  margin-bottom: 10px;
+  width: 100%;
+  padding: 10px;
+}
+
+.capacity-space {
+  display: flex;
+  direction: row;
+}
+
+.row-space {
+  display: flex;
+  direction: row;
+  justify-content: space-evenly;
+}
+
+.search-page-modal-img {
+  border: 2px solid white;
+  border-radius: 10px;
+  height: 250px;
+  border-radius: 10px;
+}
+
+.icon-modal-img {
+  width: 50px;
+  height: 30px;
+}
+
+.building-name {
+  font-weight: bold;
+}
+.location {
+  color: #69B7FF;
+}
+.ammenities {
+  color: #61ff7e;
+}
+.select-date {
+  color: #FFAF51;
+}
+.available-times {
+  color: #D96BFF;
+  margin-bottom: 10px;
+}
+
+.dropdown-basic-button{
+  text-align: start;
+  background-color: white;
+}
+
+.availableTimesSection {
+  background-color: white;
+  border: 1px solid #e1e1e1;
+  border-radius: 10px;
+  padding: 10px;
 }
 
 .availableTimeDayButton{
-  background-color: #eaeaea !important;
-  border: none!important;
-  color: #0F1A12 !important;
-  padding: 10px 20px !important;
-  text-align: center !important;
-  text-decoration: none !important;
-  display: inline-block !important;
-  margin: 4px 2px !important;
-  cursor: pointer !important;
-  border-radius: 16px !important;
-}
-
-.availableTimeDayButton{
-  background-color: #eaeaea !important;
-  border: none!important;
-  color: #0F1A12 !important;
-  padding: 10px 20px !important;
-  text-align: center !important;
-  text-decoration: none !important;
-  display: inline-block !important;
-  margin: 4px 2px !important;
-  cursor: pointer !important;
-  border-radius: 16px !important;
+  background-color: #eaeaea !important; 
+  border: #eaeaea !important;
+  color: black !important;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 20px !important;
 }
 
 .availableTimeDayButton:hover{
-  background-color: #b4b4b4 !important;
-  border: none!important;
-  color: #0F1A12 !important;
-  padding: 10px 20px !important;
-  text-align: center !important;
-  text-decoration: none !important;
-  display: inline-block !important;
-  margin: 4px 2px !important;
-  cursor: pointer !important;
-  border-radius: 16px !important;
+  background-color: #e1e1e1 !important;
 }
 
 .availableTimeDayButton:focus{
   background-color: #61ff7e !important;
-  border: none!important;
-  color: #0F1A12 !important;
-  padding: 10px 20px !important;
-  text-align: center !important;
-  text-decoration: none !important;
-  display: inline-block !important;
-  margin: 4px 2px !important;
-  cursor: pointer !important;
-  border-radius: 16px !important;
-}
-
-.roomDetailsModal{
-  min-width:50%!important;
 }
 
 
@@ -736,18 +803,34 @@ output[for="timeRange"] {
 
 /* ORG SETTINGS PAGE */
 #OrgSettingsPageDiv {
-  text-align: center;
+  max-height: 100vh;
+  overflow-y: visible;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  width: 100%;
 }
 
+/* ORG COMPLETE PROFILE PAGE */
+
 #OrgProfilePageDiv {
+  max-height: 100vh;
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  text-align: center;
 }
 
 /* UNIVERSITY COMPLETE PROFILE PAGE */
 
 #UniProfilePageDiv {
-  height: 100vh;
+  max-height: 100vh;
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 #UniProfilePageDiv h1 {
@@ -796,7 +879,7 @@ output[for="timeRange"] {
   margin-top: 2%;
 }
 
-#uni-profile-discretion-text {
+#complete-reservation-discretion-text {
   font-family: 'Gabarito', sans-serif;
   width: 80%;
   margin-bottom: 2%;
@@ -809,30 +892,42 @@ output[for="timeRange"] {
   font-family: 'Gabarito', sans-serif;
 }
 
-#uni-profile-cancel-button {
+#complete-reservation-cancel-button {
   margin-right: 10px;
   background-color: transparent;
   border-radius: 25px;
   padding: 5px 20px;
 }
 
-#uni-profile-create-button {
+#complete-reservation-create-button {
   background-color: transparent;
   border-radius: 25px;
   padding: 5px 20px;
 }
 
-#uni-profile-checkbox-message {
+#complete-reservation-checkbox-message {
   font-family: 'Gabarito', sans-serif;
   margin-bottom: 2%;
 }
 
 /* UNIVERSITY SETTINGS PAGE */
 #UniSettingsPageDiv {
-  text-align: center;
+  max-height: 100vh;
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 /* UNIVERSITY VERIFICATION PAGE */
+
+#UniVerificationsPageDiv {
+  max-height: 100vh;
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
 
 #verification-page-header {
   font-family: 'Gabarito', sans-serif;
@@ -848,6 +943,7 @@ output[for="timeRange"] {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 
 /* UNIVERSITY VERIFICATION COMPONENT */
@@ -920,4 +1016,87 @@ output[for="timeRange"] {
 
 #verification-modal-container h2{
   font-size: 24px;
+}
+
+/* COMPLETE RESERVATION FORM */
+
+#OrgCompleteReservationsPageDiv {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.complete-reservation-input-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.complete-reservation-input-label label {
+  text-align: left;
+  flex: 1;
+  margin-right: 10px;
+}
+
+.complete-reservation-input-label input {
+  text-align: right;
+  flex: 2;
+  width: 60%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  outline: none;
+}
+
+#complete-reservation-discretion-text {
+  width: 70%;
+  margin-bottom: 10px;
+  padding: 15px;
+}
+
+#complete-reservation-checkbox-message {
+  display: flex;
+  align-items: center;
+}
+
+#complete-reservation-checkbox {
+  margin-right: 5px;
+}
+
+#CompleteProfileButtonDiv {
+  display: flex;
+  justify-content: center;
+}
+
+#complete-reservation-cancel-button,
+#complete-reservation-create-button {
+  padding: 10px 20px;
+  margin: 10px;
+  background-color: #007bff; /* Button background color */
+  color: #fff; /* Button text color */
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+/* Add hover and active styles for buttons if desired */
+#complete-reservation-cancel-button:hover,
+#complete-reservation-create-button:hover {
+  background-color: #0056b3; /* Adjust as desired */
+}
+
+#complete-reservation-cancel-button:active,
+#complete-reservation-create-button:active {
+  background-color: #004292; /* Adjust as desired */
+}
+
+#OrgEditReservationsPageDiv {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
 }

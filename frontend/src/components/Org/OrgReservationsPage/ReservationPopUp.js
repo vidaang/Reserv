@@ -1,6 +1,6 @@
 import React from 'react';
 import { format } from "date-fns";
-
+import { Link } from 'react-router-dom';
 
 function ReservationPopUp({ event }) {
 
@@ -8,8 +8,12 @@ function ReservationPopUp({ event }) {
     const formattedStart = format(event.start, "H:mm");
     const formattedEnd = format(event.end, "H:mm");
 
-    const handleClick = () => {
-        alert("Button time yay!");
+    const handleEditReservation = () => {
+        
+    }
+    const handleCancelReservation = () => {
+        // API CALL TO DELETE RESERVATION
+        alert("Cancel reservation clicked");
     }
 
     return (
@@ -22,8 +26,10 @@ function ReservationPopUp({ event }) {
                 <p>End Time: {formattedEnd}</p>
             </div>
             <div id="reservation-popup-button-container">
-                <button id="popup-edit-button" onClick={handleClick}>Edit Reservation</button>
-                <button id="popup-cancel-button" onClick={handleClick}>Cancel Reservation</button>
+                <Link to="/OrgEditReservationsPage">
+                    <button id="popup-edit-button" onClick={handleEditReservation}>Edit Reservation</button>
+                </Link>
+                <button id="popup-cancel-button" onClick={handleCancelReservation}>Cancel Reservation</button>
             </div>
         </div>
     )

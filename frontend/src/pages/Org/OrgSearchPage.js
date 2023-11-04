@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import NavBar from '../../components/NavBar';
 import Map from '../../components/Org/OrgSearchPage/Map'
 import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import ChangeViewButton from "../../components/Org/OrgSearchPage/ChangeViewButton";
 import RoomList from "../../components/Org/OrgSearchPage/RoomList";
-
+import SearchBar from '../../components/Org/OrgSearchPage/SearchBar';
 
 import '../../styles/index.css';
 
@@ -18,6 +17,7 @@ function OrgSearchPage()
         setListOpen(!isListOpen);
     };
 
+    const searchBarContainer = `map-container${isListOpen ? ' slide-right' : ''}`;
     const mapContainerClass = `map-container${isListOpen ? ' slide-right' : ''}`;
     const listClass = `list${isListOpen ? ' slide-right' : ''}`;
 
@@ -35,9 +35,14 @@ function OrgSearchPage()
             </div>
 
             <div id='MapView'>
+                <div className={isListOpen ? "searchBarContainer slide-right-search" : "searchBarContainer"}>
+                    <SearchBar />
+                </div>
+                
                 <div className={mapContainerClass}>
                     <Map />
                 </div>
+                
                 <ChangeViewButton
                     toggleList={toggleList}
                     isMapView={isMapView}
@@ -50,28 +55,6 @@ function OrgSearchPage()
                     </div>
                 )}
             </div>
-            
-            {/* <div>
-                <Row>
-                    <Col lg={{ span: 2 }}>
-                        <div id="RoomList">
-                            <RoomList/>
-                        </div>                   
-                    </Col>
-                    <Col lg={{ span: 10 }}>
-                        <div id="map-container">
-                            <Map/>
-                        </div>
-                    </Col>
-                </Row>
-            </div>
-            
-            <div>
-                <RoomDetails/>
-            </div> */}
-            
-            
-            
         </div>
     );
 }

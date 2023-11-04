@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function OrgSearchRoomsForm() {
+function SearchBar() {
     const [dateRangeStart, setDateRangeStart] = useState('');
     const [dateRangeEnd, setDateRangeEnd] = useState('');
     const [timeRange, setTimeRange] = useState({ hours: 0, minutes: 30 });
@@ -76,11 +76,13 @@ function OrgSearchRoomsForm() {
                         </output>
                     </div>
                 </div>
+
+                <input type="submit" value="Search" className="search-bar-submit"/>
             </div>
 
-            <input type="submit" value="Search" />
+            
         </form>
     );
 }
 
-export default OrgSearchRoomsForm;
+export default SearchBar;
