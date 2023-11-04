@@ -162,6 +162,91 @@ app.post("/api/login", async (req, res) => {
   res.status(200).json(responseObject);
 });
 
+app.get("/api/RetrieveEvents", async(req, res) => {
+  const { Latitude, Longitude } = req.body;
+  var eventListReturn = {};
+  console.log(Latitude);
+
+  const db = client.db("Reserv");
+  const returnArray = [];
+  const eventList = await db.collection("Room").find({ RSOID : RSOID }).toArray();
+
+  eventList.forEach(event => {
+    returnArray.push({
+      EventID: event.EventID,
+      Date: event.Date,
+      EventType: event.EventType,
+      NumAttendees: event.NumAttendees,
+      Description: event.Description,
+      AtriumOccupy: event.AtriumOccupy,
+      AtriumBuilding: event.AtriumBuilding,
+      StartEnd: event.StartEnd,
+      RSOID: event.RSOID,
+      RoomID: event.RoomID
+    });
+    
+    eventListReturn = {eventList:returnArray}
+  });
+
+  res.status(200).json(eventListReturn);
+});
+
+app.put("/api/UpdateEvent", async(req,res)=>{
+  const {EventID, EventName, Description}  = req.body;
+  const db = client.db("Reserv");
+  
+  const update = await db.collection("Event").updateOne({EventID:EventID},{EventName:EventName, Description:Description})
+  res.status(200).json(update);
+});
+
+app.delete("/api/DeleteEvent", async(req,res)=>{
+  const {EventID}  = req.body;
+  const db = client.db("Reserv");
+  
+  const update = await db.collection("Event").deleteOne({EventID:EventID});
+  res.status(200).json(update);
+});
+
+app.post("/api/RetrieveRooms", async (req, res) => {
+  const { Latitude, Longitude } = req.body;
+  var roomListReturn = {};
+  console.log(Latitude);
+
+  const db = client.db("Reserv");
+  const building = await db.collection("Building").findOne({ Latitude: Latitude, Longitude: Longitude });
+
+  
+  // Construct response JSON object
+  const responseObject = {
+    // token: token, // remeber to add JWT
+    BuildingID: building.BuildingID,
+    BuildingName: building.BuildingName,
+    Latitude: building.Latitude,
+    Longitude: building.Longitude,
+    UniID: building.UniID,
+  };
+  const returnArray = [];
+  const roomList = await db.collection("Room").find({ BuildingID : responseObject.BuildingID.toString() }).toArray();
+
+  roomList.forEach(room => {
+    returnArray.push({
+      RoomID: room.RoomID,
+      RoomNumber: room.RoomNumber,
+      RoomInfo: room.RoomInfo,
+      MediaEquip: room.MediaEquip,
+      RoomType: room.RoomType,
+      Date: room.Date,
+      ResrveTimes: room.ResrveTimes,
+      UniID: room.UniID,
+      BuildingID: room.BuildingID
+    });
+    
+    roomListReturn = {roomList:returnArray}
+  });
+
+  res.status(200).json(roomListReturn);
+});
+
 function authenticateJWT(req, res, next) {
   const authHeader = req.headers.authorization;
 
@@ -185,7 +270,6 @@ function authenticateJWT(req, res, next) {
 }
 
 // PUT NEW APIs AFTER HERE, this first one has JWT but others don't yet.
-const { ObjectId } = require("mongodb"); // at the top of your file
 
 app.post("/api/createEvent", authenticateJWT, async (req, res) => {
   const { RSOID, EventName, Description, StartEnd } = req.body;
@@ -227,7 +311,7 @@ app.post("/api/createEvent", authenticateJWT, async (req, res) => {
   const objectId = new ObjectId(RSOID);
 
   // Check if RSOID exists
-  const rsoExists = await db.collection("RSO").findOne({ RSOID: objectId });
+  const rsoExists = await db.collection("RSO").findOne({ RSOID: RSOID });
   if (!rsoExists) {
     return res.status(400).json({ error: "Invalid RSOID" });
   }
