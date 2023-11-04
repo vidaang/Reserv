@@ -249,49 +249,55 @@ app.post("/api/createEvent", authenticateJWT, async (req, res) => {
 });
 
 // Other APIs still need JWT.
-app.get("/api/availability/:roomID/:date/:intervals", async (req, res) => {
-  // Convert RoomID to integer
-  const roomID = req.params.roomID;
-  // Format: MM-DD-YYYY
-  const day = req.params.date;
-  // 1 = 30 minutes, 2 = 60 minutes, ...
-  const intervalsRequired = parseInt(req.params.intervals);
+app.get(
+  "/api/availability/:roomID/:date/:intervals",
+  authenticateJWT,
+  async (req, res) => {
+    // Convert RoomID to integer
+    const roomID = req.params.roomID;
+    // Format: MM-DD-YYYY
+    const day = req.params.date;
+    // 1 = 30 minutes, 2 = 60 minutes, ...
+    const intervalsRequired = parseInt(req.params.intervals);
 
-  const db = client.db("Reserv");
+    const db = client.db("Reserv");
 
-  // Fetch events for the specified day and room from the database
-  const eventsOnDay = await db
-    .collection("Events")
-    .find({ RoomID: roomID, Date: day })
-    .toArray();
+    // Fetch events for the specified day and room from the database
+    const eventsOnDay = await db
+      .collection("Events")
+      .find({ RoomID: roomID, Date: day })
+      .toArray();
 
-  // res.status(200).json({ eventsOnDay: eventsOnDay });
+    // res.status(200).json({ eventsOnDay: eventsOnDay });
 
-  // Initialize availability array with all true values
-  // availability[0] being true means 9:00am to 9:30am is available.
-  const availability = new Array(48).fill(true);
+    // Initialize availability array with all true values
+    // availability[0] being true means 9:00am to 9:30am is available.
+    const availability = new Array(48).fill(true);
 
-  eventsOnDay.forEach((event) => {
-    // Calculate indices based on start and end times
-    const startIndex = event.StartEnd[0] * 2; // *2 because we're considering half-hour intervals
-    const endIndex = event.StartEnd[1] * 2;
+    eventsOnDay.forEach((event) => {
+      // Calculate indices based on start and end times
+      const startIndex = event.StartEnd[0] * 2; // *2 because we're considering half-hour intervals
+      const endIndex = event.StartEnd[1] * 2;
 
-    // Mark the hours between start and end times as false (unavailable)
-    for (let i = startIndex; i < endIndex; i++) {
-      availability[i] = false;
-    }
-  });
+      // Mark the hours between start and end times as false (unavailable)
+      for (let i = startIndex; i < endIndex; i++) {
+        availability[i] = false;
+      }
+    });
 
-  // res.status(200).json({ availability: availability });
+    // res.status(200).json({ availability: availability });
 
-  // Calculate continuous availability slots using the provided function
-  const continuousAvailabilitySlots = findContinuousAvailability(
-    availability,
-    intervalsRequired
-  );
+    // Calculate continuous availability slots using the provided function
+    const continuousAvailabilitySlots = findContinuousAvailability(
+      availability,
+      intervalsRequired
+    );
 
-  res.status(200).json({ continuousAvailability: continuousAvailabilitySlots });
-});
+    res
+      .status(200)
+      .json({ continuousAvailability: continuousAvailabilitySlots });
+  }
+);
 
 function findContinuousAvailability(availability, intervalsRequired) {
   const availableSlots = [];
