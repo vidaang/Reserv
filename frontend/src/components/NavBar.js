@@ -3,14 +3,26 @@ import { Link, useLocation } from 'react-router-dom';
 import '../styles/index.css'
 import Logo from '../images/reserv-logo.png';
 import MenuIcon from '../images/menu.png';
-import ProfileIcon from '../images/profile-icon.png';
 
 const NavBar = () => {
     const location = useLocation();
 
-    const showIcons = location.pathname === '/' || 
+    const showIcons = 
+          location.pathname === '/' || 
           location.pathname === '/Login' || 
           location.pathname === '/CreateAccount';
+
+    const showOrgNav = 
+          location.pathname === '/OrgHomePage' || 
+          location.pathname === '/OrgSearchPage' || 
+          location.pathname === '/OrgReservationsPage' ||
+          location.pathname === '/OrgSettingsPage';
+
+    const showUniNav = 
+          location.pathname === '/UniHomePage' || 
+          location.pathname === '/UniReservationsPage' ||
+          location.pathname === '/UniVerificationPage' ||
+          location.pathname === '/UniSettingsPage';
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const menuRef = useRef(null);
@@ -46,7 +58,8 @@ const NavBar = () => {
           </a>
         </div>
         <div className="navbar-right-align">
-          { showIcons ? (
+          { showIcons ? 
+          (
             <ul className="navbar-links">
               <li className="navbar-button">
                 <Link to="/Login">
@@ -66,13 +79,9 @@ const NavBar = () => {
                   <img src={MenuIcon} alt="Menu" className="navbar-icon"/>
                 </button>
               </div>
-              
-              {/* <li className="navbar-button">
-                <img src={ProfileIcon} alt="Profile" className="navbar-icon"/>
-              </li> */}
             </ul>
           )}
-          {isMenuOpen && (
+          {isMenuOpen && showOrgNav && (
             <div className="navbar-menu">
 
               <Link to="/OrgHomePage">
@@ -85,6 +94,27 @@ const NavBar = () => {
                 <button className="navbar-menu-text" onClick={toggleMenu}>Manage Reservations</button>
               </Link>
               <Link to="/OrgSettingsPage">
+                <button className="navbar-menu-text" onClick={toggleMenu}>Settings</button>
+              </Link>
+              <Link to="/">
+                <button className="navbar-menu-text" onClick={toggleMenu}>Log Out</button>
+              </Link>
+
+            </div>
+          )}
+          {isMenuOpen && showUniNav && (
+            <div className="navbar-menu">
+
+              <Link to="/UniHomePage">
+                <button className="navbar-menu-text" onClick={toggleMenu}>Home</button>
+              </Link>
+              <Link to="/UniVerificationPage">
+                <button className="navbar-menu-text" onClick={toggleMenu}>Manage Organizations</button>
+              </Link>
+              <Link to="/UniReservationsPage">
+                <button className="navbar-menu-text" onClick={toggleMenu}>Manage Reservations</button>
+              </Link>
+              <Link to="/UniSettingsPage">
                 <button className="navbar-menu-text" onClick={toggleMenu}>Settings</button>
               </Link>
               <Link to="/">
