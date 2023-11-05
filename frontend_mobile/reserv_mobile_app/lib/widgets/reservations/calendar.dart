@@ -95,10 +95,9 @@ class _ReservationsCalendarState extends State<ReservationsCalendar> {
             calendarFormat: _calendarFormat,
             rangeSelectionMode: _rangeSelectionMode,
             eventLoader: _getEventsForDay,
-            startingDayOfWeek: StartingDayOfWeek.monday,
+            startingDayOfWeek: StartingDayOfWeek.monday, // Can change start day
             calendarStyle: CalendarStyle(
-              // Use `CalendarStyle` to customize the UI
-              outsideDaysVisible: false,
+              outsideDaysVisible: true,
             ),
             onDaySelected: _onDaySelected,
             onRangeSelected: _onRangeSelected,
