@@ -122,7 +122,7 @@ app.post("/api/createRSO", async (req, res) => {
 });
 
 // Encryption library needs to be added
-// const jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 
 app.post("/api/login", async (req, res) => {
   const { email, password } = req.body;
@@ -135,22 +135,21 @@ app.post("/api/login", async (req, res) => {
     return res.status(400).json({ error: "Incorrect email or password" });
   }
 
-  // // Payload for JWT
-  // const jwtPayload = {
-  //   RSOID: rso.RSOID,
-  //   Email: rso.Email,
-  //   AdminID: rso.AdminID,
-  // };
+  // Payload for JWT
+  const jwtPayload = {
+    RSOID: rso.RSOID,
+  };
 
   // Secret key (this should be a long, unguessable string stored in a secure way, not hard-coded!)
-  //const secretKey = "your_very_secret_key_here";
+  const secretKey =
+    "7d4c5e4023a7f91857c1b7ad8c6286a7e5b2c0d8e1f8b2c7e3a9d4e5f6b7c8d9";
 
-  // // Generate JWT
-  //const token = jwt.sign(jwtPayload, secretKey, { expiresIn: "1h" }); // Token expires in 1 hour
+  // Generate JWT
+  const token = jwt.sign(jwtPayload, secretKey, { expiresIn: "1h" }); // Token expires in 1 hour
 
   // Construct response JSON object
   const responseObject = {
-    // token: token, // remeber to add JWT
+    token: token, // remeber to add JWT
     RSOID: rso.RSOID,
     RSOName: rso.RSOName,
     Email: rso.Email,
@@ -164,9 +163,116 @@ app.post("/api/login", async (req, res) => {
   res.status(200).json(responseObject);
 });
 
-// PUT NEW APIs AFTER HERE
+app.get("/api/RetrieveEvents", async(req, res) => {
+  const { Latitude, Longitude } = req.body;
+  var eventListReturn = {};
+  console.log(Latitude);
 
-app.post("/api/createEvent", async (req, res) => {
+  const db = client.db("Reserv");
+  const returnArray = [];
+  const eventList = await db.collection("Room").find({ RSOID : RSOID }).toArray();
+
+  eventList.forEach(event => {
+    returnArray.push({
+      EventID: event.EventID,
+      Date: event.Date,
+      EventType: event.EventType,
+      NumAttendees: event.NumAttendees,
+      Description: event.Description,
+      AtriumOccupy: event.AtriumOccupy,
+      AtriumBuilding: event.AtriumBuilding,
+      StartEnd: event.StartEnd,
+      RSOID: event.RSOID,
+      RoomID: event.RoomID
+    });
+    
+    eventListReturn = {eventList:returnArray}
+  });
+
+  res.status(200).json(eventListReturn);
+});
+
+app.put("/api/UpdateEvent", async(req,res)=>{
+  const {EventID, EventName, Description}  = req.body;
+  const db = client.db("Reserv");
+  
+  const update = await db.collection("Event").updateOne({EventID:EventID},{EventName:EventName, Description:Description})
+  res.status(200).json(update);
+});
+
+app.delete("/api/DeleteEvent", async(req,res)=>{
+  const {EventID}  = req.body;
+  const db = client.db("Reserv");
+  
+  const update = await db.collection("Event").deleteOne({EventID:EventID});
+  res.status(200).json(update);
+});
+
+app.post("/api/RetrieveRooms", async (req, res) => {
+  const { Latitude, Longitude } = req.body;
+  var roomListReturn = {};
+  console.log(Latitude);
+
+  const db = client.db("Reserv");
+  const building = await db.collection("Building").findOne({ Latitude: Latitude, Longitude: Longitude });
+
+  
+  // Construct response JSON object
+  const responseObject = {
+    // token: token, // remeber to add JWT
+    BuildingID: building.BuildingID,
+    BuildingName: building.BuildingName,
+    Latitude: building.Latitude,
+    Longitude: building.Longitude,
+    UniID: building.UniID,
+  };
+  const returnArray = [];
+  const roomList = await db.collection("Room").find({ BuildingID : responseObject.BuildingID.toString() }).toArray();
+
+  roomList.forEach(room => {
+    returnArray.push({
+      RoomID: room.RoomID,
+      RoomNumber: room.RoomNumber,
+      RoomInfo: room.RoomInfo,
+      MediaEquip: room.MediaEquip,
+      RoomType: room.RoomType,
+      Date: room.Date,
+      ResrveTimes: room.ResrveTimes,
+      UniID: room.UniID,
+      BuildingID: room.BuildingID
+    });
+    
+    roomListReturn = {roomList:returnArray}
+  });
+
+  res.status(200).json(roomListReturn);
+});
+
+function authenticateJWT(req, res, next) {
+  const authHeader = req.headers.authorization;
+
+  if (authHeader) {
+    const token = authHeader.split(" ")[1]; // Extract the token from Bearer
+
+    const secretKey =
+      "7d4c5e4023a7f91857c1b7ad8c6286a7e5b2c0d8e1f8b2c7e3a9d4e5f6b7c8d9";
+
+    jwt.verify(token, secretKey, (err, user) => {
+      if (err) {
+        return res.sendStatus(403); // Forbidden
+      }
+
+      req.user = user; // Store user information from JWT to request object
+      next(); // Continue to the next middleware or route handler
+    });
+  } else {
+    res.sendStatus(401); // Unauthorized
+  }
+}
+
+// PUT NEW APIs AFTER HERE, this first one has JWT but others don't yet.
+
+app.post("/api/createEvent", authenticateJWT, async (req, res) => {
   const { RSOID, EventName, Description, StartEnd } = req.body;
 
   // Validate the StartEnd array
@@ -197,6 +303,14 @@ app.post("/api/createEvent", async (req, res) => {
 
   const db = client.db("Reserv");
 
+  // Check if RSOID is a valid ObjectId string, this could be changed to not use the object ID
+  if (!ObjectId.isValid(RSOID)) {
+    return res.status(400).json({ error: "Invalid RSOID format" });
+  }
+
+  // Convert RSOID string to ObjectId
+  const objectId = new ObjectId(RSOID);
+
   // Check if RSOID exists
   const rsoExists = await db.collection("RSO").findOne({ RSOID: RSOID });
   if (!rsoExists) {
@@ -219,6 +333,72 @@ app.post("/api/createEvent", async (req, res) => {
   }
 });
 
+// Other APIs still need JWT.
+app.get(
+  "/api/availability/:roomID/:date/:intervals",
+  authenticateJWT,
+  async (req, res) => {
+    // Convert RoomID to integer
+    const roomID = req.params.roomID;
+    // Format: MM-DD-YYYY
+    const day = req.params.date;
+    // 1 = 30 minutes, 2 = 60 minutes, ...
+    const intervalsRequired = parseInt(req.params.intervals);
+
+    const db = client.db("Reserv");
+
+    // Fetch events for the specified day and room from the database
+    const eventsOnDay = await db
+      .collection("Events")
+      .find({ RoomID: roomID, Date: day })
+      .toArray();
+
+    // res.status(200).json({ eventsOnDay: eventsOnDay });
+
+    // Initialize availability array with all true values
+    // availability[0] being true means 9:00am to 9:30am is available.
+    const availability = new Array(48).fill(true);
+
+    eventsOnDay.forEach((event) => {
+      // Calculate indices based on start and end times
+      const startIndex = event.StartEnd[0] * 2; // *2 because we're considering half-hour intervals
+      const endIndex = event.StartEnd[1] * 2;
+
+      // Mark the hours between start and end times as false (unavailable)
+      for (let i = startIndex; i < endIndex; i++) {
+        availability[i] = false;
+      }
+    });
+
+    // res.status(200).json({ availability: availability });
+
+    // Calculate continuous availability slots using the provided function
+    const continuousAvailabilitySlots = findContinuousAvailability(
+      availability,
+      intervalsRequired
+    );
+
+    res
+      .status(200)
+      .json({ continuousAvailability: continuousAvailabilitySlots });
+  }
+);
+
+function findContinuousAvailability(availability, intervalsRequired) {
+  const availableSlots = [];
+
+  for (let i = 0; i <= availability.length - intervalsRequired; i++) {
+    if (availability.slice(i, i + intervalsRequired).every((val) => val)) {
+      availableSlots.push({
+        start: i / 2, // Convert index to hours
+        end: (i + intervalsRequired) / 2, // Convert index to hours
+      });
+    }
+  }
+
+  return availableSlots;
+}
+
 // PUT NEW APIs BEFORE HERE
 
 // This needs to be the last get request.
@@ -230,149 +410,3 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
   });
 }
-// -------------- Boiler Plate Code from MERN Stack Demo--------------- //
-
-var cardList = [
-  "Roy Campanella",
-  "Paul Molitor",
-  "Tony Gwynn",
-  "Dennis Eckersley",
-  "Reggie Jackson",
-  "Gaylord Perry",
-  "Buck Leonard",
-  "Rollie Fingers",
-  "Charlie Gehringer",
-  "Wade Boggs",
-  "Carl Hubbell",
-  "Dave Winfield",
-  "Jackie Robinson",
-  "Ken Griffey, Jr.",
-  "Al Simmons",
-  "Chuck Klein",
-  "Mel Ott",
-  "Mark McGwire",
-  "Nolan Ryan",
-  "Ralph Kiner",
-  "Yogi Berra",
-  "Goose Goslin",
-  "Greg Maddux",
-  "Frankie Frisch",
-  "Ernie Banks",
-  "Ozzie Smith",
-  "Hank Greenberg",
-  "Kirby Puckett",
-  "Bob Feller",
-  "Dizzy Dean",
-  "Joe Jackson",
-  "Sam Crawford",
-  "Barry Bonds",
-  "Duke Snider",
-  "George Sisler",
-  "Ed Walsh",
-  "Tom Seaver",
-  "Willie Stargell",
-  "Bob Gibson",
-  "Brooks Robinson",
-  "Steve Carlton",
-  "Joe Medwick",
-  "Nap Lajoie",
-  "Cal Ripken, Jr.",
-  "Mike Schmidt",
-  "Eddie Murray",
-  "Tris Speaker",
-  "Al Kaline",
-  "Sandy Koufax",
-  "Willie Keeler",
-  "Pete Rose",
-  "Robin Roberts",
-  "Eddie Collins",
-  "Lefty Gomez",
-  "Lefty Grove",
-  "Carl Yastrzemski",
-  "Frank Robinson",
-  "Juan Marichal",
-  "Warren Spahn",
-  "Pie Traynor",
-  "Roberto Clemente",
-  "Harmon Killebrew",
-  "Satchel Paige",
-  "Eddie Plank",
-  "Josh Gibson",
-  "Oscar Charleston",
-  "Mickey Mantle",
-  "Cool Papa Bell",
-  "Johnny Bench",
-  "Mickey Cochrane",
-  "Jimmie Foxx",
-  "Jim Palmer",
-  "Cy Young",
-  "Eddie Mathews",
-  "Honus Wagner",
-  "Paul Waner",
-  "Grover Alexander",
-  "Rod Carew",
-  "Joe DiMaggio",
-  "Joe Morgan",
-  "Stan Musial",
-  "Bill Terry",
-  "Rogers Hornsby",
-  "Lou Brock",
-  "Ted Williams",
-  "Bill Dickey",
-  "Christy Mathewson",
-  "Willie McCovey",
-  "Lou Gehrig",
-  "George Brett",
-  "Hank Aaron",
-  "Harry Heilmann",
-  "Walter Johnson",
-  "Roger Clemens",
-  "Ty Cobb",
-  "Whitey Ford",
-  "Willie Mays",
-  "Rickey Henderson",
-  "Babe Ruth",
-];
-
-app.post("/api/addcard", async (req, res, next) => {
-  // incoming: userId, color
-  // outgoing: error
-  const { userId, card } = req.body;
-  const newCard = { Card: card, UserId: userId };
-  var error = "";
-
-  try {
-    const db = client.db("COP4331Cards");
-    const result = db.collection("Cards").insertOne(newCard);
-  } catch (e) {
-    error = e.toString();
-  }
-
-  cardList.push(card);
-  var ret = { error: error };
-  res.status(200).json(ret);
-});
-
-app.post("/api/searchcards", async (req, res) => {
-  // incoming: userId, search
-  // outgoing: results[], error
-  var error = "";
-  const { userId, search } = req.body;
-  var _search = search.trim();
-
-  const db = client.db("COP4331Cards");
-  const results = await db
-    .collection("Cards")
-    .find({ Card: { $regex: _search + ".*", $options: "i" }, UserId: userId })
-    .toArray();
-  var _ret = [];
-
-  for (var i = 0; i < results.length; i++) {
-    _ret.push(results[i].Card);
-  }
-
-  var ret = { results: _ret, error: error };
-  res.status(200).json(ret);
-});
-
-//----------------------------------------------

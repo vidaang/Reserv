@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   IconBellRinging,
   IconKey,
@@ -14,25 +14,128 @@ import classes from '../../../styles/SettingsNavigation.module.css';
 const data = [
   { link: '', label: 'Organization Info', icon: IconUser },
   { link: '', label: 'University Info', icon: IconBuildingCommunity },
-  { link: '', label: 'Notifications', icon: IconBellRinging },
+  // { link: '', label: 'Notifications', icon: IconBellRinging },
   { link: '', label: 'Login Info', icon: IconKey },
-  { link: '', label: 'Other Settings', icon: IconSettings },
+  // { link: '', label: 'Other Settings', icon: IconSettings },
 ];
 
 function OrganizationInfo() {
+  const [organizationData, setOrganizationData] = useState({
+    organizationName: '',
+    description: '',
+    authorizedOfficerFirstName: '',
+    authorizedOfficerLastName: '',
+    phoneNumber: '',
+    facultyAdvisor: '',
+    facultyAdvisorEmail: '',
+    secondaryContactName: '',
+    secondaryContactEmail: '',
+  });
+
+  const fetchOrganizationData = async () => {
+    // GET API REQUEST HERE
+  };
+
+  useEffect(() => {
+    fetchOrganizationData();
+  }, []);
+
+  const handleInputChange = (field, value) => {
+    setOrganizationData((prevData) => ({
+      ...prevData,
+      [field]: value,
+    }));
+  };
+
+  const handleConfirmChanges = () => {
+    // POST API REQUEST HERE
+  };
+
   return (
     <div>
       <h2>Profile</h2>
-      <label>Organization Name: <input type="text" /></label><br />
-      <label>Description: <input type="text" /></label><br />
-      <label>Authorized Officer's First Name: <input type="text" /></label><br />
-      <label>Authorized Officer's Last Name: <input type="text" /></label><br />
-      <label>Email: <input type="text" /></label><br />
-      <label>Phone Number: <input type="text" /></label><br />
-      <label>Faculty Advisor: <input type="text" /></label><br />
-      <label>Faculty Advisor Email: <input type="text" /></label><br />
-      <label>Secondary Contact Name: <input type="text" /></label><br />
-      <label>Secondary Contact Email: <input type="text" /></label><br />
+      <hr />
+      <h5>Organization Information</h5>
+      <label>
+        Organization Name: 
+        <input
+          type="text"
+          value={organizationData.organizationName}
+          onChange={(e) => handleInputChange('organizationName', e.target.value)}
+        />
+      </label><br />
+      <label>
+        Description: 
+        <input
+          type="text"
+          value={organizationData.description}
+          onChange={(e) => handleInputChange('description', e.target.value)}
+        />
+      </label><br />
+      <label>
+        Phone Number:
+        <input
+          type="text"
+          value={organizationData.phoneNumber}
+          onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
+        />
+      </label><br />
+      <hr />
+      <h5>Officer Information</h5>
+      <label>
+        Authorized Officer's First Name:
+        <input
+          type="text"
+          value={organizationData.authorizedOfficerFirstName}
+          onChange={(e) => handleInputChange('authorizedOfficerFirstName', e.target.value)}
+        />
+      </label><br />
+      <label>
+        Authorized Officer's Last Name:
+        <input
+          type="text"
+          value={organizationData.authorizedOfficerLastName}
+          onChange={(e) => handleInputChange('authorizedOfficerLastName', e.target.value)}
+        />
+      </label><br />
+
+      <hr />
+      <h5>Faculty Advisor Information</h5>
+      <label>
+        Faculty Advisor:
+        <input
+          type="text"
+          value={organizationData.facultyAdvisor}
+          onChange={(e) => handleInputChange('facultyAdvisor', e.target.value)}
+        />
+      </label><br />
+      <label>
+        Faculty Advisor Email:
+        <input
+          type="text"
+          value={organizationData.facultyAdvisorEmail}
+          onChange={(e) => handleInputChange('facultyAdvisorEmail', e.target.value)}
+        />
+      </label><br />
+      <hr />
+      <h5>Secondary Contact Information</h5>
+      <label>
+        Secondary Contact Name:
+        <input
+          type="text"
+          value={organizationData.secondaryContactName}
+          onChange={(e) => handleInputChange('secondaryContactName', e.target.value)}
+        />
+      </label><br />
+      <label>
+        Secondary Contact Email:
+        <input
+          type="text"
+          value={organizationData.secondaryContactEmail}
+          onChange={(e) => handleInputChange('secondaryContactEmail', e.target.value)}
+        />
+      </label><br />
+      <button onClick={handleConfirmChanges}>Confirm Changes</button>
     </div>
   );
 }
@@ -51,29 +154,92 @@ function UniversityInfo() {
   );
 }
 
-function Notifications() {
-  const [reminders, setReminders] = useState(true);
+function LoginInfo() {
+  const [email, setEmail] = useState('');
+  const [newEmail, setNewEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [retypeNewPassword, setRetypeNewPassword] = useState('');
+  const [deleteAccountClicked, setDeleteAccountClicked] = useState(false);
 
-  const toggleReminders = () => {
-    setReminders(!reminders);
+  const handleEmailChange = (e) => {
+    // PERFORM API CALL TO CHANGE EMAIL?
+    setEmail(e.target.value);
   };
 
-  return (
-    <div>
-      <h2>Notifications</h2>
-      <label>Reminders for Upcoming Events:</label>
-      <input type="checkbox" checked={reminders} onChange={toggleReminders} />
-    </div>
-  );
-}
+  const handleNewEmailChange = (e) => {
+    setNewEmail(e.target.value);
+  };
 
-function LoginInfo() {
+  const handlePasswordChange = (e) => {
+    // PERFORM API CALL TO CHANGE PASSWORD?
+    setPassword(e.target.value);
+  };
+
+  const handleNewPasswordChange = (e) => {
+    setNewPassword(e.target.value);
+  };
+
+  const handleRetypeNewPasswordChange = (e) => {
+    setRetypeNewPassword(e.target.value);
+  };
+
+  const handleDeleteAccount = () => {
+    // PERFORM API CALL TO DELETE ACCOUNT?
+  };
+
+  const canSubmitEmailChange = email && newEmail;
+  const canSubmitPasswordChange = password && newPassword && newPassword === retypeNewPassword;
+
   return (
     <div>
       <h2>User Settings</h2>
-      <label>Change Username: <input type="text" /></label><br />
-      <label>Change Password: <input type="password" /></label><br />
-      <label>Delete Account: <button>Delete</button></label>
+      <hr />
+      <h5>Change Email</h5>
+      <label>
+        Current Email:
+        <input type="text" value={email} onChange={handleEmailChange} />
+      </label><br />
+      <label>
+        New Email:
+        <input type="text" value={newEmail} onChange={handleNewEmailChange} />
+      </label><br />
+      <button onClick={handleEmailChange} disabled={!canSubmitEmailChange}>
+        Confirm Email Change
+      </button>
+      <hr />
+      <h5>Change Password</h5>
+      <label>
+        Current Password:
+        <input type="password" value={password} onChange={handlePasswordChange} />
+      </label><br />
+      <label>
+        New Password:
+        <input type="password" value={newPassword} onChange={handleNewPasswordChange} />
+      </label><br />
+      <label>
+        Retype New Password:
+        <input type="password" value={retypeNewPassword} onChange={handleRetypeNewPasswordChange} />
+      </label><br />
+      <button onClick={handlePasswordChange} disabled={!canSubmitPasswordChange}>
+        Confirm Password Change
+      </button>
+      <hr />
+      <h5>Delete Account</h5>
+      <h6>After you perform this operation, any and all data stored will be wiped!</h6>
+      <button
+        onClick={() => {
+          if (deleteAccountClicked) {
+            setDeleteAccountClicked(false);
+            handleDeleteAccount();
+          } else {
+            setDeleteAccountClicked(true);
+          }
+        }}
+        disabled={deleteAccountClicked}
+      >
+        {deleteAccountClicked ? 'Confirm Deletion' : 'Delete'}
+      </button>
     </div>
   );
 }
@@ -99,7 +265,6 @@ export function SettingsNavigation() {
   const components = {
     'Organization Info': <OrganizationInfo />,
     'University Info': <UniversityInfo />,
-    'Notifications': <Notifications />,
     'Login Info': <LoginInfo />,
     'Other Settings': <OtherSettings />,
   };
