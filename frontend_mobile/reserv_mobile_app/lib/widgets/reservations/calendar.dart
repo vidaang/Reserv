@@ -82,6 +82,7 @@ class _ReservationsCalendarState extends State<ReservationsCalendar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF0E9D3),
       body: Column(
         children: [
           TableCalendar<Event>(
