@@ -24,7 +24,7 @@ const localizer = dateFnsLocalizer({
 });
 
 var eventList = [];
-var events = [];
+
 // const events = [
 //     {
 //         title: "General Body Meeting",
@@ -48,7 +48,7 @@ function LargeCalendar()
 {
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [opened, { open, close }] = useDisclosure(false);
-    const [event, setEvents] = useState([]);
+    const [events, setEvents] = useState([]);
     const [fetchEvent, setFetchEvent] = useState(true);
     
     // var RSOID = Cookies.get('RSOID');
@@ -62,6 +62,8 @@ function LargeCalendar()
     const formatEvents = (eventList) => {
         if (eventList == undefined) return;
 
+        var events = new Set();
+
         eventList.forEach(event => {
             
             var dateParts = event.Date.split('-');
@@ -71,7 +73,7 @@ function LargeCalendar()
             var start = event.StartEnd[0];
             var end = event.StartEnd[1];
 
-            events.push(
+            events.add(
                 {
                     id: event.EventID,
                     title: event.EventName,
