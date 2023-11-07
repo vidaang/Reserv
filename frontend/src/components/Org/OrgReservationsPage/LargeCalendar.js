@@ -5,11 +5,10 @@ import format from "date-fns/format";
 import parse from "date-fns/parse";
 import startOfWeek from "date-fns/startOfWeek";
 import getDay from 'date-fns/getDay';
-import DatePicker from 'react-datepicker';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import ReservationPopUp from './ReservationPopUp';
 import { useDisclosure } from '@mantine/hooks';
-import { Drawer, Button } from '@mantine/core';
+import { Drawer } from '@mantine/core';
 
 const locales = {
     "en-US" : require("date-fns/locale/en-US")
@@ -22,8 +21,6 @@ const localizer = dateFnsLocalizer({
    getDay,
    locales
 });
-
-var eventList = [];
 
 // const events = [
 //     {
@@ -49,7 +46,6 @@ function LargeCalendar()
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [opened, { open, close }] = useDisclosure(false);
     const [events, setEvents] = useState([]);
-    const [fetchEvent, setFetchEvent] = useState(true);
     
     // var RSOID = Cookies.get('RSOID');
     var RSOID = '65440e752b48c68af9b7c5c0';
@@ -60,7 +56,7 @@ function LargeCalendar()
     };
 
     const formatEvents = (eventList) => {
-        if (eventList == undefined) return;
+        if (eventList === undefined) return;
 
         var events = new Set();
 
@@ -132,7 +128,7 @@ function LargeCalendar()
 
         fetchEventData();
 
-    }, []);
+    }, [RSOID]);
 
     
 
