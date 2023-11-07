@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 function ReservationPopUp({ event }) {
 
     const formattedDate = format(event.date, "MMMM d, yyyy");
-    const formattedStart = format(event.start, "H:mm");
-    const formattedEnd = format(event.end, "H:mm");
+    const formattedStart = format(event.start, "h:mm a");
+    const formattedEnd = format(event.end, "h:mm a");
 
     const handleEditReservation = () => {
         
@@ -22,8 +22,8 @@ function ReservationPopUp({ event }) {
                 <h2>{event.title}</h2>
                 <p>Date: {formattedDate}</p>
                 <p>Room: {event.room}</p>
-                <p>Start Time: {formattedStart}</p>
-                <p>End Time: {formattedEnd}</p>
+                <p>Time: {formattedStart} - {formattedEnd}</p>
+                <p>Description: {event.description}</p>
             </div>
             <div id="reservation-popup-button-container">
                 <Link to="/OrgEditReservationsPage">

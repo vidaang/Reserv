@@ -57,21 +57,33 @@ function LargeCalendar()
     const handleEventClick = (event) => {
         setSelectedEvent(event);
         open();
-        setFetchEvent(false);
     };
 
     const formatEvents = (eventList) => {
         if (eventList == undefined) return;
 
         eventList.forEach(event => {
-            console.log(event.EventName);
+            
+            var dateParts = event.Date.split('-');
+            var month = parseInt(dateParts[0], 10);
+            var day = parseInt(dateParts[1], 10);
+            var year = parseInt(dateParts[2], 10);
+            var start = event.StartEnd[0];
+            var end = event.StartEnd[1];
+
             events.push(
                 {
+                    id: event.EventID,
                     title: event.EventName,
                     allDay: false,
-                    date: new Date(2023, 10, 20),
-                    start: new Date(2023, 10, 20, 9, 0, 0),
-                    end: new Date(2023, 10, 20, 10, 0, 0),
+                    date: new Date(year, month - 1, day),
+                    start: new Date(year, month - 1, day, start, 0, 0),
+                    end: new Date(year, month - 1, day, end, 0, 0),
+                    eventType: event.EventType,
+                    numAttendees: event.NumAttendees,
+                    description: event.Description,
+                    atriumOccupy: event.AtriumOccupy,
+                    atriumBuilding: event.AtriumBuilding,
                     room: event.RoomID 
                 }
             );
@@ -111,16 +123,14 @@ function LargeCalendar()
         };
     
         const fetchEventData = async () => {
-            if (fetchEvent) {
-                data = await getEventList();
-                formatEvents(data);
-                setFetchEvent(false);
-            }
+            
+            data = await getEventList();
+            formatEvents(data);          
         };
 
         fetchEventData();
 
-    }, [RSOID, fetchEvent]);
+    }, []);
 
     
 
