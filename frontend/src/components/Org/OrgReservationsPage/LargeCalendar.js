@@ -22,25 +22,6 @@ const localizer = dateFnsLocalizer({
    locales
 });
 
-// const events = [
-//     {
-//         title: "General Body Meeting",
-//         allDay: false,
-//         date: new Date(2023, 9, 20),
-//         start: new Date(2023, 9, 20, 9, 0, 0),
-//         end: new Date(2023, 9, 20, 10, 0, 0),
-//         room: "CB2 101" 
-//     },
-//     {
-//         title: "Tournament",
-//         allDay: false,
-//         date: new Date(2023, 9, 22),
-//         start: new Date(2023, 9, 22, 8, 0, 0),
-//         end: new Date(2023, 9, 22, 17, 0, 0),
-//         room: "Pegasus Ball Room" 
-//     }
-// ]
-
 function LargeCalendar()
 {
     const [selectedEvent, setSelectedEvent] = useState(null);
@@ -82,7 +63,8 @@ function LargeCalendar()
                     description: event.Description,
                     atriumOccupy: event.AtriumOccupy,
                     atriumBuilding: event.AtriumBuilding,
-                    room: event.RoomID 
+                    room: event.RoomID, 
+                    eventID: event.EventID
                 }
             );
         });

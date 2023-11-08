@@ -754,6 +754,46 @@ output[for="timeRange"] {
   min-height: 580px;
 }
 
+/* DELETE RESERVATION */
+
+#cancel-modal-container h1 {
+  font-family: 'Gabarito', sans-serif;
+  font-size: 24px;
+  text-align: center;
+}
+
+#cancel-modal-buttons {
+  margin-top: 1%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#cancel-modal-buttons button {
+  border-radius: 25px;
+  padding: 5px 15px;
+}
+
+#cancel-back-button {
+  background-color: transparent;
+  transition: 0.3s;
+}
+
+#cancel-back-button:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+#cancel-confirm-button {
+  border: 2px solid red;
+  background-color: red;
+  color: white;
+  transition: 0.3s;
+}
+
+#cancel-confirm-button:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+}
+
 /* RESERVATION PAGE POPUP / EDIT RESERVATION */
 
 #reservation-popup-content {

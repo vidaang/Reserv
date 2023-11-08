@@ -1,6 +1,9 @@
 import React from 'react';
 import { format } from "date-fns";
 import { Link } from 'react-router-dom';
+import { useDisclosure } from '@mantine/hooks';
+import { Modal, Button } from '@mantine/core';
+import '../../../styles/index.css';
 
 function ReservationPopUp({ event }) {
 
@@ -8,13 +11,39 @@ function ReservationPopUp({ event }) {
     const formattedStart = format(event.start, "h:mm a");
     const formattedEnd = format(event.end, "h:mm a");
 
+    const eventID = event.eventID;
+
+    const [opened, { open, close }] = useDisclosure(false);
+
     const handleEditReservation = () => {
         
     }
-    const handleCancelReservation = () => {
-        // API CALL TO DELETE RESERVATION
-        alert("Cancel reservation clicked");
-    }
+
+    const handleCancelReservation = async () => {
+
+        if (!eventID)
+        {
+            return;
+        }
+
+        var obj = { EventID:eventID };
+        var js = JSON.stringify(obj);
+        console.log(js);
+        try
+        {
+            const response = await fetch('http://localhost:5000/api/DeleteEvent',
+            {method:'DELETE',
+            body:js,
+            headers:{'Content-Type':'application/json'}});
+        }
+        catch(e)
+        {
+            alert(e.toString());
+            return;
+        }
+
+        window.location.reload();
+    };
 
     return (
         <div id="reservation-popup">
@@ -29,8 +58,17 @@ function ReservationPopUp({ event }) {
                 <Link to="/OrgEditReservationsPage">
                     <button id="popup-edit-button" onClick={handleEditReservation}>Edit Reservation</button>
                 </Link>
-                <button id="popup-cancel-button" onClick={handleCancelReservation}>Cancel Reservation</button>
+                <button id="popup-cancel-button" onClick={open}>Cancel Reservation</button>
             </div>
+            <Modal id="cancel-reservation-modal" opened={opened} onClose={close} title="Confirm Cancelation">
+                <div id="cancel-modal-container">
+                    <h1>Are you sure you want to cancel this reservation?</h1>
+                    <div id="cancel-modal-buttons">
+                        <button id="cancel-back-button" onClick={close}>Back</button>
+                        <button id="cancel-confirm-button" onClick={handleCancelReservation}>Confirm</button>
+                    </div>
+                </div>
+            </Modal>
         </div>
     )
 }
