@@ -218,6 +218,11 @@ app.post("/api/RetrieveRooms", async (req, res) => {
   const db = client.db("Reserv");
   const building = await db.collection("Building").findOne({ Latitude: Latitude, Longitude: Longitude });
 
+  if(building == undefined) 
+  {
+    console.log("NO BUILDING FORTNITE");
+    return;
+  }
   
   // Construct response JSON object
   const responseObject = {
