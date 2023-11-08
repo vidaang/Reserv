@@ -2,7 +2,7 @@ import React from 'react';
 import { GoogleMap, useLoadScript } from "@react-google-maps/api";
 import { useMemo } from "react";
 
-function Map()
+function Map( { toggleList } )
 {
     var roomListReturn = [];
 
@@ -76,6 +76,9 @@ function Map()
         buildingLatLng.lng = longtitude 
         fetchRoomListData(); 
         console.log(roomListReturn);
+
+        if (roomListReturn.length != 0)
+            toggleList();
     };
     
 

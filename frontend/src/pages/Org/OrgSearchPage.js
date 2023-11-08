@@ -40,7 +40,7 @@ function OrgSearchPage()
                 </div>
                 
                 <div className={mapContainerClass}>
-                    <Map />
+                    <Map toggleList={toggleList}/>
                 </div>
                 
                 <ChangeViewButton
