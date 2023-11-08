@@ -79,6 +79,38 @@ class _ReservationsCalendarState extends State<ReservationsCalendar> {
     }
   }
 
+  void _showEventDetailsDialog(Event event) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Event Details'),
+          content: Text(event.toString()), // You can customize this to display event details as needed
+          actions: <Widget>[
+            TextButton(
+              child: Text('Edit'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Delete'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -130,7 +162,7 @@ class _ReservationsCalendarState extends State<ReservationsCalendar> {
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       child: ListTile(
-                        onTap: () => print('${value[index]}'),
+                        onTap: () => _showEventDetailsDialog(value[index]),
                         title: Text('${value[index]}'),
                       ),
                     );
