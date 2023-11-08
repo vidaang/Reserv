@@ -13,7 +13,7 @@ function OrgSearchPage()
     const [isMapView, setIsMapView] = useState(true);
     const [isListOpen, setListOpen] = useState(false);
   
-    const toggleList = () => {
+    const toggleList = async () => {
         setListOpen(!isListOpen);
     };
 

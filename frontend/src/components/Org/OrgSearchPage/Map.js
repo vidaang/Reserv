@@ -4,7 +4,7 @@ import { useMemo } from "react";
 
 function Map( { toggleList } )
 {
-    var roomListReturn = [];
+    var roomListReturn = new Set();
 
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: process.env.GOOGLE_MAPS_API,
@@ -21,10 +21,9 @@ function Map( { toggleList } )
         lng: 0
     };
 
-    const setRoomList = (roomList) => {
-        alert("here");
+    const setRoomList = async (roomList) => {
         roomList.forEach(room => {
-            roomListReturn.push({
+            roomListReturn.add({
                 RoomID: room.RoomID,
                 RoomNumber: room.RoomNumber,
                 RoomInfo: room.RoomInfo,
@@ -37,48 +36,47 @@ function Map( { toggleList } )
             })
         });
     }
-    
-    const handleClickedMap = (e) => {
-        
 
-        const getRoomList = async () =>
+    const getRoomList = async () =>
         {
 
             var obj = { Latitude:buildingLatLng.lat, Longitude:buildingLatLng.lng };
             var js = JSON.stringify(obj);
             console.log(js);
-            try
-            {
-                const response = await fetch('http://localhost:5000/api/RetrieveRooms',
-                {method:'POST',
-                body:js,
-                headers:{'Content-Type':'application/json'}});
-                var res = await response.json();
-                console.log(res.roomList);
-                return res.roomList;
-            }
-            catch(e)
-            {
-                alert(e.toString());
-                return;
-            }
+
+            const response = await fetch('http://localhost:5000/api/RetrieveRooms',
+            {method:'POST',
+            body:js,
+            headers:{'Content-Type':'application/json'}});
+            var res = await response.json();
+            return res.roomList;
+
         };
 
         const fetchRoomListData = async () => {        
             var data;
             data = await getRoomList();           
-            setRoomList(data);      
+            await setRoomList(data);      
         };
 
+        const ToggleListInternal = async () => {
+            console.log(roomListReturn);
+            if (roomListReturn.entries.size != 0)
+            {
+                toggleList();
+            }
+                
+        }
+    
+    const handleClickedMap = (e) => {
         let latitude = e.latLng.lat()
         let longtitude  = e.latLng.lng()
         buildingLatLng.lat = latitude
         buildingLatLng.lng = longtitude 
         fetchRoomListData(); 
         console.log(roomListReturn);
-
-        if (roomListReturn.length != 0)
-            toggleList();
+        console.log(roomListReturn.size);
+        ToggleListInternal();
     };
     
 

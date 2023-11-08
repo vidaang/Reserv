@@ -221,7 +221,7 @@ app.post("/api/RetrieveRooms", async (req, res) => {
   if(building == undefined) 
   {
     console.log("NO BUILDING FORTNITE");
-    return;
+    return roomListReturn;
   }
   
   // Construct response JSON object
