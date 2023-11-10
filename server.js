@@ -163,7 +163,7 @@ app.post("/api/login", async (req, res) => {
   res.status(200).json(responseObject);
 });
 
-app.get("/api/RetrieveEvents", async(req, res) => {
+app.post("/api/RetrieveEvents", async(req, res) => {
   const { RSOID } = req.body;
   var eventListReturn = {};
 
