@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
-import 'home.dart'; 
+import '../widgets/navbar.dart'; 
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -67,7 +67,7 @@ class _LoginFormState extends State<LoginForm> {
                   if (response['error'] == null) {
                     // Login was successful
                     Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => const HomePage()),
+                      MaterialPageRoute(builder: (context) => const NavBar()),
                     );
                   } else {
                     // Login failed, show an error message
