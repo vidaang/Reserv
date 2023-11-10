@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:reserv_mobile_app/screens/signup.dart';
 import '../services/api_service.dart';
 import 'home.dart';
+import '../widgets/navbar.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -198,7 +199,6 @@ class _LoginFormState extends State<LoginForm> {
                                       side: const BorderSide(
                                           color: Color(0xFFDFDFDF))))),
                           onPressed: () {
-                            // Navigate to the SignUpScreen when the "Sign Up" button is pressed.
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (context) => const SignUpPage()),
@@ -215,20 +215,6 @@ class _LoginFormState extends State<LoginForm> {
                           ),
                         ),
                       ),
-                      // ElevatedButton(
-                      //   onPressed: () {
-                      //     // Navigate to the SignUpScreen when the "Sign Up" button is pressed.
-                      //     Navigator.of(context).push(
-                      //       MaterialPageRoute(
-                      //           builder: (context) => const SignUpPage()),
-                      //     );
-                      //   },
-                      //   child: const Text('Sign Up Here'),
-                      //   style: ElevatedButton.styleFrom(
-                      //     primary: Color(0xFF526760), // Button color
-                      //     minimumSize: Size(200, 50), // Button size
-                      //   ),
-                      // ),
                     ],
                   ))),
         ],
