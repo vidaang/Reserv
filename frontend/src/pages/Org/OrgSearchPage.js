@@ -19,7 +19,6 @@ function OrgSearchPage()
 
     const searchBarContainer = `map-container${isListOpen ? ' slide-right' : ''}`;
     const mapContainerClass = `map-container${isListOpen ? ' slide-right' : ''}`;
-    const listClass = `list${isListOpen ? ' slide-right' : ''}`;
 
     return (
         <div id="OrgSearchPageDiv">
@@ -40,20 +39,13 @@ function OrgSearchPage()
                 </div>
                 
                 <div className={mapContainerClass}>
-                    <Map toggleList={toggleList}/>
+                    <Map toggleList={toggleList} isListOpen={isListOpen}/>
                 </div>
                 
                 <ChangeViewButton
                     toggleList={toggleList}
                     isMapView={isMapView}
                 />
-                {isListOpen && (
-                    <div className={listClass}>
-                        <div className="list-container">
-                            <RoomList /> 
-                        </div>
-                    </div>
-                )}
             </div>
         </div>
     );
