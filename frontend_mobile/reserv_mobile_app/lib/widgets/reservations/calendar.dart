@@ -4,6 +4,8 @@ import 'package:table_calendar/table_calendar.dart';
 import 'utils.dart';
 
 class ReservationsCalendar extends StatefulWidget {
+  const ReservationsCalendar({super.key});
+
   @override
   _ReservationsCalendarState createState() => _ReservationsCalendarState();
 }
@@ -84,23 +86,23 @@ class _ReservationsCalendarState extends State<ReservationsCalendar> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Event Details'),
+          title: const Text('Event Details'),
           content: Text(event.toString()), // You can customize this to display event details as needed
           actions: <Widget>[
             TextButton(
-              child: Text('Edit'),
+              child: const Text('Edit'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Delete'),
+              child: const Text('Delete'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Close'),
+              child: const Text('Close'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -114,7 +116,7 @@ class _ReservationsCalendarState extends State<ReservationsCalendar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF0E9D3),
+      backgroundColor: const Color(0xFFF0E9D3),
       body: Column(
         children: [
           TableCalendar<Event>(
@@ -128,7 +130,7 @@ class _ReservationsCalendarState extends State<ReservationsCalendar> {
             rangeSelectionMode: _rangeSelectionMode,
             eventLoader: _getEventsForDay,
             startingDayOfWeek: StartingDayOfWeek.monday, // Can change start day
-            calendarStyle: CalendarStyle(
+            calendarStyle: const CalendarStyle(
               outsideDaysVisible: true,
             ),
             onDaySelected: _onDaySelected,

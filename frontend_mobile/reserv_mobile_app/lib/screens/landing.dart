@@ -9,10 +9,10 @@ class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF0E9D3),
+      backgroundColor: const Color(0xFFF0E9D3),
       appBar: AppBar(
         title: const Text('Reserv'),
-        backgroundColor: Color(0xFF526760)
+        backgroundColor: const Color(0xFF526760)
       ),
       body: Center(
         child: Column(
@@ -35,11 +35,11 @@ class LandingPage extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => const LoginScreen()),
                 );
               },
-              child: const Text('Login'),
               style: ElevatedButton.styleFrom(
-                  primary: Color(0xFF526760), // Button color
-                  minimumSize: Size(200, 50), // Button size
+                  backgroundColor: const Color(0xFF526760), // Button color
+                  minimumSize: const Size(200, 50), // Button size
               ),
+              child: const Text('Login'),
             ),
             const SizedBox(height: 16.0),
             ElevatedButton(
@@ -49,11 +49,11 @@ class LandingPage extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => const SignUpPage()),
                 );
               },
-              child: const Text('Sign Up'),
               style: ElevatedButton.styleFrom(
-                  primary: Color(0xFF526760), // Button color
-                  minimumSize: Size(200, 50), // Button size
+                  backgroundColor: const Color(0xFF526760), // Button color
+                  minimumSize: const Size(200, 50), // Button size
               ),
+              child: const Text('Sign Up'),
             ),
           ],
         ),

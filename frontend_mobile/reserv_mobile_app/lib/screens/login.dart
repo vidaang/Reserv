@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reserv_mobile_app/screens/signup.dart';
 import '../services/api_service.dart';
-import 'home.dart';
-import '../widgets/navbar.dart';
+import '../widgets/navbar.dart'; 
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -154,7 +153,7 @@ class _LoginFormState extends State<LoginForm> {
                                   // Login was successful
                                   Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
-                                        builder: (context) => const HomePage()),
+                                        builder: (context) => const NavBar()),
                                   );
                                 } else {
                                   // Login failed, show an error message
