@@ -218,23 +218,27 @@ app.post("/api/RetrieveRooms", async (req, res) => {
   const db = client.db("Reserv");
   const building = await db.collection("Building").findOne({ Latitude: Latitude, Longitude: Longitude });
 
+  var returnArray = [];
+  var roomList;
+
   if(building == undefined) 
   {
-    console.log("NO BUILDING FORTNITE");
-    return roomListReturn;
+    roomList = await db.collection("Room").find({}).toArray();
+  }
+  else 
+  {
+    // Construct response JSON object
+    const responseObject = {
+      // token: token, // remeber to add JWT
+      BuildingID: building.BuildingID,
+      BuildingName: building.BuildingName,
+      Latitude: building.Latitude,
+      Longitude: building.Longitude,
+      UniID: building.UniID,
+    };
+    roomList = await db.collection("Room").find({ BuildingID : responseObject.BuildingID.toString() }).toArray();
   }
   
-  // Construct response JSON object
-  const responseObject = {
-    // token: token, // remeber to add JWT
-    BuildingID: building.BuildingID,
-    BuildingName: building.BuildingName,
-    Latitude: building.Latitude,
-    Longitude: building.Longitude,
-    UniID: building.UniID,
-  };
-  const returnArray = [];
-  const roomList = await db.collection("Room").find({ BuildingID : responseObject.BuildingID.toString() }).toArray();
 
   roomList.forEach(room => {
     returnArray.push({

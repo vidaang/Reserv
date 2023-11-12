@@ -24,6 +24,13 @@ function Map( { toggleList, isListOpen} )
     const listClass = `list${isListOpen ? ' slide-right' : ''}`;
 
     const formatRoomList = (roomList) => {
+        
+        if(roomList === undefined)
+        {
+            setRoomList(new Set());
+            return;
+        }    
+        
         var roomListReturn = new Set();
 
         roomList.forEach(room => {
@@ -40,29 +47,10 @@ function Map( { toggleList, isListOpen} )
             })
         });
 
-        console.log(roomListReturn);
         setRoomList(roomListReturn);
     }
 
-    const getRoomList = async () =>
-    {
-        var obj = { Latitude:selectedLocation.lat, Longitude:selectedLocation.lng };
-        var js = JSON.stringify(obj);
-        console.log(js);
-
-        const response = await fetch('http://localhost:5000/api/RetrieveRooms',
-        {method:'POST',
-        body:js,
-        headers:{'Content-Type':'application/json'}});
-        var res = await response.json();
-        return res.roomList;
-    };
-
-    const fetchRoomListData = async () => {        
-        var data;
-        data = await getRoomList();           
-        formatRoomList(data);      
-    };
+    
 
     const ToggleListInternal = async () => {
         if (roomList.size !== 0)
@@ -74,6 +62,32 @@ function Map( { toggleList, isListOpen} )
     const clearRooms = () => {
         setRoomList(new Set());
     }
+    
+    useEffect(() => {
+        clearRooms();
+
+        const getRoomList = async () =>
+        {
+            var obj = { Latitude:selectedLocation.lat, Longitude:selectedLocation.lng };
+            var js = JSON.stringify(obj);
+            console.log(js);
+
+            const response = await fetch('http://localhost:5000/api/RetrieveRooms',
+            {method:'POST',
+            body:js,
+            headers:{'Content-Type':'application/json'}});
+            var res = await response.json();
+            return res.roomList;
+        };
+
+        const fetchRoomListData = async () => {        
+            var data;
+            data = await getRoomList();           
+            formatRoomList(data);      
+        };
+
+        fetchRoomListData();
+    }, [selectedLocation]);
 
     const handleClickedMap = (e) => {
         let latitude = e.latLng.lat();
@@ -84,14 +98,8 @@ function Map( { toggleList, isListOpen} )
         };
         setLatLng(newLatLng);
         setSelectedLocation(newLatLng);
-        fetchRoomListData();
         console.log(roomList); 
     };
-    
-    useEffect(() => {
-        clearRooms();  
-        ToggleListInternal();
-    }, [selectedLocation]);
 
 
     return(

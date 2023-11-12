@@ -11,14 +11,14 @@ import '../../styles/index.css';
 function OrgSearchPage()
 {
     const [isMapView, setIsMapView] = useState(true);
-    const [isListOpen, setListOpen] = useState(false);
+    const [isListOpen, setListOpen] = useState(true);
   
-    const toggleList = async () => {
-        setListOpen(!isListOpen);
-    };
+    // const toggleList = async () => {
+    //     setListOpen(!isListOpen);
+    // };
 
     const searchBarContainer = `map-container${isListOpen ? ' slide-right' : ''}`;
-    const mapContainerClass = `map-container${isListOpen ? ' slide-right' : ''}`;
+    //const mapContainerClass = `map-container${isListOpen ? ' slide-right' : ''}`;
 
     return (
         <div id="OrgSearchPageDiv">
@@ -38,14 +38,9 @@ function OrgSearchPage()
                     <SearchBar />
                 </div>
                 
-                <div className={mapContainerClass}>
-                    <Map toggleList={toggleList} isListOpen={isListOpen}/>
+                <div id="map-container">
+                    <Map isListOpen={isListOpen}/>
                 </div>
-                
-                <ChangeViewButton
-                    toggleList={toggleList}
-                    isMapView={isMapView}
-                />
             </div>
         </div>
     );

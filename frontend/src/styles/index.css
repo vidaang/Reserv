@@ -582,7 +582,7 @@ output[for="timeRange"] {
   position: absolute;
   top: 60px;
   left: 0;
-  width: 10%;
+  width: 25%;
   background: white;
   transition: left 0.3s ease;
   text-align: center;
@@ -597,6 +597,7 @@ output[for="timeRange"] {
 
 .room-list {
   height: 93.5vh;
+  width: 105%;
   overflow-y: scroll;
   overflow-x: hidden;
   transition: left 0.3s ease;

@@ -21,9 +21,10 @@ function RoomDetails(props) {
 
   const [view, setView] = useState('month');
   const [roomDetails, setRoomDetails] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
 
-  const handleViewChange = (selectedView) => {
-    setView(selectedView);
+  const fillRoomTimes = () => {
+
   };
 
   // Simulated dummy data for room details
@@ -31,16 +32,8 @@ function RoomDetails(props) {
     buildingName: 'Classroom Building One',
     roomNumber: 'Room 120',
     capacity: 250,
-    availableTimes: [
-      {
-        date: 'Monday, October 2nd, 2023',
-        times: ['6:00am - 8:30am', '9:00am - 10:00am', '12:00pm - 1:30pm'],
-      },
-      {
-        date: 'Monday, October 3rd, 2023',
-        times: ['6:00am - 8:30am', '9:00am - 10:00am', '12:00pm - 1:30pm'],
-      },
-    ],
+    date: 'Monday, October 2nd, 2023',
+    availableTimes: ['6:00am - 8:30am', '9:00am - 10:00am', '12:00pm - 1:30pm'],
   };
 
   useEffect(() => {
@@ -69,7 +62,7 @@ function RoomDetails(props) {
               <div className="roomDescriptionRight">
                 <div className="location-container">
                   <h5 className="location">LOCATION</h5>
-                  <h1 className="building-name">{roomDetails.buildingName}</h1>
+                  <h1 className="building-name">Classroom II</h1>
                   <div className="row-space">
                     <h3>{roomDetails.roomNumber}</h3>
                     <div className="capacity-space">
@@ -94,16 +87,15 @@ function RoomDetails(props) {
               <div id="availableTimesHeading">
                 <h5 className="available-times">AVAILABLE TIMES</h5>
               </div>
-              {roomDetails.availableTimes.map((day, index) => (
-                <div key={index}>
+                <div>
                   <div id="availableTimesDayHeading">
-                    <h3>{day.date}</h3>
+                    <h3>{roomDetails.date}</h3>
                   </div>
                   <div id="availableTimesDayButton">
-                    {day.times.map((time, timeIndex) => (
+                    {roomDetails.availableTimes.map((time, index) => (
                       <Button
-                        key={timeIndex}
-                        id={`timeButton${timeIndex}`}
+                        key={index}
+                        id={`timeButton${index}`}
                         className="availableTimeDayButton"
                       >
                         {time}
@@ -111,7 +103,6 @@ function RoomDetails(props) {
                     ))}
                   </div>
                 </div>
-              ))}
             </div>
           </>
         )}
