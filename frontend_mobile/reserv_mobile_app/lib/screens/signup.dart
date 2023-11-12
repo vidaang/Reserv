@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
-import 'home.dart';
+import '../widgets/navbar.dart'; 
 import 'package:google_fonts/google_fonts.dart';
 
 class SignUpPage extends StatelessWidget {
@@ -8,9 +8,9 @@ class SignUpPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xff90e49c),
-      body: const SignUpForm(),
+    return const Scaffold(
+      backgroundColor: Color(0xff90e49c),
+      body: SignUpForm(),
     );
   }
 }
@@ -442,10 +442,10 @@ class _SignUpFormState extends State<SignUpForm> {
                                 _advNameController.clear();
                                 _advEmailController.clear();
 
-                                // Redirect to the home page
+                                // Redirect to the navbar
                                 Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
-                                      builder: (context) => const HomePage()),
+                                      builder: (context) => const NavBar()),
                                 );
                               } else {
                                 // Sign-up failed, show error message

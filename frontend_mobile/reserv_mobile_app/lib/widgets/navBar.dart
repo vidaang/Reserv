@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../screens/home.dart';
+// import '../screens/home.dart';
 import '../screens/reservations.dart';
 import '../screens/search.dart';
 import '../screens/settings.dart';
@@ -15,7 +15,6 @@ class _NavBarState extends State<NavBar> {
   int pageIndex = 0;
 
   final List<Widget> pages = [
-    const HomePage(),
     const SearchPage(),
     const ReservationsPage(),
     const SettingsPage(),
@@ -30,17 +29,9 @@ class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('NavBar'),
-      ),
-
       body: pages[pageIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
             label: 'Search',
