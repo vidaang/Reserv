@@ -2,10 +2,6 @@ import React, { useState } from 'react';
 import NavBar from '../../components/NavBar';
 import Map from '../../components/Org/OrgSearchPage/Map'
 import Row from 'react-bootstrap/Row';
-import ChangeViewButton from "../../components/Org/OrgSearchPage/ChangeViewButton";
-import RoomList from "../../components/Org/OrgSearchPage/RoomList";
-import SearchBar from '../../components/Org/OrgSearchPage/SearchBar';
-
 import '../../styles/index.css';
 
 function OrgSearchPage()
@@ -17,7 +13,7 @@ function OrgSearchPage()
     //     setListOpen(!isListOpen);
     // };
 
-    const searchBarContainer = `map-container${isListOpen ? ' slide-right' : ''}`;
+    //const searchBarContainer = `map-container${isListOpen ? ' slide-right' : ''}`;
     //const mapContainerClass = `map-container${isListOpen ? ' slide-right' : ''}`;
 
     return (
@@ -34,10 +30,6 @@ function OrgSearchPage()
             </div>
 
             <div id='MapView'>
-                <div className={isListOpen ? "searchBarContainer slide-right-search" : "searchBarContainer"}>
-                    <SearchBar />
-                </div>
-                
                 <div id="map-container">
                     <Map isListOpen={isListOpen}/>
                 </div>

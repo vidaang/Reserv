@@ -22,6 +22,29 @@ function RoomDetails(props) {
   const [view, setView] = useState('month');
   const [roomDetails, setRoomDetails] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [timeRange, setTimeRange] = useState({ hours: 0, minutes: 30 });
+
+  const handleDateChange = (e) => {
+      setSelectedDate(e.target.value);
+  };
+
+  const handleTimeRangeChange = (e) => {
+      const minutes = parseInt(e.target.value, 10);
+      const hours = Math.floor(minutes / 60);
+      const remainingMinutes = minutes % 60;
+      setTimeRange({ hours, minutes: remainingMinutes });
+  };
+
+  const handleSubmit = (e) => {
+      e.preventDefault();
+      console.log("Date:", selectedDate);
+      console.log("Time Range:", `${timeRange.hours} hours, ${timeRange.minutes} minutes`);
+
+      // PERFORM API CALL HERE
+
+      // Search form should redirect to search page
+  };
+
 
   const fillRoomTimes = () => {
 
@@ -82,6 +105,44 @@ function RoomDetails(props) {
               </div>
             </div>
 
+            {/*Date and Time Search Form*/}
+            <form onSubmit={handleSubmit}>
+              <div className="entry-form-container">
+                  <div className="entry-form-row">
+                      <label htmlFor="dateRangeStart">Date:</label>
+                      <div className="entry-form-input">
+                          <input
+                              type="date"
+                              id="dateRangeStart"
+                              name="dateRangeStart"
+                              required
+                              value={selectedDate}
+                              onChange={handleDateChange}
+                          />
+                      </div>
+                  </div>
+
+                  <div className="entry-form-row">
+                      <div className="entry-form-input">
+                          <label htmlFor="timeRange">Time Range:</label>
+                          <input
+                              type="range"
+                              id="timeRange"
+                              name="timeRange"
+                              min="30"
+                              max="1380"
+                              step="30"
+                              value={timeRange.hours * 60 + timeRange.minutes}
+                              onChange={handleTimeRangeChange}
+                          />
+                          <output htmlFor="timeRange">
+                              {timeRange.hours} hours, {timeRange.minutes} minutes
+                          </output>
+                      </div>
+                  </div>
+                  <input type="submit" value="Submit" className="search-bar-submit"/>
+              </div>
+          </form>
             {/* Available Times Section */}
             <div className="availableTimesSection">
               <div id="availableTimesHeading">
