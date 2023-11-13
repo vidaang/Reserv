@@ -81,18 +81,6 @@ class _SearchPageState extends State<SearchPage> {
                 print('Error fetching data: $error');
               });
             },
-            // onTap: () {
-            //   // Navigate to DetailsPage when building is tapped
-            //   Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //       builder: (context) => RoomList(
-            //         title: building.title,
-            //         snippet: building.snippet,
-            //       ),
-            //     ),
-            //   );
-            // },
           ),
         ),
       ),

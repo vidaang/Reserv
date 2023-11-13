@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class RoomList extends StatelessWidget {
   final Map<String, dynamic> data;
 
-  const RoomList({super.key, required this.data});
+  const RoomList({Key? key, required this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,40 +15,38 @@ class RoomList extends StatelessWidget {
         ),
       );
     }
+    
+    final List<dynamic> roomList = data['roomList'];
 
     return Scaffold(
-      body: Center(
-        child: Text(
-          '$data',
-          style: const TextStyle(fontSize: 16),
-        ),
-      ),
+      body: ListView.builder(
+        itemCount: roomList.length,
+        itemBuilder: (context, index) {
+          final room = roomList[index];
+
+          return Card(
+            margin: EdgeInsets.all(8.0),
+            child: ListTile(
+              title: Text('Room ID: ${room['RoomID']}'),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Room Number: ${room['RoomNumber']}'),
+                  Text('Room Info: ${room['RoomInfo']}'),
+                  Text('Media Equipment: ${room['MediaEquip']}'),
+                  Text('Room Type: ${room['RoomType']}'),
+                  Text('Room Info: ${room['RoomInfo']}'),
+                  Text('Building Id: ${room['BuildingID']}'),
+                ],
+              ),
+              onTap: () {
+                // Handle the tap on a room, you can navigate to a detailed page or perform other actions
+                print('Tapped on Room ID: ${room['RoomID']}');
+              },
+            ),
+          );
+        },
+      )
     );
   }
 }
-
-
-// import 'package:flutter/material.dart';
-// import 'package:google_maps_flutter/google_maps_flutter.dart';
-// import 'package:sliding_up_panel/sliding_up_panel.dart';
-
-// class RoomList extends StatelessWidget {
-//   final String title;
-//   final String snippet;
-
-//   RoomList({required this.title, required this.snippet});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Column(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         crossAxisAlignment: CrossAxisAlignment.center,
-//         children: [
-//           Text('Title: $title'),
-//           Text('Snippet: $snippet'),
-//         ],
-//       ),
-//     );
-//   }
-// }
