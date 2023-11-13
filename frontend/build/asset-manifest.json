@@ -1,20 +1,23 @@
 {
   "files": {
-    "main.css": "/static/css/main.7ab6eeb2.css",
-    "main.js": "/static/js/main.b71ea92f.js",
+    "main.css": "/static/css/main.fed47bfc.css",
+    "main.js": "/static/js/main.6b97c004.js",
     "static/js/787.cda612ba.chunk.js": "/static/js/787.cda612ba.chunk.js",
     "static/media/lecture-hall.jpg": "/static/media/lecture-hall.29831faf652fd45bbd60.jpg",
     "static/media/lecture-hall-4.jpg": "/static/media/lecture-hall-4.eb493ddb124ae6efdbbb.jpg",
     "static/media/lecture-hall-2.jpg": "/static/media/lecture-hall-2.1f4cc3d02b20e27bd389.jpg",
     "static/media/lecture-hall-3.jpg": "/static/media/lecture-hall-3.153dedbc5c334f199508.jpg",
     "static/media/lecture-hall-1.jpg": "/static/media/lecture-hall-1.09e55ba0a43f8da49efc.jpg",
+    "static/media/org-1.jpg": "/static/media/org-1.dcf946db6ade4cc79a54.jpg",
+    "static/media/org-4.jpg": "/static/media/org-4.1721632084f891db8148.jpg",
+    "static/media/org-3.jpg": "/static/media/org-3.54c8815f1ce33cd33327.jpg",
     "index.html": "/index.html",
-    "main.7ab6eeb2.css.map": "/static/css/main.7ab6eeb2.css.map",
-    "main.b71ea92f.js.map": "/static/js/main.b71ea92f.js.map",
+    "main.fed47bfc.css.map": "/static/css/main.fed47bfc.css.map",
+    "main.6b97c004.js.map": "/static/js/main.6b97c004.js.map",
     "787.cda612ba.chunk.js.map": "/static/js/787.cda612ba.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.7ab6eeb2.css",
-    "static/js/main.b71ea92f.js"
+    "static/css/main.fed47bfc.css",
+    "static/js/main.6b97c004.js"
   ]
 }
