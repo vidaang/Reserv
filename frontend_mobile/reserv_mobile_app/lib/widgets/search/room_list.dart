@@ -7,7 +7,7 @@ class RoomList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        // Check if data is empty or null
+    // Check if data is empty or null
     if (data.isEmpty) {
       return const Scaffold(
         body: Center(
@@ -16,19 +16,12 @@ class RoomList extends StatelessWidget {
       );
     }
 
-    // Access data as needed
-    final title = data['BuildingName'];
-    final snippet = data['Latitude'];
-
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text('Title: $title'),
-          Text('Snippet: $snippet'),
-          // Add more widgets to display other data as needed
-        ],
+      body: Center(
+        child: Text(
+          '$data',
+          style: const TextStyle(fontSize: 16),
+        ),
       ),
     );
   }

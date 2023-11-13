@@ -62,17 +62,17 @@ class ApiService {
   }
 
   // Handling for Search Rooms API
-  static Future<Map<String, dynamic>> retrieveRooms(double latitude, double longitude) async {
-    // final String uri = "https://knightsreserv-00cde8777914.herokuapp.com/api/RetrieveRooms";
-    final Uri uri = Uri.parse("http://10.201.19.134:5000/api/RetrieveRooms");
+  static Future<Map<String, dynamic>> retrieveRooms(String latitude, String longitude) async {
+    final String uri = "https://knightsreserv-00cde8777914.herokuapp.com/api/RetrieveRooms";
+    // final Uri uri = Uri.parse("http://10.201.19.134:5000/api/RetrieveRooms");
 
-    final Map<String, double> requestBody = {
+    final Map<String, String> requestBody = {
       'Latitude': latitude,
       'Longitude': longitude,
     };
 
     final response = await http.post(
-      uri,
+      Uri.parse(uri),
       body: json.encode(requestBody),
       headers: {
         'Content-Type': 'application/json'
