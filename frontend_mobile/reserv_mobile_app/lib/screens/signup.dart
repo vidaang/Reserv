@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
-import '../widgets/navbar.dart'; 
+import '../widgets/navbar.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SignUpPage extends StatelessWidget {
@@ -73,8 +73,8 @@ class _SignUpFormState extends State<SignUpForm> {
                       Align(
                         alignment: const Alignment(-.6, 0),
                         child: SizedBox(
-                          width: 103,
-                          height: 15,
+                          width: 150,
+                          height: 20,
                           child: Text(
                             'Organization Email',
                             style: GoogleFonts.rubik(
@@ -111,8 +111,8 @@ class _SignUpFormState extends State<SignUpForm> {
                       Align(
                         alignment: const Alignment(-.6, 0),
                         child: SizedBox(
-                          width: 103,
-                          height: 15,
+                          width: 140,
+                          height: 20,
                           child: Text(
                             'Password',
                             style: GoogleFonts.rubik(
@@ -148,8 +148,8 @@ class _SignUpFormState extends State<SignUpForm> {
                       Align(
                         alignment: const Alignment(-.6, 0),
                         child: SizedBox(
-                          width: 103,
-                          height: 15,
+                          width: 140,
+                          height: 20,
                           child: Text(
                             'Retype Password',
                             style: GoogleFonts.rubik(
@@ -183,12 +183,12 @@ class _SignUpFormState extends State<SignUpForm> {
                           },
                         ),
                       ),
-                      const SizedBox(height: 24.0),
+                      const SizedBox(height: 16.0),
                       Align(
                         alignment: const Alignment(-.6, 0),
                         child: SizedBox(
-                          width: 103,
-                          height: 15,
+                          width: 140,
+                          height: 20,
                           child: Text(
                             'Officer First Name',
                             style: GoogleFonts.rubik(
@@ -223,8 +223,8 @@ class _SignUpFormState extends State<SignUpForm> {
                       Align(
                         alignment: const Alignment(-.6, 0),
                         child: SizedBox(
-                          width: 103,
-                          height: 15,
+                          width: 140,
+                          height: 20,
                           child: Text(
                             'Officer Last Name',
                             style: GoogleFonts.rubik(
@@ -259,8 +259,8 @@ class _SignUpFormState extends State<SignUpForm> {
                       Align(
                         alignment: const Alignment(-.6, 0),
                         child: SizedBox(
-                          width: 103,
-                          height: 15,
+                          width: 150,
+                          height: 20,
                           child: Text(
                             'Organization Name',
                             style: GoogleFonts.rubik(
@@ -293,10 +293,10 @@ class _SignUpFormState extends State<SignUpForm> {
                       ),
                       const SizedBox(height: 16.0),
                       Align(
-                        alignment: const Alignment(-.6, 0),
+                        alignment: const Alignment(-.3, 0),
                         child: SizedBox(
-                          width: 103,
-                          height: 15,
+                          width: 215,
+                          height: 20,
                           child: Text(
                             'Organization Phone number',
                             style: GoogleFonts.rubik(
@@ -327,12 +327,12 @@ class _SignUpFormState extends State<SignUpForm> {
                           },
                         ),
                       ),
-                      const SizedBox(height: 24.0),
+                      const SizedBox(height: 16.0),
                       Align(
-                        alignment: const Alignment(-.6, 0),
+                        alignment: const Alignment(-.65, 0),
                         child: SizedBox(
-                          width: 103,
-                          height: 15,
+                          width: 115,
+                          height: 20,
                           child: Text(
                             'Advisor Name',
                             style: GoogleFonts.rubik(
@@ -365,10 +365,10 @@ class _SignUpFormState extends State<SignUpForm> {
                       ),
                       const SizedBox(height: 16.0),
                       Align(
-                        alignment: const Alignment(-.6, 0),
+                        alignment: const Alignment(-.5, 0),
                         child: SizedBox(
-                          width: 103,
-                          height: 15,
+                          width: 175,
+                          height: 20,
                           child: Text(
                             'Advisor Email Address',
                             style: GoogleFonts.rubik(
@@ -400,69 +400,88 @@ class _SignUpFormState extends State<SignUpForm> {
                         ),
                       ),
                       const SizedBox(height: 16.0),
-                      ElevatedButton(
-                        onPressed: () async {
-                          if (_formKey.currentState?.validate() ?? false) {
-                            // Retrieve user input from form fields
-                            String firstName = _firstNameController.text;
-                            String lastName = _lastNameController.text;
-                            String email = _emailController.text;
-                            String password = _passController.text;
-                            String orgName = _orgNameController.text;
-                            String orgPhone = _orgPhoneController.text;
-                            String advName = _advNameController.text;
-                            String advEmail = _advEmailController.text;
+                      SizedBox(
+                        width: 186,
+                        height: 40,
+                        child: TextButton(
+                          style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(36.0),
+                                      side: const BorderSide(
+                                          color: Color(0xFFDFDFDF))))),
+                          onPressed: () async {
+                            if (_formKey.currentState?.validate() ?? false) {
+                              // Retrieve user input from form fields
+                              String firstName = _firstNameController.text;
+                              String lastName = _lastNameController.text;
+                              String email = _emailController.text;
+                              String password = _passController.text;
+                              String orgName = _orgNameController.text;
+                              String orgPhone = _orgPhoneController.text;
+                              String advName = _advNameController.text;
+                              String advEmail = _advEmailController.text;
 
-                            // Call the API for sign-up
-                            try {
-                              final response = await ApiService.signUp(
-                                email: email,
-                                password: password,
-                                officerFirstName: firstName,
-                                officerLastName: lastName,
-                                rsoName: orgName,
-                                phone: orgPhone,
-                                advisorName: advName,
-                                advisorEmail: advEmail,
-                              );
-
-                              // Handle the response from the API
-                              if (response['error'] == "") {
-                                // Sign-up was successful, reset the form and show success message
-                                setState(() {
-                                  _message = 'Account created successfully';
-                                });
-                                _firstNameController.clear();
-                                _lastNameController.clear();
-                                _emailController.clear();
-                                _passController.clear();
-                                _retypePassController.clear();
-                                _orgNameController.clear();
-                                _orgPhoneController.clear();
-                                _advNameController.clear();
-                                _advEmailController.clear();
-
-                                // Redirect to the navbar
-                                Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                      builder: (context) => const NavBar()),
+                              // Call the API for sign-up
+                              try {
+                                final response = await ApiService.signUp(
+                                  email: email,
+                                  password: password,
+                                  officerFirstName: firstName,
+                                  officerLastName: lastName,
+                                  rsoName: orgName,
+                                  phone: orgPhone,
+                                  advisorName: advName,
+                                  advisorEmail: advEmail,
                                 );
-                              } else {
-                                // Sign-up failed, show error message
+
+                                // Handle the response from the API
+                                if (response['error'] == "") {
+                                  // Sign-up was successful, reset the form and show success message
+                                  setState(() {
+                                    _message = 'Account created successfully';
+                                  });
+                                  _firstNameController.clear();
+                                  _lastNameController.clear();
+                                  _emailController.clear();
+                                  _passController.clear();
+                                  _retypePassController.clear();
+                                  _orgNameController.clear();
+                                  _orgPhoneController.clear();
+                                  _advNameController.clear();
+                                  _advEmailController.clear();
+
+                                  // Redirect to the navbar
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (context) => const NavBar()),
+                                  );
+                                } else {
+                                  // Sign-up failed, show error message
+                                  setState(() {
+                                    _message =
+                                        'Sign-up failed: ${response['error']}';
+                                  });
+                                }
+                              } catch (e) {
+                                // Handle network or other errors
                                 setState(() {
-                                  _message =
-                                      'Sign-up failed: ${response['error']}';
+                                  _message = 'An error occurred: $e';
                                 });
                               }
-                            } catch (e) {
-                              // Handle network or other errors
-                              setState(() {
-                                _message = 'An error occurred: $e';
-                              });
                             }
-                          }
-                        },
-                        child: const Text('Sign Up'),
+                          },
+                          child: Text(
+                            'Sign Up Here',
+                            style: GoogleFonts.rubik(
+                              textStyle: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                            ),
+                          ),
+                        ),
                       ),
                     ]))),
           ],

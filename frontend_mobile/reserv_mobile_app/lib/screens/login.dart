@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reserv_mobile_app/screens/signup.dart';
 import '../services/api_service.dart';
-import '../widgets/navbar.dart'; 
+import '../widgets/navbar.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -60,7 +60,7 @@ class _LoginFormState extends State<LoginForm> {
                       ),
                       const SizedBox(height: 16.0),
                       Align(
-                        alignment: const Alignment(-.6, 0),
+                        alignment: const Alignment(-.7, 0),
                         child: SizedBox(
                           width: 103,
                           height: 15,
@@ -91,7 +91,7 @@ class _LoginFormState extends State<LoginForm> {
                       ),
                       const SizedBox(height: 16.0),
                       Align(
-                        alignment: const Alignment(-.6, 0),
+                        alignment: const Alignment(-.7, 0),
                         child: SizedBox(
                           width: 103,
                           height: 15,
@@ -124,7 +124,7 @@ class _LoginFormState extends State<LoginForm> {
                       const SizedBox(height: 47.0),
                       SizedBox(
                         width: 186,
-                        height: 32,
+                        height: 40,
                         child: TextButton(
                           style: ButtonStyle(
                               shape: MaterialStateProperty.all<
@@ -188,7 +188,7 @@ class _LoginFormState extends State<LoginForm> {
                       const SizedBox(height: 5.0),
                       SizedBox(
                         width: 186,
-                        height: 32,
+                        height: 40,
                         child: TextButton(
                           style: ButtonStyle(
                               shape: MaterialStateProperty.all<
