@@ -27,16 +27,12 @@ class RoomList extends StatelessWidget {
           return Card(
             margin: EdgeInsets.all(8.0),
             child: ListTile(
-              title: Text('Room ID: ${room['RoomID']}'),
+              title: Text('${room['BuildingID']} ' ' ${room['RoomNumber']}'),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Room Number: ${room['RoomNumber']}'),
-                  Text('Room Info: ${room['RoomInfo']}'),
-                  Text('Media Equipment: ${room['MediaEquip']}'),
+                children: [                 
                   Text('Room Type: ${room['RoomType']}'),
-                  Text('Room Info: ${room['RoomInfo']}'),
-                  Text('Building Id: ${room['BuildingID']}'),
+                  Text('Capacity: '),
                 ],
               ),
               onTap: () {

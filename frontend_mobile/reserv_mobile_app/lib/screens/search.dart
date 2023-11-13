@@ -60,7 +60,6 @@ class _SearchPageState extends State<SearchPage> {
             position: building.position,
             infoWindow: InfoWindow(
               title: building.title,
-              snippet: building.snippet,
             ),
             onTap: () {
               // Fetch data from the API based on the tapped marker's position
