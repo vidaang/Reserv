@@ -2,6 +2,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class ApiService {
+  // Handling for Login API
   static Future<Map<String, dynamic>> login(String email, String password) async {
     final Uri uri = Uri.parse('https://knightsreserv-00cde8777914.herokuapp.com/api/login'); // Replace with your API endpoint
     final Map<String, String> requestBody = {
@@ -23,6 +24,7 @@ class ApiService {
     }
   }
 
+  // Handling for Sign Up API
   static Future<Map<String, dynamic>> signUp({
     required String email,
     required String password,
@@ -33,7 +35,7 @@ class ApiService {
     required String advisorName,
     required String advisorEmail,
   }) async {
-    final Uri uri = Uri.parse('https://knightsreserv-00cde8777914.herokuapp.com/api/createRSO'); // Replace with your API endpoint
+    final Uri uri = Uri.parse('https://knightsreserv-00cde8777914.herokuapp.com/api/createRSO');
     final Map<String, String> requestBody = {
       'Email': email,
       'Password': password,
@@ -58,4 +60,26 @@ class ApiService {
       throw Exception('Sign-up failed with status code: ${response.statusCode}');
     }
   }
+
+  // Handling for Search Rooms API
+  static Future<Map<String, dynamic>> retrieveRooms(String latitude, String longitude) async {
+  const String apiUrl = "https://knightsreserv-00cde8777914.herokuapp.com/api/RetrieveRooms";
+
+  final Map<String, String> requestBody = {
+    'Latitude': latitude,
+    'Longitude': longitude,
+  };
+
+  final response = await http.post(
+    Uri.parse(apiUrl),
+    body: json.encode(requestBody),
+    headers: {'Content-Type': 'application/json'},
+  );
+
+  if (response.statusCode == 200) {
+    return json.decode(response.body);
+  } else {
+    throw Exception('Failed to retrieve rooms');
+  }
+}
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../widgets/search/buildings.dart';
+import '../widgets/search/room_list.dart';
+import '../services/api_service.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:async';
 
@@ -28,11 +30,12 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   _onMapCreated(GoogleMapController controller) {
-    if (mounted)
+    if (mounted) {
       setState(() {
         _mapController = controller;
         controller.setMapStyle(_mapStyle);
       });
+    }
   }
   
   static const _initialCameraPosition = CameraPosition(
@@ -59,12 +62,31 @@ class _SearchPageState extends State<SearchPage> {
               title: building.title,
               snippet: building.snippet,
             ),
+            onTap: () {
+              // Fetch data from the API based on the tapped marker's position
+              final latitude = building.position.latitude;
+              final longitude = building.position.longitude;
+
+              ApiService.retrieveRooms(latitude.toString(), longitude.toString())
+                  .then((data) {
+                // Open RoomList with the fetched data
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RoomList(data: data),
+                  ),
+                );
+              }).catchError((error) {
+                // Handle error
+                print('Error fetching data: $error');
+              });
+            },
             // onTap: () {
             //   // Navigate to DetailsPage when building is tapped
             //   Navigator.push(
             //     context,
             //     MaterialPageRoute(
-            //       builder: (context) => DetailsPage(
+            //       builder: (context) => RoomList(
             //         title: building.title,
             //         snippet: building.snippet,
             //       ),
