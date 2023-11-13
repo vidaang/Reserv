@@ -6,7 +6,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 // Connecting to database.
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 // Setting up express.
 const app = express();
@@ -164,17 +164,17 @@ app.post("/api/login", async (req, res) => {
 });
 
 app.get("/api/RetrieveEvents", async(req, res) => {
-  const { Latitude, Longitude } = req.body;
+  const { RSOID } = req.body;
   var eventListReturn = {};
-  console.log(Latitude);
 
   const db = client.db("Reserv");
   const returnArray = [];
-  const eventList = await db.collection("Room").find({ RSOID : RSOID }).toArray();
+  const eventList = await db.collection("Events").find({ RSOID : RSOID }).toArray();
 
   eventList.forEach(event => {
     returnArray.push({
       EventID: event.EventID,
+      EventName: event.EventName,
       Date: event.Date,
       EventType: event.EventType,
       NumAttendees: event.NumAttendees,
@@ -195,16 +195,18 @@ app.get("/api/RetrieveEvents", async(req, res) => {
 app.put("/api/UpdateEvent", async(req,res)=>{
   const {EventID, EventName, Description}  = req.body;
   const db = client.db("Reserv");
+  var eventObjectId = new ObjectId(EventID);
   
-  const update = await db.collection("Event").updateOne({EventID:EventID},{EventName:EventName, Description:Description})
+  const update = await db.collection("Events").updateOne({EventID:eventObjectId},{$set:{EventName:EventName, Description:Description}})
   res.status(200).json(update);
 });
 
 app.delete("/api/DeleteEvent", async(req,res)=>{
   const {EventID}  = req.body;
   const db = client.db("Reserv");
+  var eventObjectId = new ObjectId(EventID);
   
-  const update = await db.collection("Event").deleteOne({EventID:EventID});
+  const update = await db.collection("Events").deleteOne({EventID:eventObjectId});
   res.status(200).json(update);
 });
 
@@ -216,18 +218,27 @@ app.post("/api/RetrieveRooms", async (req, res) => {
   const db = client.db("Reserv");
   const building = await db.collection("Building").findOne({ Latitude: Latitude, Longitude: Longitude });
 
+  var returnArray = [];
+  var roomList;
+
+  if(building == undefined) 
+  {
+    roomList = await db.collection("Room").find({}).toArray();
+  }
+  else 
+  {
+    // Construct response JSON object
+    const responseObject = {
+      // token: token, // remeber to add JWT
+      BuildingID: building.BuildingID,
+      BuildingName: building.BuildingName,
+      Latitude: building.Latitude,
+      Longitude: building.Longitude,
+      UniID: building.UniID,
+    };
+    roomList = await db.collection("Room").find({ BuildingID : responseObject.BuildingID.toString() }).toArray();
+  }
   
-  // Construct response JSON object
-  const responseObject = {
-    // token: token, // remeber to add JWT
-    BuildingID: building.BuildingID,
-    BuildingName: building.BuildingName,
-    Latitude: building.Latitude,
-    Longitude: building.Longitude,
-    UniID: building.UniID,
-  };
-  const returnArray = [];
-  const roomList = await db.collection("Room").find({ BuildingID : responseObject.BuildingID.toString() }).toArray();
 
   roomList.forEach(room => {
     returnArray.push({
