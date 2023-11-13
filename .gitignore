@@ -13,6 +13,9 @@
 /frontend/node_modules/.cache
 /frontend/node_modules/.cache/.eslintcache
 /frontend/node_modules/.cache/default-development
+/frontend_mobile/reserv_mobile_app/linux/flutter
+/frontend_mobile/reserv_mobile_app/macos/flutter
+/frontend_mobile/reserv_mobile_app/windows/flutter
 
 # testing
 /coverage
