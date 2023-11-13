@@ -347,7 +347,7 @@ app.post("/api/createEvent", authenticateJWT, async (req, res) => {
 // Other APIs still need JWT.
 app.get(
   "/api/availability/:roomID/:date/:intervals",
-  authenticateJWT,
+  //authenticateJWT,
   async (req, res) => {
     // Convert RoomID to integer
     const roomID = req.params.roomID;

@@ -4,6 +4,7 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { DropdownButton, Dropdown, Modal, Button } from 'react-bootstrap';
 import '../../../styles/index.css';
+import { format } from "date-fns";
 import {
   IconUsers,
   IconFriends,
@@ -20,9 +21,74 @@ function RoomDetails(props) {
   const { room, handleCloseModal } = props;
 
   const [view, setView] = useState('month');
+  const [intervals, setIntervals] = useState(0);
   const [roomDetails, setRoomDetails] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [formattedDate, setFormattedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState();
+  const [availableTimes, setAvailableTimes] = useState([]);
+  const [formattedAvailability, setFormattedAvailability] = useState([]);
   const [timeRange, setTimeRange] = useState({ hours: 0, minutes: 30 });
+
+  const getAvailability = async () => {
+    var date = selectedDate.split('-');
+    var apiFormattedDate = date[1] + '-' + date[2] + '-' + date[0];
+    console.log(formattedDate);
+    console.log(intervals);
+    console.log(room.RoomID);
+
+    var response;
+    
+    try
+    {  
+       response = await fetch(`http://localhost:5000/api/availability/${room.RoomID}/${apiFormattedDate}/${intervals}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type':'application/json',
+          'Authorization': 'temp'
+        }
+      });
+    }
+    catch (error)
+    {
+      console.error(error);
+    }
+    
+    const data = await response.json();
+    console.log(data);
+    setAvailableTimes(data.continuousAvailability);
+    formatAvailability(data.continuousAvailability);
+  };
+
+  const formatDate = () => {
+    var date = selectedDate.split('-');
+    var year = date[0];
+    var month = date[1];
+    var day = date[2];
+
+    return format(new Date(year, month - 1, day), "MMMM d, yyyy");
+  };
+
+  const formatAvailability = (availability) => {
+    var formattedAvailability = [];
+    availability.forEach(timeSlot =>{
+      var start;
+      if (timeSlot.start % 1 === 0.5)
+        start = new Date(0, 0, 0, timeSlot.start, 30, 0);
+      else
+        start = new Date(0, 0, 0, timeSlot.start, 0, 0);
+      var end;
+      if (timeSlot.end % 1 === 0.5)
+        end = new Date(0, 0, 0, timeSlot.end, 30, 0);
+      else
+        end = new Date(0, 0, 0, timeSlot.end, 0, 0);
+
+      var formattedStart = format(start, "h:mm a");
+      var formattedEnd = format(end, "h:mm a");
+      var availString = formattedStart + " - " + formattedEnd;
+      formattedAvailability.push(availString);
+    });
+    setFormattedAvailability(formattedAvailability);
+  };
 
   const handleDateChange = (e) => {
       setSelectedDate(e.target.value);
@@ -33,21 +99,25 @@ function RoomDetails(props) {
       const hours = Math.floor(minutes / 60);
       const remainingMinutes = minutes % 60;
       setTimeRange({ hours, minutes: remainingMinutes });
+      setIntervals(minutes / 30);
   };
 
   const handleSubmit = (e) => {
       e.preventDefault();
-      console.log("Date:", selectedDate);
-      console.log("Time Range:", `${timeRange.hours} hours, ${timeRange.minutes} minutes`);
-
-      // PERFORM API CALL HERE
-
-      // Search form should redirect to search page
+      setFormattedDate(formatDate());
+      getAvailability();
+      // console.log("Date:", selectedDate);
+      // console.log("Time Range:", `${timeRange.hours} hours, ${timeRange.minutes} minutes`);
+      // console.log("# of Intervals = " + intervals);
   };
-
-
-  const fillRoomTimes = () => {
-
+  
+  const formatRoomData = (room) => {
+    var details = {
+      buildingName: room.BuildingID,
+      roomNumber: room.RoomNumber,
+      capacity: 250,
+    }
+    return details;
   };
 
   // Simulated dummy data for room details
@@ -59,8 +129,12 @@ function RoomDetails(props) {
     availableTimes: ['6:00am - 8:30am', '9:00am - 10:00am', '12:00pm - 1:30pm'],
   };
 
+
+
   useEffect(() => {
-    setRoomDetails(dummyRoomData);
+    // setAvailableTimes(new Set());
+    var roomData = formatRoomData(room);
+    setRoomDetails(roomData);
   }, []);
 
   function handleCreateReservation() {
@@ -150,10 +224,10 @@ function RoomDetails(props) {
               </div>
                 <div>
                   <div id="availableTimesDayHeading">
-                    <h3>{roomDetails.date}</h3>
+                    <h3>{formattedDate}</h3>
                   </div>
                   <div id="availableTimesDayButton">
-                    {roomDetails.availableTimes.map((time, index) => (
+                    {formattedAvailability.map((time, index) => (
                       <Button
                         key={index}
                         id={`timeButton${index}`}
