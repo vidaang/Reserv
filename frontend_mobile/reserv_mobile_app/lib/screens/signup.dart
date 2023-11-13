@@ -43,7 +43,7 @@ class _SignUpFormState extends State<SignUpForm> {
       child: Center(
         key: _formKey,
         child: Column(
-          // might not need
+          // body: SingleChildScrollView(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             FittedBox(
