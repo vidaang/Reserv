@@ -523,6 +523,23 @@ app.post("/api/getRoomDetails", async (req, res) => {
 
 })
 
+app.post("/api/checkVerification", async (req, res) => {
+  try {
+    const db = client.db("Reserv");
+    const RSOName = req.body.RSOName;
+
+    const rso = await db.collection("RSO").findOne({ RSOName: RSOName });
+
+    if (rso) {
+      return res.status(200).json({ result: rso.Verification === true });
+    } else {
+      return res.status(200).json({ result: false });
+    }
+  } catch (e) {
+    return res.status(500).json({ error: e.toString() });
+  }
+});
+
 // PUT NEW APIs BEFORE HERE
 
 // This needs to be the last get request.
