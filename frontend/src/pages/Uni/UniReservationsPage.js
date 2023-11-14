@@ -6,10 +6,6 @@ import LargeCalendar from '../../components/Org/OrgReservationsPage/LargeCalenda
 
 function UniReservationsPage()
 {
-    const handleClick = () => {
-        alert("Button clicked!");
-    }
-
     return (
         <div id="OrgHomePageDiv">
             <link rel="preconnect" href="https://fonts.googleapis.com"/>
