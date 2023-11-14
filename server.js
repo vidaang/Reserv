@@ -192,6 +192,45 @@ app.get("/api/RetrieveEvents", async(req, res) => {
   res.status(200).json(eventListReturn);
 });
 
+app.post("/api/RetrieveRSO", async(req, res) => {
+  const { UniID, VerificationFlag } = req.body;
+  var RSOListReturn = {};
+
+  const db = client.db("Reserv");
+  const returnArray = [];
+  const RSOList = await db.collection("RSO").find({ UniID : UniID, Verification:VerificationFlag}).toArray();
+  console.log(RSOList);
+  
+
+  RSOList.forEach(rso => {
+    returnArray.push({
+      AdminID: rso.AdminID,
+      AdvisorEmail: rso.advisorEmail,
+      AdvisorName: rso.AdvisorName,
+      Email: rso.Email,
+      OfficerLastName: rso.OfficerFirstName,
+      OfficerLastName: rso.OfficerLastName,
+      RSOID: rso.RSOID,
+      RSOName: rso.RSOName,
+      UniID: rso.UniID,
+      Verification: rso.Verification
+    });
+    
+    RSOListReturn = {RSOList:returnArray}
+  });
+
+  res.status(200).json(RSOListReturn);
+});
+
+app.put("/api/VerifyRSO", async(req,res)=>{
+  const {RSOID}  = req.body;
+  const db = client.db("Reserv");
+  var rsoObjectID = new ObjectId(RSOID);
+  
+  const update = await db.collection("Events").updateOne({RSOID:rsoObjectID},{$set:{Verification : true}})
+  res.status(200).json(update);
+});
+
 app.put("/api/UpdateEvent", async(req,res)=>{
   const {EventID, EventName, Description}  = req.body;
   const db = client.db("Reserv");
