@@ -302,6 +302,24 @@ app.post("/api/createEvent", authenticateJWT, async (req, res) => {
     RoomID,
   } = req.body;
 
+  const db = client.db("Reserv");
+
+  // If they are not verified block them out.
+  const ObjectId = require("mongodb").ObjectId;
+
+  // Suppose you have an _id value as a string
+  const idString = RSOID;
+
+  // Convert the string to an ObjectId
+  const id = new ObjectId(idString);
+
+  // Fetch the document with the specified _id
+  const document = await db.collection("RSO").findOne({ _id: id });
+
+  // Now, access the 'Verification' field from the document
+  if (document.Verification == false) {
+    return res.status(400).json({ error: "You have not yet been verified!" });
+  }
   // Validate the StartEnd array
   if (!Array.isArray(StartEnd) || StartEnd.length !== 2) {
     return res.status(400).json({ error: "Invalid StartEnd format" });
@@ -327,8 +345,6 @@ app.post("/api/createEvent", authenticateJWT, async (req, res) => {
       .status(400)
       .json({ error: "Start time must be before end time" });
   }
-
-  const db = client.db("Reserv");
 
   // If all checks pass, insert the event
   const newEvent = {
