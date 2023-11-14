@@ -122,6 +122,7 @@ app.post("/api/createRSO", async (req, res) => {
 });
 
 const jwt = require("jsonwebtoken");
+const { env } = require("process");
 
 app.post("/api/login", async (req, res) => {
   const { email, password } = req.body;
@@ -140,8 +141,7 @@ app.post("/api/login", async (req, res) => {
   };
 
   // Secret key (this should be a long, unguessable string stored in a secure way, not hard-coded!)
-  const secretKey =
-    "7d4c5e4023a7f91857c1b7ad8c6286a7e5b2c0d8e1f8b2c7e3a9d4e5f6b7c8d9";
+  const secretKey = process.env.SECRET_KEY;
 
   // Generate JWT
   const token = jwt.sign(jwtPayload, secretKey, { expiresIn: "1h" }); // Token expires in 1 hour
@@ -269,8 +269,7 @@ function authenticateJWT(req, res, next) {
   if (authHeader) {
     const token = authHeader.split(" ")[1]; // Extract the token from Bearer
 
-    const secretKey =
-      "7d4c5e4023a7f91857c1b7ad8c6286a7e5b2c0d8e1f8b2c7e3a9d4e5f6b7c8d9";
+    const secretKey = process.env.SECRET_KEY;
 
     jwt.verify(token, secretKey, (err, user) => {
       if (err) {
