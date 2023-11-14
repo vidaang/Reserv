@@ -283,7 +283,9 @@ function authenticateJWT(req, res, next) {
 
 // PUT NEW APIs AFTER HERE, this first one has JWT but others don't yet.
 
-app.post("/api/createEvent", authenticateJWT, async (req, res) => {
+app.post("/api/createEvent", 
+  //authenticateJWT, 
+  async (req, res) => {
   const { RSOID, EventName, Description, StartEnd } = req.body;
 
   // Validate the StartEnd array
