@@ -63,7 +63,7 @@ class ApiService {
 
   // Handling for Search Rooms API
   static Future<Map<String, dynamic>> retrieveRooms(String latitude, String longitude) async {
-    final String uri = "https://knightsreserv-00cde8777914.herokuapp.com/api/RetrieveRooms";
+    const String uri = "https://knightsreserv-00cde8777914.herokuapp.com/api/RetrieveRooms";
 
     final Map<String, String> requestBody = {
       'Latitude': latitude,
@@ -82,6 +82,30 @@ class ApiService {
       return json.decode(response.body);
     } else {
       throw Exception('Failed to retrieve rooms: ${response.statusCode}');
+    }
+  }
+
+  static const String baseUrl = "https://knightsreserv-00cde8777914.herokuapp.com"; // Replace with your actual API base URL
+
+  static Future<Map<String, dynamic>> getAvailability(String roomID, String date, int intervals) async {
+    // Construct the API endpoint URL
+    final apiUrl = "$baseUrl/api/availability/$roomID/$date/$intervals";
+
+    try {
+      // Make the API request
+      final response = await http.get(Uri.parse(apiUrl));
+
+      if (response.statusCode == 200) {
+        // Parse and return the response JSON
+        return json.decode(response.body);
+      } else {
+        // If the server did not return a 200 OK response,
+        // throw an exception with the error message.
+        throw Exception('Failed to load availability');
+      }
+    } catch (error) {
+      // Handle network errors or other exceptions
+      throw Exception('Failed to connect to the server. Please check your internet connection.');
     }
   }
 }
