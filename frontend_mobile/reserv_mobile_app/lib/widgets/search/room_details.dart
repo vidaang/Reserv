@@ -10,8 +10,10 @@ class RoomDetails extends StatefulWidget {
   final String roomInfo;
   final List? mediaEquip;
   final Int32? capacity;
+  final String date;
+  final int? interval;
 
-  const RoomDetails({
+  RoomDetails({
     super.key,
     required this.buildingID,
     required this.roomNumber,
@@ -20,6 +22,8 @@ class RoomDetails extends StatefulWidget {
     required this.mediaEquip,
     required this.capacity,
     required this.availabilityData,
+    required this.date,
+    required this.interval,
   });
 
   @override
@@ -41,13 +45,13 @@ class _RoomDetailsState extends State<RoomDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.buildingID} ${widget.roomNumber}'), // Display buildingID and roomNumber as the title
+        title: Text('${widget.buildingID} ${widget.roomNumber}'),
       ),
       body: FutureBuilder<Map<String, dynamic>>(
         future: widget.availabilityData,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator(); // Display a loading indicator while data is being fetched
+            return const CircularProgressIndicator();
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
@@ -67,6 +71,8 @@ class _RoomDetailsState extends State<RoomDetails> {
                         ListTile(title: Text('Room Info: ${widget.roomInfo}')),
                         ListTile(title: Text('Media Equip: ${widget.mediaEquip}')),
                         ListTile(title: Text('Capacity: ${widget.capacity}')),
+                        ListTile(title: Text('Date: ${widget.date}')),
+                        ListTile(title: Text('Interval: ${widget.interval}')),
                       ],
                     ),
                     SizedBox(
@@ -116,12 +122,13 @@ class _RoomDetailsState extends State<RoomDetails> {
                     // Button to navigate to CreateReservation
                     ElevatedButton(
                       onPressed: () {
-                        // Check if a time is selected before navigating
+                        // Check if a time is selected before navigating && rso is verified
                         if (selectedTime != null) {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => CreateReservation(
+                                date: widget.date,
                                 selectedTime: selectedTime!,
                                 buildingID: widget.buildingID,
                                 roomNumber: widget.roomNumber,

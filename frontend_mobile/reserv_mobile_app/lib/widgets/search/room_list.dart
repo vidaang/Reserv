@@ -53,7 +53,9 @@ class RoomList extends StatelessWidget {
                         roomInfo: room['RoomInfo'],
                         mediaEquip: room['MediaEquip'],
                         capacity: room['Capacity'],
-                        availabilityData: ApiService.getAvailability(room['RoomID'], "11-25-2023", 2),
+                        date: "11-25-2023",
+                        interval: 1,
+                        availabilityData: ApiService.getAvailability(room['RoomID'], "11-25-2023", 1),
                       ),
                     ),
                   );

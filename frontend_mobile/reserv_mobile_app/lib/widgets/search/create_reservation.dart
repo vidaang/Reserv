@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class CreateReservation extends StatelessWidget {
+  final String date;
   final String selectedTime;
   final String buildingID;
   final int? roomNumber;
 
   const CreateReservation({
     Key? key,
+    required this.date,
     required this.selectedTime,
     required this.buildingID,
     required this.roomNumber,
@@ -23,11 +25,13 @@ class CreateReservation extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('$buildingID $roomNumber'),
-            Text('Selected Time: $selectedTime')
+            Text('Room: $buildingID $roomNumber'),
+            Text('Date: $date'),
+            Text('Selected Time: $selectedTime'),
           ],
         ),
       ),
     );
   }
 }
+
