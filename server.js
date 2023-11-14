@@ -121,7 +121,6 @@ app.post("/api/createRSO", async (req, res) => {
   res.status(200).json(ret);
 });
 
-// Encryption library needs to be added
 const jwt = require("jsonwebtoken");
 
 app.post("/api/login", async (req, res) => {
@@ -163,15 +162,18 @@ app.post("/api/login", async (req, res) => {
   res.status(200).json(responseObject);
 });
 
-app.get("/api/RetrieveEvents", async(req, res) => {
+app.get("/api/RetrieveEvents", async (req, res) => {
   const { RSOID } = req.body;
   var eventListReturn = {};
 
   const db = client.db("Reserv");
   const returnArray = [];
-  const eventList = await db.collection("Events").find({ RSOID : RSOID }).toArray();
+  const eventList = await db
+    .collection("Events")
+    .find({ RSOID: RSOID })
+    .toArray();
 
-  eventList.forEach(event => {
+  eventList.forEach((event) => {
     returnArray.push({
       EventID: event.EventID,
       EventName: event.EventName,
@@ -183,30 +185,37 @@ app.get("/api/RetrieveEvents", async(req, res) => {
       AtriumBuilding: event.AtriumBuilding,
       StartEnd: event.StartEnd,
       RSOID: event.RSOID,
-      RoomID: event.RoomID
+      RoomID: event.RoomID,
     });
-    
-    eventListReturn = {eventList:returnArray}
+
+    eventListReturn = { eventList: returnArray };
   });
 
   res.status(200).json(eventListReturn);
 });
 
-app.put("/api/UpdateEvent", async(req,res)=>{
-  const {EventID, EventName, Description}  = req.body;
+app.put("/api/UpdateEvent", async (req, res) => {
+  const { EventID, EventName, Description } = req.body;
   const db = client.db("Reserv");
   var eventObjectId = new ObjectId(EventID);
-  
-  const update = await db.collection("Events").updateOne({EventID:eventObjectId},{$set:{EventName:EventName, Description:Description}})
+
+  const update = await db
+    .collection("Events")
+    .updateOne(
+      { EventID: eventObjectId },
+      { $set: { EventName: EventName, Description: Description } }
+    );
   res.status(200).json(update);
 });
 
-app.delete("/api/DeleteEvent", async(req,res)=>{
-  const {EventID}  = req.body;
+app.delete("/api/DeleteEvent", async (req, res) => {
+  const { EventID } = req.body;
   const db = client.db("Reserv");
   var eventObjectId = new ObjectId(EventID);
-  
-  const update = await db.collection("Events").deleteOne({EventID:eventObjectId});
+
+  const update = await db
+    .collection("Events")
+    .deleteOne({ EventID: eventObjectId });
   res.status(200).json(update);
 });
 
@@ -216,9 +225,10 @@ app.post("/api/RetrieveRooms", async (req, res) => {
   console.log(Latitude);
 
   const db = client.db("Reserv");
-  const building = await db.collection("Building").findOne({ Latitude: Latitude, Longitude: Longitude });
+  const building = await db
+    .collection("Building")
+    .findOne({ Latitude: Latitude, Longitude: Longitude });
 
-  
   // Construct response JSON object
   const responseObject = {
     // token: token, // remeber to add JWT
@@ -229,9 +239,12 @@ app.post("/api/RetrieveRooms", async (req, res) => {
     UniID: building.UniID,
   };
   const returnArray = [];
-  const roomList = await db.collection("Room").find({ BuildingID : responseObject.BuildingID.toString() }).toArray();
+  const roomList = await db
+    .collection("Room")
+    .find({ BuildingID: responseObject.BuildingID.toString() })
+    .toArray();
 
-  roomList.forEach(room => {
+  roomList.forEach((room) => {
     returnArray.push({
       RoomID: room.RoomID,
       RoomNumber: room.RoomNumber,
@@ -241,10 +254,10 @@ app.post("/api/RetrieveRooms", async (req, res) => {
       Date: room.Date,
       ResrveTimes: room.ResrveTimes,
       UniID: room.UniID,
-      BuildingID: room.BuildingID
+      BuildingID: room.BuildingID,
     });
-    
-    roomListReturn = {roomList:returnArray}
+
+    roomListReturn = { roomList: returnArray };
   });
 
   res.status(200).json(roomListReturn);
@@ -275,7 +288,20 @@ function authenticateJWT(req, res, next) {
 // PUT NEW APIs AFTER HERE, this first one has JWT but others don't yet.
 
 app.post("/api/createEvent", authenticateJWT, async (req, res) => {
-  const { RSOID, EventName, Description, StartEnd } = req.body;
+  const {
+    Date,
+    EventName,
+    EventType,
+    NumAttendees,
+    Description,
+    AtriumOccupy,
+    AtriumBuilding,
+    StartEnd,
+    EventAgreement,
+    MediaEquip,
+    RSOID,
+    RoomID,
+  } = req.body;
 
   // Validate the StartEnd array
   if (!Array.isArray(StartEnd) || StartEnd.length !== 2) {
@@ -305,26 +331,20 @@ app.post("/api/createEvent", authenticateJWT, async (req, res) => {
 
   const db = client.db("Reserv");
 
-  // Check if RSOID is a valid ObjectId string, this could be changed to not use the object ID
-  if (!ObjectId.isValid(RSOID)) {
-    return res.status(400).json({ error: "Invalid RSOID format" });
-  }
-
-  // Convert RSOID string to ObjectId
-  const objectId = new ObjectId(RSOID);
-
-  // Check if RSOID exists
-  const rsoExists = await db.collection("RSO").findOne({ RSOID: RSOID });
-  if (!rsoExists) {
-    return res.status(400).json({ error: "Invalid RSOID" });
-  }
-
   // If all checks pass, insert the event
   const newEvent = {
-    RSOID,
+    Date,
     EventName,
+    EventType,
+    NumAttendees,
     Description,
+    AtriumOccupy,
+    AtriumBuilding,
     StartEnd,
+    EventAgreement,
+    MediaEquip,
+    RSOID,
+    RoomID,
   };
 
   try {
@@ -416,34 +436,30 @@ app.put("/api/updateRSO", async (req, res) => {
     SecondaryContactEmail: null,
     SecondaryContactPhone: null,
     UniID: null,
-    Verification: false
+    Verification: false,
   };
 
   const db = client.db("Reserv");
 
   try {
-    let result = db.collection("RSO").replaceOne({ RSOName: updatedRSO.RSOName }, updatedRSO)
-    return res.status(200).json({ success: true })
-
+    let result = db
+      .collection("RSO")
+      .replaceOne({ RSOName: updatedRSO.RSOName }, updatedRSO);
+    return res.status(200).json({ success: true });
   } catch (e) {
-    if (res.status(400))
-      return res.status(400).json({ error: e.toString() });
-    else
-      return res.status(500).json({ error: e.toString() });
+    if (res.status(400)) return res.status(400).json({ error: e.toString() });
+    else return res.status(500).json({ error: e.toString() });
   }
-
-
-
-})
+});
 
 app.delete("/api/deleteRSO", async (req, res) => {
   RSOName = req.body.RSOName;
   // define our db
-  db = client.db("Reserv")
+  db = client.db("Reserv");
   // connect to a collection in the db
   try {
-    let result = db.collection("RSO").deleteOne({ RSOName: RSOName })
-    res.status(200).json({ operation: "successful" })
+    let result = db.collection("RSO").deleteOne({ RSOName: RSOName });
+    res.status(200).json({ operation: "successful" });
   } catch (err) {
     console.log({ error: err.toString() });
   }
@@ -451,10 +467,9 @@ app.delete("/api/deleteRSO", async (req, res) => {
   // if the response status is 200, log a success
 
   // other wise log an error
-})
+});
 
 app.post("/api/getRoomDetails", async (req, res) => {
-
   const roomID = req.body.RoomID;
   const RoomNumber = req.body.RoomNumber;
   console.log(RoomNumber);
@@ -470,8 +485,7 @@ app.post("/api/getRoomDetails", async (req, res) => {
   }
 
   return res.json({ error: error });
-
-})
+});
 
 // PUT NEW APIs BEFORE HERE
 
