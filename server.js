@@ -121,8 +121,8 @@ app.post("/api/createRSO", async (req, res) => {
   res.status(200).json(ret);
 });
 
-// Encryption library needs to be added
 const jwt = require("jsonwebtoken");
+const { env } = require("process");
 
 app.post("/api/login", async (req, res) => {
   const { email, password } = req.body;
@@ -141,8 +141,7 @@ app.post("/api/login", async (req, res) => {
   };
 
   // Secret key (this should be a long, unguessable string stored in a secure way, not hard-coded!)
-  const secretKey =
-    "7d4c5e4023a7f91857c1b7ad8c6286a7e5b2c0d8e1f8b2c7e3a9d4e5f6b7c8d9";
+  const secretKey = process.env.SECRET_KEY;
 
   // Generate JWT
   const token = jwt.sign(jwtPayload, secretKey, { expiresIn: "1h" }); // Token expires in 1 hour
@@ -150,7 +149,7 @@ app.post("/api/login", async (req, res) => {
   // Construct response JSON object
   const responseObject = {
     token: token, // remeber to add JWT
-    RSOID: rso.RSOID,
+    RSOID: rso._id,
     RSOName: rso.RSOName,
     Email: rso.Email,
     Phone: rso.Phone,
@@ -163,17 +162,21 @@ app.post("/api/login", async (req, res) => {
   res.status(200).json(responseObject);
 });
 
+
 app.post("/api/RetrieveEvents", async(req, res) => {
   const { RSOID } = req.body;
   var eventListReturn = {};
 
   const db = client.db("Reserv");
   const returnArray = [];
-  const eventList = await db.collection("Events").find({ RSOID : RSOID }).toArray();
+  const eventList = await db
+    .collection("Events")
+    .find({ RSOID: RSOID })
+    .toArray();
 
-  eventList.forEach(event => {
+  eventList.forEach((event) => {
     returnArray.push({
-      EventID: event.EventID,
+      EventID: event._id,
       EventName: event.EventName,
       Date: event.Date,
       EventType: event.EventType,
@@ -183,14 +186,15 @@ app.post("/api/RetrieveEvents", async(req, res) => {
       AtriumBuilding: event.AtriumBuilding,
       StartEnd: event.StartEnd,
       RSOID: event.RSOID,
-      RoomID: event.RoomID
+      RoomID: event.RoomID,
     });
-    
-    eventListReturn = {eventList:returnArray}
+
+    eventListReturn = { eventList: returnArray };
   });
 
   res.status(200).json(eventListReturn);
 });
+
 
 app.post("/api/RetrieveRSO", async(req, res) => {
   const { UniID, VerificationFlag } = req.body;
@@ -235,17 +239,24 @@ app.put("/api/UpdateEvent", async(req,res)=>{
   const {EventID, EventName, Description}  = req.body;
   const db = client.db("Reserv");
   var eventObjectId = new ObjectId(EventID);
-  
-  const update = await db.collection("Events").updateOne({EventID:eventObjectId},{$set:{EventName:EventName, Description:Description}})
+
+  const update = await db
+    .collection("Events")
+    .updateOne(
+      { _id: eventObjectId },
+      { $set: { EventName: EventName, Description: Description } }
+    );
   res.status(200).json(update);
 });
 
-app.delete("/api/DeleteEvent", async(req,res)=>{
-  const {EventID}  = req.body;
+app.delete("/api/DeleteEvent", async (req, res) => {
+  const { EventID } = req.body;
   const db = client.db("Reserv");
   var eventObjectId = new ObjectId(EventID);
-  
-  const update = await db.collection("Events").deleteOne({EventID:eventObjectId});
+
+  const update = await db
+    .collection("Events")
+    .deleteOne({ _id: eventObjectId });
   res.status(200).json(update);
 });
 
@@ -255,7 +266,10 @@ app.post("/api/RetrieveRooms", async (req, res) => {
   console.log(Latitude);
 
   const db = client.db("Reserv");
-  const building = await db.collection("Building").findOne({ Latitude: Latitude, Longitude: Longitude });
+  const building = await db
+    .collection("Building")
+    .findOne({ Latitude: Latitude, Longitude: Longitude });
+
 
   var returnArray = [];
   var roomList;
@@ -279,7 +293,7 @@ app.post("/api/RetrieveRooms", async (req, res) => {
   }
   
 
-  roomList.forEach(room => {
+  roomList.forEach((room) => {
     returnArray.push({
       RoomID: room.RoomID,
       RoomNumber: room.RoomNumber,
@@ -289,10 +303,10 @@ app.post("/api/RetrieveRooms", async (req, res) => {
       Date: room.Date,
       ResrveTimes: room.ResrveTimes,
       UniID: room.UniID,
-      BuildingID: room.BuildingID
+      BuildingID: room.BuildingID,
     });
-    
-    roomListReturn = {roomList:returnArray}
+
+    roomListReturn = { roomList: returnArray };
   });
 
   res.status(200).json(roomListReturn);
@@ -304,8 +318,7 @@ function authenticateJWT(req, res, next) {
   if (authHeader) {
     const token = authHeader.split(" ")[1]; // Extract the token from Bearer
 
-    const secretKey =
-      "7d4c5e4023a7f91857c1b7ad8c6286a7e5b2c0d8e1f8b2c7e3a9d4e5f6b7c8d9";
+    const secretKey = process.env.SECRET_KEY;
 
     jwt.verify(token, secretKey, (err, user) => {
       if (err) {
@@ -322,11 +335,52 @@ function authenticateJWT(req, res, next) {
 
 // PUT NEW APIs AFTER HERE, this first one has JWT but others don't yet.
 
-app.post("/api/createEvent", 
-  //authenticateJWT, 
-  async (req, res) => {
-  const { RSOID, EventName, Description, StartEnd } = req.body;
 
+app.post("/api/createEvent", authenticateJWT, async (req, res) => {
+  const {
+    Date,
+    EventName,
+    EventType,
+    NumAttendees,
+    Description,
+    AtriumOccupy,
+    AtriumBuilding,
+    StartEnd,
+    EventAgreement,
+    MediaEquip,
+    RSOID,
+    RoomID,
+  } = req.body;
+
+
+  const db = client.db("Reserv");
+
+  // If they are not verified block them out.
+  const ObjectId = require("mongodb").ObjectId;
+
+  // Suppose you have an _id value as a string
+  const idString = RSOID;
+
+  // Validate the input, for example, check if the idString is valid
+  if (!isValidId(idString)) {
+    // Send a 400 Bad Request response
+    return res.status(400).json({ error: "Invalid ID format" });
+  }
+
+  // Convert the string to an ObjectId
+  const id = new ObjectId(idString);
+
+  // Fetch the document with the specified _id
+  const document = await db.collection("RSO").findOne({ _id: id });
+
+  if (document == false) {
+    return res.status(400).json({ error: "RSO does not exist!" });
+  }
+
+  // Now, access the 'Verification' field from the document
+  if (document.Verification == false) {
+    return res.status(400).json({ error: "You have not yet been verified!" });
+  }
   // Validate the StartEnd array
   if (!Array.isArray(StartEnd) || StartEnd.length !== 2) {
     return res.status(400).json({ error: "Invalid StartEnd format" });
@@ -353,28 +407,20 @@ app.post("/api/createEvent",
       .json({ error: "Start time must be before end time" });
   }
 
-  const db = client.db("Reserv");
-
-  // Check if RSOID is a valid ObjectId string, this could be changed to not use the object ID
-  if (!ObjectId.isValid(RSOID)) {
-    return res.status(400).json({ error: "Invalid RSOID format" });
-  }
-
-  // Convert RSOID string to ObjectId
-  const objectId = new ObjectId(RSOID);
-
-  // Check if RSOID exists
-  const rsoExists = await db.collection("RSO").findOne({ RSOID: RSOID });
-  if (!rsoExists) {
-    return res.status(400).json({ error: "Invalid RSOID" });
-  }
-
   // If all checks pass, insert the event
   const newEvent = {
-    RSOID,
+    Date,
     EventName,
+    EventType,
+    NumAttendees,
     Description,
+    AtriumOccupy,
+    AtriumBuilding,
     StartEnd,
+    EventAgreement,
+    MediaEquip,
+    RSOID,
+    RoomID,
   };
 
   try {
@@ -385,10 +431,14 @@ app.post("/api/createEvent",
   }
 });
 
+function isValidId(id) {
+  return id && id.length === 24 && /^[0-9a-fA-F]{24}$/.test(id);
+}
+
 // Other APIs still need JWT.
 app.get(
   "/api/availability/:roomID/:date/:intervals",
-  //authenticateJWT,
+  authenticateJWT,
   async (req, res) => {
     // Convert RoomID to integer
     const roomID = req.params.roomID;
@@ -466,34 +516,30 @@ app.put("/api/updateRSO", async (req, res) => {
     SecondaryContactEmail: null,
     SecondaryContactPhone: null,
     UniID: null,
-    Verification: false
+    Verification: false,
   };
 
   const db = client.db("Reserv");
 
   try {
-    let result = db.collection("RSO").replaceOne({ RSOName: updatedRSO.RSOName }, updatedRSO)
-    return res.status(200).json({ success: true })
-
+    let result = db
+      .collection("RSO")
+      .replaceOne({ RSOName: updatedRSO.RSOName }, updatedRSO);
+    return res.status(200).json({ success: true });
   } catch (e) {
-    if (res.status(400))
-      return res.status(400).json({ error: e.toString() });
-    else
-      return res.status(500).json({ error: e.toString() });
+    if (res.status(400)) return res.status(400).json({ error: e.toString() });
+    else return res.status(500).json({ error: e.toString() });
   }
-
-
-
-})
+});
 
 app.delete("/api/deleteRSO", async (req, res) => {
   RSOName = req.body.RSOName;
   // define our db
-  db = client.db("Reserv")
+  db = client.db("Reserv");
   // connect to a collection in the db
   try {
-    let result = db.collection("RSO").deleteOne({ RSOName: RSOName })
-    res.status(200).json({ operation: "successful" })
+    let result = db.collection("RSO").deleteOne({ RSOName: RSOName });
+    res.status(200).json({ operation: "successful" });
   } catch (err) {
     console.log({ error: err.toString() });
   }
@@ -501,10 +547,9 @@ app.delete("/api/deleteRSO", async (req, res) => {
   // if the response status is 200, log a success
 
   // other wise log an error
-})
+});
 
 app.post("/api/getRoomDetails", async (req, res) => {
-
   const roomID = req.body.RoomID;
   const RoomNumber = req.body.RoomNumber;
   console.log(RoomNumber);
@@ -520,8 +565,7 @@ app.post("/api/getRoomDetails", async (req, res) => {
   }
 
   return res.json({ error: error });
-
-})
+});
 
 app.post("/api/checkVerification", async (req, res) => {
   try {

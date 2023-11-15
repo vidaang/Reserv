@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-// import Cookies from 'js-cookies';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import format from "date-fns/format";
 import parse from "date-fns/parse";
@@ -28,11 +27,12 @@ function LargeCalendar()
     const [opened, { open, close }] = useDisclosure(false);
     const [events, setEvents] = useState([]);
     
-    // var RSOID = Cookies.get('RSOID');
-    var RSOID = '65440e752b48c68af9b7c5c0';
+    var storedData = JSON.parse(localStorage.getItem("userInfo"));
+    var RSOID = storedData.RSOID;
 
     const handleEventClick = (event) => {
         setSelectedEvent(event);
+        console.log(event.eventID);
         open();
     };
 

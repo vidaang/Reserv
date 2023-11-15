@@ -5,7 +5,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { DropdownButton, Dropdown, Modal, Button } from 'react-bootstrap';
 import ReservationsForm from './ReservationsForm';
 import '../../../styles/index.css';
-import { format } from "date-fns";
+import { format, setDate } from "date-fns";
 import {
   IconUsers,
   IconFriends,
@@ -27,10 +27,15 @@ function RoomDetails(props) {
   const [showEventForm, setShowEventForm] = useState(false);
   const [formattedDate, setFormattedDate] = useState(null);
   const [selectedDate, setSelectedDate] = useState();
+  const [dateForCreate, setDateForCreate] = useState();
   const [availableTimes, setAvailableTimes] = useState([]);
   const [selectedTime, setSelectedTime] = useState(null);
   const [formattedAvailability, setFormattedAvailability] = useState([]);
   const [timeRange, setTimeRange] = useState({ hours: 0, minutes: 30 });
+
+
+  var storedData = JSON.parse(localStorage.getItem("userInfo"));
+  var userToken = localStorage.getItem("userToken");
 
   const getAvailability = async () => {
     var date = selectedDate.split('-');
@@ -47,7 +52,7 @@ function RoomDetails(props) {
         method: 'GET',
         headers: {
           'Content-Type':'application/json',
-          'Authorization': 'temp'
+          'Authorization': `Bearer ${userToken}`,
         }
       });
     }
@@ -68,6 +73,7 @@ function RoomDetails(props) {
     var month = date[1];
     var day = date[2];
 
+    setDateForCreate(month + "-" + day + "-" + year);
     return format(new Date(year, month - 1, day), "MMMM d, yyyy");
   };
 
@@ -140,11 +146,66 @@ function RoomDetails(props) {
     setRoomDetails(roomData);
   }, []);
 
+  var eventName;
+  var eventType;
+  var numAttendees;
+  var description;
+  var atriumOccupy = true; // CHANGE THIS
+  var atriumBuilding = room.BuildingID;
+  var startEnd = [];
+  var eventAgreement = true; // CHANGE THESE
+  var mediaEquip = true;
+  var RSOID = JSON.parse(localStorage.getItem("userInfo")).RSOID;
+  var roomID = room.RoomID;
+
+  const createEvent = async (time) => {
+    console.log("Creating event...")
+
+    startEnd = [time.start, time.end];
+
+    var obj = {
+      Date: dateForCreate, 
+      EventName: eventName.value,
+      EventType: eventType.value,
+      NumAttendees: numAttendees.value,
+      Description: description.value,
+      AtriumOccupy: atriumOccupy,
+      AtriumBuilding: atriumBuilding,
+      StartEnd: startEnd,
+      EventAgreement: eventAgreement,
+      MediaEquip: mediaEquip,
+      RSOID: RSOID,
+      RoomID: roomID,
+    };
+
+    var js = JSON.stringify(obj);
+    console.log(js);
+    try
+    {  
+       var response = await fetch(`http://localhost:5000/api/createEvent`, {
+        method: 'POST',
+        body: js,
+        headers: {
+          'Content-Type':'application/json',
+          'Authorization': `Bearer ${userToken}`,
+        }
+      });
+    }
+    catch (error)
+    {
+      console.error(error);
+    }
+    
+    const data = await response.json();
+    console.log(data);
+  };
+
   function handleCreateReservation() {
     // PASS IN ROOM INFORMATION
     console.log(selectedDate);
     console.log("Index: " + selectedTime);
     console.log(availableTimes[selectedTime]);
+    createEvent(availableTimes[selectedTime]);    
   }
 
   return (
@@ -247,8 +308,50 @@ function RoomDetails(props) {
                 </div>
             </div>
           </>
-        ) : (
-          <ReservationsForm />
+        ) : ( 
+          <div id="CompleteReservationContainer">
+            {/*CHANGE TO A FORM AND REMOVE FOOTER*/}
+            <div className="complete-reservation-input-label">
+                <label htmlFor="eventName">Event Name:</label>
+                <input type="text" id="eventName" placeholder="Enter Event Name" ref={(c) => (eventName = c)}/>
+            </div>
+            <div className="complete-reservation-input-label">
+                <label htmlFor="eventType">Event Type:</label>
+                <input type="text" id="eventType" placeholder="Enter Event Type" ref={(c) => (eventType = c)}/>
+            </div>
+            <div className="complete-reservation-input-label">
+                <label htmlFor="eventDescription">Event Description:</label>
+                <input type="text" id="eventDescription" placeholder="Enter Event Description" ref={(c) => (description = c)}/>
+            </div>
+            <div className="complete-reservation-input-label">
+                <label htmlFor="eventAttendees">Number of Attendees:</label>
+                <input type="text" id="eventAttendees" placeholder="Enter Number of Attendees" ref={(c) => (numAttendees = c)}/>
+            </div>
+            <div className="complete-reservation-input-label">
+                <label htmlFor="eventAtriumLobby">Atrium or Lobby Needed:</label>
+                <input type="text" id="eventAtriumLobby" placeholder="Yes/No" />
+            </div>
+            <div className="complete-reservation-input-label">
+                <label htmlFor="eventStart">Event Start Date:</label>
+                <input type="text" id="eventStart" placeholder="Enter Start Date" />
+            </div>
+            <div className="complete-reservation-input-label">
+                <label htmlFor="eventRepeat">Event Repeats:</label>
+                <input type="text" id="eventRepeat" placeholder="Yes/No" />
+            </div>
+            <div className="complete-reservation-input-label">
+                <label htmlFor="eventEnd">Event End Date:</label>
+                <input type="text" id="eventEnd" placeholder="Enter End Date" />
+            </div>
+            <div className="complete-reservation-input-label">
+                <label htmlFor="setupTime">Setup Time:</label>
+                <input type="text" id="setupTime" placeholder="Enter Setup Time" />
+            </div>
+            <div className="complete-reservation-input-label">
+                <label htmlFor="cleanupTime">Cleanup Time:</label>
+                <input type="text" id="cleanupTime" placeholder="Enter Cleanup Time" />
+            </div>
+        </div>
         ))}
       </Modal.Body>
 
