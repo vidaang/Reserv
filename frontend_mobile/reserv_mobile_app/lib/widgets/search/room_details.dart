@@ -1,6 +1,9 @@
+// ignore_for_file: use_build_context_synchronously, avoid_print, unused_local_variable
 import 'dart:ffi';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import './create_reservation.dart';
+import '../../services/api_service.dart';
 
 class RoomDetails extends StatefulWidget {
   final Future<Map<String, dynamic>> availabilityData;
@@ -13,7 +16,7 @@ class RoomDetails extends StatefulWidget {
   final String date;
   final int? interval;
 
-  RoomDetails({
+  const RoomDetails({
     super.key,
     required this.buildingID,
     required this.roomNumber,
@@ -27,118 +30,161 @@ class RoomDetails extends StatefulWidget {
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _RoomDetailsState createState() => _RoomDetailsState();
 }
 
 class _RoomDetailsState extends State<RoomDetails> {
   String? selectedTime;
-  String formattedSelectedTime = '';
+  List<num> startTime = [];
 
-  
-  String convertDecimalToTime(double decimalTime) {
-    int hours = decimalTime.toInt();
-    int minutes = ((decimalTime - hours) * 60).toInt();
-    return '$hours:${minutes.toString().padLeft(2, '0')}';
+  Future<void> checkVerificationFunction(String rsoName) async {
+    try {
+      bool verificationResult = await ApiService.checkVerification(rsoName);
+      // Check if a time is selected before navigating && rso is verified
+      if (selectedTime != null && startTime != []) {
+        if (verificationResult) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CreateReservation(
+                date: widget.date,
+                time: selectedTime,
+                startEnd: startTime,
+                buildingID: widget.buildingID,
+                roomNumber: widget.roomNumber,
+              ),
+            ),
+          );
+        } else {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Verification Error'),
+                content: const Text('Could not verify organization. Ensure organization is verified with university!'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Selection Error'),
+              content: const Text('Please select an available time'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
-        title: Text('${widget.buildingID} ${widget.roomNumber}'),
+        title: const Text('Room Details'),
       ),
+
       body: FutureBuilder<Map<String, dynamic>>(
         future: widget.availabilityData,
         builder: (context, snapshot) {
+
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const CircularProgressIndicator();
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
+
+            // creating the array of available times
             Map<String, dynamic> data = snapshot.data!;
-            List<String> availableTimes = (data['continuousAvailability'] as List<dynamic>)
-                .map((dynamic item) => item.toString())
+            List<List<num>> unformatted = [];
+            List<String> timesFormatted = [];
+
+            List<dynamic> makeSets = (data['continuousAvailability'] as List<dynamic>)
+                .map((dynamic item) {
+                  
+                  num start = item['start'];
+                  num end = item['end'];
+
+                  DateTime startTime = DateTime(2023, 1, 1, start.floor(), (start % 1 * 60).round());
+                  DateTime endTime = DateTime(2023, 1, 1, end.floor(), (end % 1 * 60).round());
+
+                  String formattedSlot = '${DateFormat.jm().format(startTime)} - ${DateFormat.jm().format(endTime)}';
+
+                  unformatted.add([start, end]);
+                  timesFormatted.add(formattedSlot);
+                })
                 .toList();
 
             return SingleChildScrollView(
               child: Center(
                 child: Column(
                   children: [
-                    ListView(
-                      shrinkWrap: true,
-                      children: [
-                        ListTile(title: Text('Room Type: ${widget.roomType}')),
-                        ListTile(title: Text('Room Info: ${widget.roomInfo}')),
-                        ListTile(title: Text('Media Equip: ${widget.mediaEquip}')),
-                        ListTile(title: Text('Capacity: ${widget.capacity}')),
-                        ListTile(title: Text('Date: ${widget.date}')),
-                        ListTile(title: Text('Interval: ${widget.interval}')),
-                      ],
-                    ),
+                    Text('${widget.buildingID} ${widget.roomNumber}'),
+                    Text('Room Type: ${widget.roomType}'),
+                    Text('Room Info: ${widget.roomInfo}'),
+                    Text('Media Equip: ${widget.mediaEquip}'), // CHANGE
+                    Text('Capacity: ${widget.capacity}'), // CHANGE
+                    Text('Date: ${widget.date}'),
+                    Text('Interval: ${widget.interval}'), // CHANGE
+
+                    // Dropdown menu for selecting an available time
                     SizedBox(
-                      height: 50, // Set a fixed height for the DropdownButton container
+                      height: 50,
                       child: DropdownButton<String>(
-                        value: availableTimes.isNotEmpty ? availableTimes[0] : null,
-                        items: availableTimes
+                        value: selectedTime,
+                        items: timesFormatted
                             .map((String time) {
-                              // Split the continuous availability data into start and end values
-                              List<String> values = time
-                                .replaceAll(RegExp(r'start: |, end: '), '') // Remove 'start:' and ', end:' labels
-                                .split(RegExp(r'[^0-9.]+'));
-
-                              // Extract start and end values
-                              String start = values[0];
-                              String end = values[1];
-
-                              // Format the time range
-                              String formattedTime = '$start$end';
-
                               return DropdownMenuItem<String>(
                                 value: time,
-                                child: Text(formattedTime),
+                                child: Text(time),
                               );
                             })
                             .toList(),
                         onChanged: (String? newSelectedTime) {
-                          // Handle the selected time
                           setState(() {
                             selectedTime = newSelectedTime;
-                            // Update the formatted selected time
-                            if (selectedTime != null) {
-                              List<String> values = selectedTime!.split(RegExp(r'start: |, end: '));
-                              String start = values[0];
-                              String end = values[1];
-                              formattedSelectedTime = '$start$end';
-                            }
+                              if (selectedTime != null) {
+
+                                int selectedIndex = timesFormatted.indexOf(selectedTime!);
+
+                                if (selectedIndex > -1) {
+                                  startTime = unformatted[selectedIndex];
+                                }
+                              }
                           });
-                          print('Selected Time: $selectedTime');
                         },
                         hint: const Text('Select Available Time'),
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Text('Selected Time: $selectedTime'),
 
                     // Button to navigate to CreateReservation
                     ElevatedButton(
-                      onPressed: () {
-                        // Check if a time is selected before navigating && rso is verified
-                        if (selectedTime != null) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CreateReservation(
-                                date: widget.date,
-                                selectedTime: selectedTime!,
-                                buildingID: widget.buildingID,
-                                roomNumber: widget.roomNumber,
-                              ),
-                            ),
-                          );
-                        } else {
-                          // Handle the case where no time is selected
-                          print('Please select a time before creating a reservation.');
-                        }
+                      onPressed: () async {
+                        await checkVerificationFunction("test");
                       },
                       child: const Text('Create Reservation'),
                     ),

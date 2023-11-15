@@ -109,31 +109,45 @@ class ApiService {
     }
   }
 
-  Future<void> createEvent(String token, String RSOID, String EventName, String Description, List<int> StartEnd) async {
-    // Validate the StartEnd array
-    if (StartEnd.length != 2) {
-      throw Exception('Invalid StartEnd format');
+  static Future<bool> checkVerification(String rsoName) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/api/checkVerification'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'RSOName': rsoName}),
+      );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data = jsonDecode(response.body);
+
+        bool verificationResult = data['result'] ?? false;
+
+        return verificationResult;
+      } else {
+        throw Exception('Failed to check verification: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Exception during verification check: $e');
+      return false;
     }
+  }
 
-    int startTime = StartEnd[0];
-    int endTime = StartEnd[1];
+  static Future<void> createEvent(String token, String RSOID, String RoomID, String Date, 
+    String EventName, String EventType, String Description, int? Attendees, bool AtriumOccupy, 
+    bool MediaEquip, bool EventAgreement, List<num> StartEnd) async {
 
-    // Check if both startTime and endTime are within the valid range
-    if (startTime < 0 || startTime > 24 || endTime < 0 || endTime > 24) {
-      throw Exception('Invalid time values provided');
-    }
-
-    // Ensure start time is before end time
-    if (startTime >= endTime) {
-      throw Exception('Start time must be before end time');
-    }
-
-    // Construct the request body
     Map<String, dynamic> requestBody = {
       'RSOID': RSOID,
-      'EventName': EventName,
-      'Description': Description,
+      'RoomID': RoomID,
+      'Date': Date,
       'StartEnd': StartEnd,
+      'EventName': EventName,
+      'EventType': EventType,
+      'Description': Description,
+      'Attendees': Attendees,
+      'AtriumOccupy': AtriumOccupy,
+      'MediaEqip': MediaEquip,
+      'EventAgreement': EventAgreement,
     };
 
     // Make the API request
@@ -148,11 +162,9 @@ class ApiService {
       );
 
       if (response.statusCode == 200) {
-        // Event creation successful
         final Map<String, dynamic> responseData = json.decode(response.body);
         print('Event created successfully! Event ID: ${responseData['eventId']}');
       } else {
-        // Handle error cases
         throw Exception('Failed to create event. Status code: ${response.statusCode}, Body: ${response.body}');
       }
     } catch (e) {

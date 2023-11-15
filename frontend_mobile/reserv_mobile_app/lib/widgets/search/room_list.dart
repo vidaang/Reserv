@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../services/api_service.dart';
-import './room_details.dart';
+import 'room_details.dart';
 
 class RoomList extends StatelessWidget {
   final Map<String, dynamic> data;

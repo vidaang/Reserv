@@ -48,11 +48,6 @@ class _SearchPageState extends State<SearchPage> {
     return GoogleMap(
       initialCameraPosition: _initialCameraPosition,
       onMapCreated: _onMapCreated,
-      // polylines: Set<Polyline>.of(_polyLines.values),
-      // myLocationEnabled: true,
-      // myLocationButtonEnabled: false,
-      // mapType: MapType.normal,
-      // compassEnabled: true,
       markers: Set.from(
         buildingbuildings.map(
           (building) => Marker(
