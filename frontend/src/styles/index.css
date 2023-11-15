@@ -618,7 +618,7 @@ output[for="timeRange"] {
 
 /* SEARCH PAGE MODAL */
 .roomDetailsModal{
-  min-width: max-content;
+  min-width: min-content;
   max-height: 90%;
   overflow-y: scroll;
   background-color: transparent;
@@ -628,6 +628,7 @@ output[for="timeRange"] {
   margin: 10px 0;
   padding: 5px;
   display: flex;
+  min-width: max-content;
   flex-direction: row;
 }
 
@@ -703,6 +704,8 @@ output[for="timeRange"] {
   border: 1px solid #e1e1e1;
   border-radius: 10px;
   padding: 10px;
+  min-width: min-content;
+  overflow-x: wrap;
 }
 
 .availableTimeDayButton{
