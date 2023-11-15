@@ -582,12 +582,11 @@ output[for="timeRange"] {
   position: absolute;
   top: 60px;
   left: 0;
-  width: 10%;
+  width: 25%;
   background: white;
   transition: left 0.3s ease;
   text-align: center;
   justify-content: center;
-  width: 25%;
   padding-left: 20px;
   padding-right: 20px;
 }
@@ -598,6 +597,7 @@ output[for="timeRange"] {
 
 .room-list {
   height: 93.5vh;
+  width: 105%;
   overflow-y: scroll;
   overflow-x: hidden;
   transition: left 0.3s ease;
@@ -754,7 +754,51 @@ output[for="timeRange"] {
   min-height: 580px;
 }
 
+/* DELETE RESERVATION */
+
+#cancel-modal-container h1 {
+  font-family: 'Gabarito', sans-serif;
+  font-size: 24px;
+  text-align: center;
+}
+
+#cancel-modal-buttons {
+  margin-top: 1%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#cancel-modal-buttons button {
+  border-radius: 25px;
+  padding: 5px 15px;
+}
+
+#cancel-back-button {
+  background-color: transparent;
+  transition: 0.3s;
+}
+
+#cancel-back-button:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+#cancel-confirm-button {
+  border: 2px solid red;
+  background-color: red;
+  color: white;
+  transition: 0.3s;
+}
+
+#cancel-confirm-button:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+}
+
 /* RESERVATION PAGE POPUP / EDIT RESERVATION */
+
+#OrgEditReservationsPageDiv h1{
+  margin-top: 1%;
+}
 
 #reservation-popup-content {
   font-family: 'Gabarito', sans-serif;
@@ -773,15 +817,42 @@ output[for="timeRange"] {
 }
 
 #reservation-popup-button-container button {
-  margin: 0 10px;
   border-radius: 25px;
+  padding: 7px 18px;
+}
+
+#EditReservationButtonDiv {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#EditReservationButtonDiv button {
+  margin: 0 10px;
+  border-radius: 5px;
   padding: 7px 15px;
+  margin-bottom: 3%;
+}
+
+#edit-reservation-cancel-button {
+  background-color: transparent;
+  border: 2px solid var(--color-4);
+  font-weight: bold;
+  color: var(--color-4);
+}
+
+#edit-reservation-confirm-button {
+  background-color: var(--color-4);
+  border: 2px solid var(--color-4);
+  color: white;
+  font-weight: bold;
 }
 
 #popup-edit-button {
   border: 2px solid gold;
   background-color: transparent;
   transition: 0.2s;
+  margin-right: 3%;
 }
 
 #popup-edit-button:hover {

@@ -162,7 +162,8 @@ app.post("/api/login", async (req, res) => {
   res.status(200).json(responseObject);
 });
 
-app.get("/api/RetrieveEvents", async (req, res) => {
+
+app.post("/api/RetrieveEvents", async(req, res) => {
   const { RSOID } = req.body;
   var eventListReturn = {};
 
@@ -194,8 +195,48 @@ app.get("/api/RetrieveEvents", async (req, res) => {
   res.status(200).json(eventListReturn);
 });
 
-app.put("/api/UpdateEvent", async (req, res) => {
-  const { EventID, EventName, Description } = req.body;
+
+app.post("/api/RetrieveRSO", async(req, res) => {
+  const { UniID, VerificationFlag } = req.body;
+  var RSOListReturn = {};
+
+  const db = client.db("Reserv");
+  const returnArray = [];
+  const RSOList = await db.collection("RSO").find({ UniID : UniID, Verification:VerificationFlag}).toArray();
+  console.log(RSOList);
+  
+
+  RSOList.forEach(rso => {
+    returnArray.push({
+      AdminID: rso.AdminID,
+      AdvisorEmail: rso.advisorEmail,
+      AdvisorName: rso.AdvisorName,
+      Email: rso.Email,
+      OfficerLastName: rso.OfficerFirstName,
+      OfficerLastName: rso.OfficerLastName,
+      RSOID: rso.RSOID,
+      RSOName: rso.RSOName,
+      UniID: rso.UniID,
+      Verification: rso.Verification
+    });
+    
+    RSOListReturn = {RSOList:returnArray}
+  });
+
+  res.status(200).json(RSOListReturn);
+});
+
+app.put("/api/VerifyRSO", async(req,res)=>{
+  const {RSOID}  = req.body;
+  const db = client.db("Reserv");
+  var rsoObjectID = new ObjectId(RSOID);
+  
+  const update = await db.collection("Events").updateOne({RSOID:rsoObjectID},{$set:{Verification : true}})
+  res.status(200).json(update);
+});
+
+app.put("/api/UpdateEvent", async(req,res)=>{
+  const {EventID, EventName, Description}  = req.body;
   const db = client.db("Reserv");
   var eventObjectId = new ObjectId(EventID);
 
@@ -229,20 +270,28 @@ app.post("/api/RetrieveRooms", async (req, res) => {
     .collection("Building")
     .findOne({ Latitude: Latitude, Longitude: Longitude });
 
-  // Construct response JSON object
-  const responseObject = {
-    // token: token, // remeber to add JWT
-    BuildingID: building.BuildingID,
-    BuildingName: building.BuildingName,
-    Latitude: building.Latitude,
-    Longitude: building.Longitude,
-    UniID: building.UniID,
-  };
-  const returnArray = [];
-  const roomList = await db
-    .collection("Room")
-    .find({ BuildingID: responseObject.BuildingID.toString() })
-    .toArray();
+
+  var returnArray = [];
+  var roomList;
+
+  if(building == undefined) 
+  {
+    roomList = await db.collection("Room").find({}).toArray();
+  }
+  else 
+  {
+    // Construct response JSON object
+    const responseObject = {
+      // token: token, // remeber to add JWT
+      BuildingID: building.BuildingID,
+      BuildingName: building.BuildingName,
+      Latitude: building.Latitude,
+      Longitude: building.Longitude,
+      UniID: building.UniID,
+    };
+    roomList = await db.collection("Room").find({ BuildingID : responseObject.BuildingID.toString() }).toArray();
+  }
+  
 
   roomList.forEach((room) => {
     returnArray.push({
@@ -286,6 +335,7 @@ function authenticateJWT(req, res, next) {
 
 // PUT NEW APIs AFTER HERE, this first one has JWT but others don't yet.
 
+
 app.post("/api/createEvent", authenticateJWT, async (req, res) => {
   const {
     Date,
@@ -301,6 +351,7 @@ app.post("/api/createEvent", authenticateJWT, async (req, res) => {
     RSOID,
     RoomID,
   } = req.body;
+
 
   const db = client.db("Reserv");
 
@@ -387,7 +438,7 @@ function isValidId(id) {
 // Other APIs still need JWT.
 app.get(
   "/api/availability/:roomID/:date/:intervals",
-  authenticateJWT,
+  //authenticateJWT,
   async (req, res) => {
     // Convert RoomID to integer
     const roomID = req.params.roomID;
@@ -514,6 +565,23 @@ app.post("/api/getRoomDetails", async (req, res) => {
   }
 
   return res.json({ error: error });
+});
+
+app.post("/api/checkVerification", async (req, res) => {
+  try {
+    const db = client.db("Reserv");
+    const RSOName = req.body.RSOName;
+
+    const rso = await db.collection("RSO").findOne({ RSOName: RSOName });
+
+    if (rso) {
+      return res.status(200).json({ result: rso.Verification === true });
+    } else {
+      return res.status(200).json({ result: false });
+    }
+  } catch (e) {
+    return res.status(500).json({ error: e.toString() });
+  }
 });
 
 // PUT NEW APIs BEFORE HERE
