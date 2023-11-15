@@ -310,11 +310,21 @@ app.post("/api/createEvent", authenticateJWT, async (req, res) => {
   // Suppose you have an _id value as a string
   const idString = RSOID;
 
+  // Validate the input, for example, check if the idString is valid
+  if (!isValidId(idString)) {
+    // Send a 400 Bad Request response
+    return res.status(400).json({ error: "Invalid ID format" });
+  }
+
   // Convert the string to an ObjectId
   const id = new ObjectId(idString);
 
   // Fetch the document with the specified _id
   const document = await db.collection("RSO").findOne({ _id: id });
+
+  if (document == false) {
+    return res.status(400).json({ error: "RSO does not exist!" });
+  }
 
   // Now, access the 'Verification' field from the document
   if (document.Verification == false) {
@@ -369,6 +379,10 @@ app.post("/api/createEvent", authenticateJWT, async (req, res) => {
     return res.status(500).json({ error: e.toString() });
   }
 });
+
+function isValidId(id) {
+  return id && id.length === 24 && /^[0-9a-fA-F]{24}$/.test(id);
+}
 
 // Other APIs still need JWT.
 app.get(
