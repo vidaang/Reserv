@@ -3,6 +3,7 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { DropdownButton, Dropdown, Modal, Button } from 'react-bootstrap';
+import ReservationsForm from './ReservationsForm';
 import '../../../styles/index.css';
 import { format } from "date-fns";
 import {
@@ -23,9 +24,11 @@ function RoomDetails(props) {
   const [view, setView] = useState('month');
   const [intervals, setIntervals] = useState(0);
   const [roomDetails, setRoomDetails] = useState(null);
+  const [showEventForm, setShowEventForm] = useState(false);
   const [formattedDate, setFormattedDate] = useState(null);
   const [selectedDate, setSelectedDate] = useState();
   const [availableTimes, setAvailableTimes] = useState([]);
+  const [selectedTime, setSelectedTime] = useState(null);
   const [formattedAvailability, setFormattedAvailability] = useState([]);
   const [timeRange, setTimeRange] = useState({ hours: 0, minutes: 30 });
 
@@ -139,6 +142,9 @@ function RoomDetails(props) {
 
   function handleCreateReservation() {
     // PASS IN ROOM INFORMATION
+    console.log(selectedDate);
+    console.log("Index: " + selectedTime);
+    console.log(availableTimes[selectedTime]);
   }
 
   return (
@@ -149,7 +155,7 @@ function RoomDetails(props) {
       </Modal.Header>
 
       <Modal.Body id="roomDetailsModalBody">
-        {roomDetails && (
+        {roomDetails && (!showEventForm ? (
           <>
             {/* Room Description Section */}
             <div className="roomDescription">
@@ -232,6 +238,7 @@ function RoomDetails(props) {
                         key={index}
                         id={`timeButton${index}`}
                         className="availableTimeDayButton"
+                        onClick={() => setSelectedTime(index)}
                       >
                         {time}
                       </Button>
@@ -240,19 +247,38 @@ function RoomDetails(props) {
                 </div>
             </div>
           </>
-        )}
+        ) : (
+          <ReservationsForm />
+        ))}
       </Modal.Body>
 
       <Modal.Footer>
-        <Link to="/OrgCompleteReservationPage">
+        {!showEventForm ? (
           <Button
             id="CreateReservationButton"
             variant="primary"
-            onClick={handleCreateReservation}
+            onClick={() => setShowEventForm(true)}
           >
             Create Reservation
-          </Button>
-        </Link>
+          </Button> 
+        ) : (
+          <div id="CreateReservationButtonContainer">
+            <Button
+              id="CreateReservationBackButton"
+              variant="primary"
+              onClick={() => setShowEventForm(false)}
+            >
+              Back
+            </Button>
+            <Button
+              id="CreateReservationSubmitButton"
+              variant="primary"
+              onClick={handleCreateReservation}
+            >
+              Submit
+            </Button>
+          </div>
+        )}
       </Modal.Footer>
     </Modal>
   );

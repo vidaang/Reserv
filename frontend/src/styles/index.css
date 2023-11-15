@@ -1094,6 +1094,36 @@ output[for="timeRange"] {
 
 /* COMPLETE RESERVATION FORM */
 
+#CompleteReservationContainer {
+  border: 1px solid gray;
+  border-radius: 15px;
+  min-width: min-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 1%;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+}
+
+#CreateReservationButtonContainer {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+#CreateReservationBackButton {
+  margin-right: 5%;
+  background-color: transparent;
+  color: #007bff;
+  border: solid 2px;
+  transition: 0.3s;
+}
+
+#CreateReservationBackButton:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
 #OrgCompleteReservationsPageDiv {
   display: flex !important;
   flex-direction: column !important;
