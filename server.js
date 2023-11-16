@@ -121,6 +121,7 @@ app.post("/api/createRSO", async (req, res) => {
   res.status(200).json(ret);
 });
 
+const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const { env } = require("process");
 
@@ -192,6 +193,169 @@ app.post("/api/RetrieveEvents", async (req, res) => {
   });
 
   res.status(200).json(eventListReturn);
+});
+
+app.put("/api/createAdmin", async (req, res) => {
+  const { Email, Password } = req.body;
+
+  try {
+    const db = client.db("Reserv");
+
+    const hashedPassword = await bcrypt.hash(Password, 10); // 10 is the salt rounds
+
+    const newUniversity = {
+      UniID: new ObjectId(),
+      Email: Email,
+      Password: hashedPassword,
+    };
+
+    await db.collection("Admin").insertOne(newUniversity);
+
+    const universityData = {
+      UniID: newUniversity.UniID,
+      UniName: "",
+      Address: "",
+      EmailDomain: "",
+      Website: "",
+      Phone: "",
+    };
+    await db.collection("University").insertOne(universityData);
+
+    return res.status(201).json({ success: true, message: "Admin and University created successfully" });
+  } catch (e) {
+    console.error("Error during createAdmin:", e);
+    return res.status(500).json({ success: false, error: "Failed to create account" });
+  }
+});
+
+app.post("/api/adminLogin", async (req, res) => {
+  const { Email, Password } = req.body;
+
+  try {
+    const db = client.db("Reserv");
+    const uni = await db.collection("Admin").findOne({ Email: Email });
+
+    if (!uni) {
+      return res.status(400).json({ error: "University does not exist! Please make an account." });
+    }
+
+    const passwordMatch = await bcrypt.compare(Password, uni.Password);
+
+    if (!passwordMatch) {
+      return res.status(400).json({ error: "Incorrect password" });
+    }
+
+    const jwtPayload = {
+      UniID: uni.UniID,
+    };
+
+    const secretKey = process.env.SECRET_KEY;
+
+    const token = jwt.sign(jwtPayload, secretKey, { expiresIn: "1h" }); // Token expires in 1 hour
+
+    const responseObject = {
+      token: token,
+      UniID: uni.UniID,
+      Email: uni.Email,
+    };
+
+    res.status(200).json(responseObject);
+  } catch (e) {
+    console.error("Error during adminLogin:", e);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.post("/api/updateUniversityInfo", async (req, res) => {
+  const update = {
+    UniName: req.body.UniName,
+    Address: req.body.Address,
+    EmailDomain: req.body.EmailDomain,
+    Website: req.body.Website,
+    Phone: req.body.Phone,
+  };
+
+  const db = client.db("Reserv");
+
+  try {
+    let result = await db.collection("University").updateOne(
+      { UniID: new ObjectId(req.body.UniID) }, // Ensure UniID is an ObjectId
+      { $set: update }
+    );
+
+    if (result.modifiedCount === 1) {
+      return res.status(200).json({ success: true });
+    } else {
+      return res.status(400).json({ error: "No document updated. UniID may not exist." });
+    }
+  } catch (e) {
+    return res.status(500).json({ error: e.toString() });
+  }
+});
+
+app.post("/api/updateUniversityLogin", async (req, res) => {
+  const { Email, Password } = req.body;
+
+  const update = {
+    Email: Email,
+  };
+
+  if (Password) {
+    const hashedPassword = await bcrypt.hash(Password, 10); // 10 is the salt rounds
+    update.Password = hashedPassword;
+  }
+
+  const db = client.db("Reserv");
+
+  try {
+    let result = await db.collection("Admin").updateOne(
+      { UniID: new ObjectId(req.body.UniID) },
+      { $set: update }
+    );
+
+    if (result.modifiedCount === 1) {
+      return res.status(200).json({ success: true });
+    } else {
+      return res.status(400).json({ error: "No document updated. UniID may not exist." });
+    }
+  } catch (e) {
+    return res.status(500).json({ error: e.toString() });
+  }
+});
+
+app.put("/api/DeleteUniversity", async (req, res) => {
+  const db = client.db("Reserv");
+
+  try {
+    const object = new ObjectId(req.body.UniID);
+
+    // Define collections to delete documents from
+    const collectionsToDelete = [
+      { name: "Admin", method: "deleteOne" },
+      { name: "University", method: "deleteOne" },
+      { name: "Room", method: "deleteMany" },
+      { name: "RSO", method: "deleteMany" },
+      { name: "Events", method: "deleteMany" },
+      { name: "Building", method: "deleteMany" },
+    ];
+
+    let totalDeletedCount = 0;
+
+    for (const collection of collectionsToDelete) {
+      const result = await db.collection(collection.name)[collection.method]({ UniID: object });
+      // console.log(`${collection.name} Collection Deletion Result:`, result);
+      totalDeletedCount += result.deletedCount || 0;
+    }
+
+    if (totalDeletedCount > 0) {
+      return res.status(200).json({ success: true, message: "University and related items deleted successfully" });
+    } else {
+      return res.status(404).json({ success: false, message: "No matching documents found for deletion" });
+    }
+  } catch (e) {
+    console.error("Error during DeleteUniversity:", e);
+    return res.status(500).json({ success: false, error: e.message });
+  }
 });
 
 app.post("/api/RetrieveRSO", async (req, res) => {
