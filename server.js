@@ -149,7 +149,7 @@ app.post("/api/login", async (req, res) => {
   // Construct response JSON object
   const responseObject = {
     token: token, // remeber to add JWT
-    RSOID: rso.RSOID,
+    RSOID: rso._id,
     RSOName: rso.RSOName,
     Email: rso.Email,
     Phone: rso.Phone,
@@ -162,8 +162,7 @@ app.post("/api/login", async (req, res) => {
   res.status(200).json(responseObject);
 });
 
-
-app.post("/api/RetrieveEvents", async(req, res) => {
+app.post("/api/RetrieveEvents", async (req, res) => {
   const { RSOID } = req.body;
   var eventListReturn = {};
 
@@ -195,18 +194,19 @@ app.post("/api/RetrieveEvents", async(req, res) => {
   res.status(200).json(eventListReturn);
 });
 
-
-app.post("/api/RetrieveRSO", async(req, res) => {
+app.post("/api/RetrieveRSO", async (req, res) => {
   const { UniID, VerificationFlag } = req.body;
   var RSOListReturn = {};
 
   const db = client.db("Reserv");
   const returnArray = [];
-  const RSOList = await db.collection("RSO").find({ UniID : UniID, Verification:VerificationFlag}).toArray();
+  const RSOList = await db
+    .collection("RSO")
+    .find({ UniID: UniID, Verification: VerificationFlag })
+    .toArray();
   console.log(RSOList);
-  
 
-  RSOList.forEach(rso => {
+  RSOList.forEach((rso) => {
     returnArray.push({
       AdminID: rso.AdminID,
       AdvisorEmail: rso.advisorEmail,
@@ -217,26 +217,28 @@ app.post("/api/RetrieveRSO", async(req, res) => {
       RSOID: rso.RSOID,
       RSOName: rso.RSOName,
       UniID: rso.UniID,
-      Verification: rso.Verification
+      Verification: rso.Verification,
     });
-    
-    RSOListReturn = {RSOList:returnArray}
+
+    RSOListReturn = { RSOList: returnArray };
   });
 
   res.status(200).json(RSOListReturn);
 });
 
-app.put("/api/VerifyRSO", async(req,res)=>{
-  const {RSOID}  = req.body;
+app.put("/api/VerifyRSO", async (req, res) => {
+  const { RSOID } = req.body;
   const db = client.db("Reserv");
   var rsoObjectID = new ObjectId(RSOID);
-  
-  const update = await db.collection("Events").updateOne({RSOID:rsoObjectID},{$set:{Verification : true}})
+
+  const update = await db
+    .collection("Events")
+    .updateOne({ RSOID: rsoObjectID }, { $set: { Verification: true } });
   res.status(200).json(update);
 });
 
-app.put("/api/UpdateEvent", async(req,res)=>{
-  const {EventID, EventName, Description}  = req.body;
+app.put("/api/UpdateEvent", async (req, res) => {
+  const { EventID, EventName, Description } = req.body;
   const db = client.db("Reserv");
   var eventObjectId = new ObjectId(EventID);
 
@@ -270,16 +272,12 @@ app.post("/api/RetrieveRooms", async (req, res) => {
     .collection("Building")
     .findOne({ Latitude: Latitude, Longitude: Longitude });
 
-
   var returnArray = [];
   var roomList;
 
-  if(building == undefined) 
-  {
+  if (building == undefined) {
     roomList = await db.collection("Room").find({}).toArray();
-  }
-  else 
-  {
+  } else {
     // Construct response JSON object
     const responseObject = {
       // token: token, // remeber to add JWT
@@ -289,9 +287,11 @@ app.post("/api/RetrieveRooms", async (req, res) => {
       Longitude: building.Longitude,
       UniID: building.UniID,
     };
-    roomList = await db.collection("Room").find({ BuildingID : responseObject.BuildingID.toString() }).toArray();
+    roomList = await db
+      .collection("Room")
+      .find({ BuildingID: responseObject.BuildingID.toString() })
+      .toArray();
   }
-  
 
   roomList.forEach((room) => {
     returnArray.push({
@@ -335,7 +335,6 @@ function authenticateJWT(req, res, next) {
 
 // PUT NEW APIs AFTER HERE, this first one has JWT but others don't yet.
 
-
 app.post("/api/createEvent", authenticateJWT, async (req, res) => {
   const {
     Date,
@@ -351,7 +350,6 @@ app.post("/api/createEvent", authenticateJWT, async (req, res) => {
     RSOID,
     RoomID,
   } = req.body;
-
 
   const db = client.db("Reserv");
 
