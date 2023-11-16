@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/index.css";
 
-function Login() {
+function OrgLogin() {
   var loginName;
   var loginPassword;
   const [message, setMessage] = useState("");
@@ -16,7 +16,7 @@ function Login() {
 
     try {
       // CHANGE THIS BACK TO HEROKU ON DEV
-      const response = await fetch("http://localhost:5000/api/login", {
+      const response = await fetch("https://knightsreserv-00cde8777914.herokuapp.com/api/login", {
         method: "POST",
         body: js,
         headers: { "Content-Type": "application/json" },
@@ -40,7 +40,7 @@ function Login() {
           );
 
           setMessage("");
-          window.location.href = "/OrgHomePage";
+          window.location.href = "/OrgProfilePage";
         } else {
           setMessage("No token received, login failed");
         }
@@ -87,9 +87,12 @@ function Login() {
           value="Login"
           onClick={doLogin}
         />
+        <Link to="/OrgCreateAccount">
+          <button className="navbar-menu-text">Don't Have an Account? Sign Up Here!</button>
+        </Link>
       </form>
       <span id="loginResult">{message}</span>
     </div>
   );
 }
-export default Login;
+export default OrgLogin;

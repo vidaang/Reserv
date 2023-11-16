@@ -7,6 +7,8 @@ import './styles/App.css';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
+import UniLoginPage from './pages/UniLoginPage';
+import UniSignUpPage from './pages/UniSignUpPage';
 import OrgProfilePage from './pages/Org/OrgProfilePage';
 import OrgHomePage from './pages/Org/OrgHomePage';
 import OrgSearchPage from './pages/Org/OrgSearchPage';
@@ -30,8 +32,10 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/Login" element={<LoginPage />} />
-          <Route path="/CreateAccount" element={<SignUpPage />} />
+          <Route path="/OrgLogin" element={<LoginPage />} />
+          <Route path="/OrgCreateAccount" element={<SignUpPage />} />
+          <Route path="/UniLogin" element={<UniLoginPage />} />
+          <Route path="/UniCreateAccount" element={<UniSignUpPage />} />
 
           <Route path="/OrgProfilePage" element={<OrgProfilePage/>}/>
           <Route path="/OrgHomePage" element={<OrgHomePage/>}/>

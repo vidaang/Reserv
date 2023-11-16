@@ -6,7 +6,7 @@
   --color-1: #61ff7e;
   --color-2: #F0E9D390;
   --color-3: #8e8a8850;
-  --color-4: #526760;
+  --color-8: #526760;
   --color-5: #95d07d;
   --color-6: #1C1018;
   --color-7: #eaeaea;
@@ -19,7 +19,8 @@
 
 #page-container{
   background-color: #ffffff;
-  max-height: 100%;
+  height: 100vh;
+  overflow-y: hidden;
 }
 
 
@@ -115,8 +116,8 @@ body {
   font-weight: bold;
   font-family: 'Gabarito', sans-serif;
   padding: 6px 17px;
-  color: var(--color-4);
-  border: 2px solid var(--color-4);
+  color: var(--color-8);
+  border: 2px solid var(--color-8);
   border-radius: 50px;
   background-color: transparent;
   transition: all 0.3s ease-in-out;
@@ -134,8 +135,8 @@ body {
   font-weight: bold;
   color: white;
   padding: 5px 13px;
-  background-color: var(--color-4);
-  border: 2px solid var(--color-4);
+  background-color: var(--color-8);
+  border: 2px solid var(--color-8);
   border-radius: 50px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
@@ -238,11 +239,14 @@ body {
   border-radius: 25px;
 }
 
-.side-image-container {
-  background-image: url(../images/lecture-hall.jpg);
+.side-image-container, .side-image-container-uni {
+  background-image: url(../images/organization-login.jpg);
   background-size: cover;
   height: 100vh;
   width: 100%;
+}
+.side-image-container-uni {
+  background-image: url(../images/university-login.jpg);
 }
 
 
@@ -281,8 +285,8 @@ body {
   color: white;
   font-family: 'Gabarito', sans-serif;
   font-size: 18px;
-  border: 2px solid var(--color-4);
-  background-color: var(--color-4);
+  border: 2px solid var(--color-8);
+  background-color: var(--color-8);
   transition: 0.3s;
 }
 
@@ -291,17 +295,17 @@ body {
 }
 
 #landing-university-button {
-  color: var(--color-4);
+  color: var(--color-8);
   font-family: 'Gabarito', sans-serif;
   font-weight: bold;
   font-size: 18px;
-  border: 2px solid var(--color-4);
+  border: 2px solid var(--color-8);
   background-color: transparent;
   transition: 0.3s;
 }
 
 #landing-university-button:hover {
-  background-color: var(--color-4);
+  background-color: var(--color-8);
   color: white;
 }
 
@@ -836,14 +840,14 @@ output[for="timeRange"] {
 
 #edit-reservation-cancel-button {
   background-color: transparent;
-  border: 2px solid var(--color-4);
+  border: 2px solid var(--color-8);
   font-weight: bold;
-  color: var(--color-4);
+  color: var(--color-8);
 }
 
 #edit-reservation-confirm-button {
-  background-color: var(--color-4);
-  border: 2px solid var(--color-4);
+  background-color: var(--color-8);
+  border: 2px solid var(--color-8);
   color: white;
   font-weight: bold;
 }

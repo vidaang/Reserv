@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
-import Login from '../components/Login';
-import CreateAccount from '../components/CreateAccount';
+import OrgLogin from '../components/OrgLogin';
+import OrgCreateAccount from '../components/OrgCreateAccount';
 import NavBar from '../components/NavBar';
 import { Link } from 'react-router-dom';
 
-const LoginPage = () =>
+const SignUpPage = () =>
 {
     const [show,setShow] = useState(false);
 
@@ -16,8 +16,8 @@ const LoginPage = () =>
             </div>
             <div id="user-authentication-container">
                 <div id="user-authentication-container-elements">
-                    <h1 id="user-authetication-title">Sign Up</h1>
-                    <CreateAccount />
+                    <h1 id="user-authetication-title">Organization Sign Up</h1>
+                    <OrgCreateAccount />
                 </div> 
 
                 <div className='side-image-container'></div>            
@@ -25,4 +25,4 @@ const LoginPage = () =>
         </div>
     );
 };
-export default LoginPage;
+export default SignUpPage;

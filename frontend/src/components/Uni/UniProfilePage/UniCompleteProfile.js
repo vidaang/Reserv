@@ -3,9 +3,13 @@ import "../../../styles/index.css";
 
 function UniCompleteProfile()
 {
-    const handleClick = () =>
+    const handleCancelClick = () =>
     {
-        alert("Button Click Yippee!");
+        window.location.href = "/";
+    };
+    const handleCreateClick = () =>
+    {
+        window.location.href = "/UniVerificationPage";
     };
 
     return (
@@ -22,8 +26,8 @@ function UniCompleteProfile()
                 I understand and agree to the statement above
             </label>
             <div id="CompleteProfileButtonDiv">
-                <button id="uni-profile-cancel-button" onClick={handleClick}>Cancel</button>
-                <button id="uni-profile-create-button" onClick={handleClick}>Create Account</button>
+                <button id="uni-profile-cancel-button" onClick={handleCancelClick}>Cancel</button>
+                <button id="uni-profile-create-button" onClick={handleCreateClick}>Create Account</button>
             </div>
         </div>
     );
