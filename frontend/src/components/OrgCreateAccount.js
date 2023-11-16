@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Button } from 'react-bootstrap';
-import Hall from '../images/lecture-hall.jpg';
+import { Link } from "react-router-dom";
 
-function CreateAccount()
+function OrgCreateAccount()
 {
     var createAccountEmail;
     var createAccountPassword;
@@ -77,8 +76,11 @@ function CreateAccount()
                 <input type="text" class="user-authentication-text-form" id="createAccountAdvisorEmail" placeholder="Advisor Email" ref={(c) => createAccountAdvisorEmail = c} /><br />
                 <input type="submit" id="loginButton" class="user-authentication-buttons" value="Create Account" onClick={doCreateAccount} />
             </form>
+            <Link to="/OrgLogin">
+                <button className="navbar-menu-text">Have an Account? Sign In Here!</button>
+            </Link>
             <span id="loginResult">{message}</span>
         </div>
     );
 };
-export default CreateAccount;
+export default OrgCreateAccount;
