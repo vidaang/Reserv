@@ -169,14 +169,28 @@ app.post("/api/RetrieveEvents", async (req, res) => {
 
   const db = client.db("Reserv");
   const returnArray = [];
-  const eventList = await db
+  var eventList;
+
+  if (RSOID == undefined)
+  {
+    eventList = await db
+    .collection("Events")
+    .find({})
+    .toArray();
+    console.log(eventList);
+  }
+  else 
+  {
+    eventList = await db
     .collection("Events")
     .find({ RSOID: RSOID })
     .toArray();
+  }
+  
 
   eventList.forEach((event) => {
     returnArray.push({
-      EventID: event.EventID,
+      EventID: event._id,
       EventName: event.EventName,
       Date: event.Date,
       EventType: event.EventType,
@@ -471,7 +485,7 @@ app.delete("/api/DeleteEvent", async (req, res) => {
 
   const update = await db
     .collection("Events")
-    .deleteOne({ EventID: eventObjectId });
+    .deleteOne({ _id: eventObjectId });
   res.status(200).json(update);
 });
 
