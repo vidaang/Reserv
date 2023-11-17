@@ -10,13 +10,14 @@ function UniLogin() {
   const doLogin = async (event) => {
     event.preventDefault();
 
-    var obj = { email: loginName.value, password: loginPassword.value };
+    var obj = { Email: loginName.value, Password: loginPassword.value };
     var js = JSON.stringify(obj);
     console.log(js);
 
     try {
       // CHANGE THIS BACK TO HEROKU ON DEV
-      const response = await fetch("https://knightsreserv-00cde8777914.herokuapp.com/api/login", {
+      const response = await fetch("https://knightsreserv-00cde8777914.herokuapp.com/api/adminLogin", {
+      // const response = await fetch('http://localhost:5000/api/adminLogin', {
         method: "POST",
         body: js,
         headers: { "Content-Type": "application/json" },
@@ -36,11 +37,44 @@ function UniLogin() {
           // Optionally store other user info as needed
           localStorage.setItem(
             "userInfo",
-            JSON.stringify({ RSOName: res.RSOName, RSOID: res.RSOID })
+            JSON.stringify({ UniName: res.UniName, UniID: res.UniID })
           );
 
+          const update = {
+            UniName: res.UniName,
+            Address: res.Address,
+            EmailDomain: res.EmailDomain,
+            Website: res.Website,
+            Phone: res.Phone,
+          };
+
+          try {
+            // Call the checkFieldsNotEmpty endpoint
+            const checkResponse = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/checkUniFields', {
+            // const checkResponse = await fetch('http://localhost:5000/api/checkUniFields', {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`, // Include the token in the Authorization header
+              },
+              body: JSON.stringify(update), // assuming `update` contains the fields you want to check
+            });
+        
+            const checkResult = await checkResponse.json();
+        
+            if (checkResult.fieldsNotEmpty) {
+              // Fields are not empty, redirect to UniVerificationPage
+              window.location.href = "/UniVerificationPage";
+            } else {
+              // Fields are empty, redirect to UniProfilePage
+              window.location.href = "/UniProfilePage";
+            }
+          } catch (error) {
+            console.error("Error during checkFieldsNotEmpty:", error);
+            // Handle error as needed, e.g., redirect to an error page
+          }
+        
           setMessage("");
-          window.location.href = "/UniProfilePage";
         } else {
           setMessage("No token received, login failed");
         }
