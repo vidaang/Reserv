@@ -42,6 +42,7 @@ function UniCompleteProfile() {
         console.error('Token not found');
         return;
       }
+      // const response = await fetch('http://localhost:5000/api/updateUniversityInfo', {
       const response = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/updateUniversityInfo', {
         method: 'POST',
         headers: {
@@ -69,25 +70,6 @@ function UniCompleteProfile() {
       console.error(`Error: ${error.message}`);
     }
   };
-  
-//   const handleCreateClick = async () => {
-//     // Include the token in the headers of your fetch request
-//     try {
-//       const response = await fetch('http://localhost:5000/api/updateUniversityInfo', {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//           'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
-//         },
-//         body: JSON.stringify(uniInfo),
-//       });
-
-//       // Rest of the code...
-//     } catch (error) {
-//       // Handle network errors or other exceptions
-//       console.error(`Error: ${error.message}`);
-//     }
-//   };
 
   return (
     <div id="CompleteProfileContainer">

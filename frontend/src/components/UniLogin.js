@@ -40,8 +40,41 @@ function UniLogin() {
             JSON.stringify({ UniName: res.UniName, UniID: res.UniID })
           );
 
+          const update = {
+            UniName: res.UniName,
+            Address: res.Address,
+            EmailDomain: res.EmailDomain,
+            Website: res.Website,
+            Phone: res.Phone,
+          };
+
+          try {
+            // Call the checkFieldsNotEmpty endpoint
+            const checkResponse = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/checkUniFields', {
+            // const checkResponse = await fetch('http://localhost:5000/api/checkUniFields', {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`, // Include the token in the Authorization header
+              },
+              body: JSON.stringify(update), // assuming `update` contains the fields you want to check
+            });
+        
+            const checkResult = await checkResponse.json();
+        
+            if (checkResult.fieldsNotEmpty) {
+              // Fields are not empty, redirect to UniVerificationPage
+              window.location.href = "/UniVerificationPage";
+            } else {
+              // Fields are empty, redirect to UniProfilePage
+              window.location.href = "/UniProfilePage";
+            }
+          } catch (error) {
+            console.error("Error during checkFieldsNotEmpty:", error);
+            // Handle error as needed, e.g., redirect to an error page
+          }
+        
           setMessage("");
-          window.location.href = "/UniProfilePage";
         } else {
           setMessage("No token received, login failed");
         }
