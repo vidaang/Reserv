@@ -10,13 +10,14 @@ function UniLogin() {
   const doLogin = async (event) => {
     event.preventDefault();
 
-    var obj = { email: loginName.value, password: loginPassword.value };
+    var obj = { Email: loginName.value, Password: loginPassword.value };
     var js = JSON.stringify(obj);
     console.log(js);
 
     try {
       // CHANGE THIS BACK TO HEROKU ON DEV
-      const response = await fetch("https://knightsreserv-00cde8777914.herokuapp.com/api/login", {
+      const response = await fetch("https://knightsreserv-00cde8777914.herokuapp.com/api/adminLogin", {
+      // const response = await fetch('http://localhost:5000/api/adminLogin', {
         method: "POST",
         body: js,
         headers: { "Content-Type": "application/json" },
@@ -36,7 +37,7 @@ function UniLogin() {
           // Optionally store other user info as needed
           localStorage.setItem(
             "userInfo",
-            JSON.stringify({ RSOName: res.RSOName, RSOID: res.RSOID })
+            JSON.stringify({ UniName: res.UniName, UniID: res.UniID })
           );
 
           setMessage("");
