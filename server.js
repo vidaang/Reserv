@@ -410,12 +410,14 @@ app.put("/api/DeleteUniversity", async (req, res) => {
 app.post("/api/RetrieveRSO", async (req, res) => {
   const { UniID, VerificationFlag } = req.body;
   var RSOListReturn = {};
+  var uniObjectID = new ObjectId(UniID);
+
 
   const db = client.db("Reserv");
   const returnArray = [];
   const RSOList = await db
     .collection("RSO")
-    .find({ UniID: UniID, Verification: VerificationFlag })
+    .find({ UniID: uniObjectID, Verification: VerificationFlag })
     .toArray();
   console.log(RSOList);
 
@@ -425,9 +427,10 @@ app.post("/api/RetrieveRSO", async (req, res) => {
       AdvisorEmail: rso.advisorEmail,
       AdvisorName: rso.AdvisorName,
       Email: rso.Email,
-      OfficerLastName: rso.OfficerFirstName,
+      Phone: rso.Phone,
+      OfficerFirstName: rso.OfficerFirstName,
       OfficerLastName: rso.OfficerLastName,
-      RSOID: rso.RSOID,
+      RSOID: rso._id,
       RSOName: rso.RSOName,
       UniID: rso.UniID,
       Verification: rso.Verification,
@@ -444,9 +447,11 @@ app.put("/api/VerifyRSO", async (req, res) => {
   const db = client.db("Reserv");
   var rsoObjectID = new ObjectId(RSOID);
 
+  console.log(rsoObjectID);
+
   const update = await db
-    .collection("Events")
-    .updateOne({ RSOID: rsoObjectID }, { $set: { Verification: true } });
+    .collection("RSO")
+    .updateOne({ _id: rsoObjectID }, { $set: { Verification: true } });
   res.status(200).json(update);
 });
 
