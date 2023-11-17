@@ -1101,7 +1101,6 @@ output[for="timeRange"] {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
   margin: 1%;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
 }
@@ -1110,10 +1109,12 @@ output[for="timeRange"] {
   display: flex;
   justify-content: space-between;
   flex-direction: row;
+  margin-bottom: 1%;
 }
 
 #CreateReservationBackButton {
-  margin-right: 5%;
+  margin-left: 2%;
+  margin-bottom: 1%;
   background-color: transparent;
   color: #007bff;
   border: solid 2px;
@@ -1122,6 +1123,11 @@ output[for="timeRange"] {
 
 #CreateReservationBackButton:hover {
   background-color: rgba(0, 0, 0, 0.1);
+}
+
+#CreateReservationSubmitButton {
+  margin-right: 2%;
+  margin-bottom: 1%;
 }
 
 #OrgCompleteReservationsPageDiv {
@@ -1197,6 +1203,26 @@ output[for="timeRange"] {
 #complete-reservation-create-button:active {
   background-color: #004292; /* Adjust as desired */
 }
+
+.complete-reservation-checkbox {
+  margin-left: 2%;
+  margin-bottom: 2%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.complete-reservation-checkbox span {
+  align-items: left;
+  justify-content: left;
+}
+
+.complete-reservation-checkbox input {
+  margin-left: 100px;
+  align-items: right;
+  justify-content: right;
+}
+
 
 #OrgEditReservationsPageDiv {
   display: flex !important;

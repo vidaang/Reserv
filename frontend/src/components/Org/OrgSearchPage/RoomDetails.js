@@ -150,11 +150,11 @@ function RoomDetails(props) {
   var eventType;
   var numAttendees;
   var description;
-  var atriumOccupy = true; // CHANGE THIS
+  var atriumOccupy; // CHANGE THIS
   var atriumBuilding = room.BuildingID;
   var startEnd = [];
-  var eventAgreement = true; // CHANGE THESE
-  var mediaEquip = true;
+  var eventAgreement; // CHANGE THESE
+  var mediaEquip;
   var RSOID = JSON.parse(localStorage.getItem("userInfo")).RSOID;
   var roomID = room.RoomID;
 
@@ -169,11 +169,11 @@ function RoomDetails(props) {
       EventType: eventType.value,
       NumAttendees: numAttendees.value,
       Description: description.value,
-      AtriumOccupy: atriumOccupy,
+      AtriumOccupy: atriumOccupy.checked,
       AtriumBuilding: atriumBuilding,
       StartEnd: startEnd,
-      EventAgreement: eventAgreement,
-      MediaEquip: mediaEquip,
+      EventAgreement: eventAgreement.checked,
+      MediaEquip: mediaEquip.checked,
       RSOID: RSOID,
       RoomID: roomID,
     };
@@ -200,12 +200,14 @@ function RoomDetails(props) {
     console.log(data);
   };
 
-  function handleCreateReservation() {
+  function handleCreateReservation(e) {
     // PASS IN ROOM INFORMATION
+    e.preventDefault();
     console.log(selectedDate);
     console.log("Index: " + selectedTime);
     console.log(availableTimes[selectedTime]);
-    createEvent(availableTimes[selectedTime]);    
+    createEvent(availableTimes[selectedTime]);
+    window.location.reload();
   }
 
   return (
@@ -309,49 +311,55 @@ function RoomDetails(props) {
             </div>
           </>
         ) : ( 
-          <div id="CompleteReservationContainer">
-            {/*CHANGE TO A FORM AND REMOVE FOOTER*/}
-            <div className="complete-reservation-input-label">
-                <label htmlFor="eventName">Event Name:</label>
-                <input type="text" id="eventName" placeholder="Enter Event Name" ref={(c) => (eventName = c)}/>
+          <form onSubmit={handleCreateReservation}>
+            <div id="CompleteReservationContainer">
+              {/*CHANGE TO A FORM AND REMOVE FOOTER*/}
+              <div className="complete-reservation-input-label">
+                  <label htmlFor="eventName">Event Name:</label>
+                  <input type="text" id="eventName" placeholder="Enter Event Name" ref={(c) => (eventName = c)} required/>
+              </div>
+              <div className="complete-reservation-input-label">
+                  <label htmlFor="eventType">Event Type:</label>
+                  <input type="text" id="eventType" placeholder="Enter Event Type" ref={(c) => (eventType = c)} required/>
+              </div>
+              <div className="complete-reservation-input-label">
+                  <label htmlFor="eventDescription">Event Description:</label>
+                  <input type="text" id="eventDescription" placeholder="Enter Event Description" ref={(c) => (description = c)} required/>
+              </div>
+              <div className="complete-reservation-input-label">
+                  <label htmlFor="eventAttendees">Number of Attendees:</label>
+                  <input type="text" id="eventAttendees" placeholder="Enter Number of Attendees" ref={(c) => (numAttendees = c)} required/>
+              </div>
+              <div className="complete-reservation-checkbox">
+                  <span htmlFor="eventAtriumLobby">Atrium or Lobby Needed:</span>
+                  <input type="checkbox" id="eventAtriumLobby" ref={(c) => (atriumOccupy = c)}/>
+              </div>
+              <div className="complete-reservation-checkbox">
+                  <span htmlFor="eventMediaEquip">Need use of Media Equipment:</span>
+                  <input type="checkbox" id="eventMediaEquip" ref={(c) => (mediaEquip = c)}/>
+              </div>
+              <div className="complete-reservation-checkbox">
+                  <span htmlFor="eventAgreement">Agree to Event Terms:</span>
+                  <input type="checkbox" id="eventAgreement" ref={(c) => (eventAgreement = c)} required/>
+              </div>
+              <div id="CreateReservationButtonContainer">
+              <Button
+                id="CreateReservationBackButton"
+                variant="primary"
+                onClick={() => setShowEventForm(false)}
+              >
+                Back
+              </Button>
+              <Button
+                id="CreateReservationSubmitButton"
+                variant="primary"
+                type="submit"
+              >
+                Submit
+              </Button>
             </div>
-            <div className="complete-reservation-input-label">
-                <label htmlFor="eventType">Event Type:</label>
-                <input type="text" id="eventType" placeholder="Enter Event Type" ref={(c) => (eventType = c)}/>
-            </div>
-            <div className="complete-reservation-input-label">
-                <label htmlFor="eventDescription">Event Description:</label>
-                <input type="text" id="eventDescription" placeholder="Enter Event Description" ref={(c) => (description = c)}/>
-            </div>
-            <div className="complete-reservation-input-label">
-                <label htmlFor="eventAttendees">Number of Attendees:</label>
-                <input type="text" id="eventAttendees" placeholder="Enter Number of Attendees" ref={(c) => (numAttendees = c)}/>
-            </div>
-            <div className="complete-reservation-input-label">
-                <label htmlFor="eventAtriumLobby">Atrium or Lobby Needed:</label>
-                <input type="text" id="eventAtriumLobby" placeholder="Yes/No" />
-            </div>
-            <div className="complete-reservation-input-label">
-                <label htmlFor="eventStart">Event Start Date:</label>
-                <input type="text" id="eventStart" placeholder="Enter Start Date" />
-            </div>
-            <div className="complete-reservation-input-label">
-                <label htmlFor="eventRepeat">Event Repeats:</label>
-                <input type="text" id="eventRepeat" placeholder="Yes/No" />
-            </div>
-            <div className="complete-reservation-input-label">
-                <label htmlFor="eventEnd">Event End Date:</label>
-                <input type="text" id="eventEnd" placeholder="Enter End Date" />
-            </div>
-            <div className="complete-reservation-input-label">
-                <label htmlFor="setupTime">Setup Time:</label>
-                <input type="text" id="setupTime" placeholder="Enter Setup Time" />
-            </div>
-            <div className="complete-reservation-input-label">
-                <label htmlFor="cleanupTime">Cleanup Time:</label>
-                <input type="text" id="cleanupTime" placeholder="Enter Cleanup Time" />
-            </div>
-        </div>
+          </div>
+        </form>
         ))}
       </Modal.Body>
 
@@ -365,22 +373,7 @@ function RoomDetails(props) {
             Create Reservation
           </Button> 
         ) : (
-          <div id="CreateReservationButtonContainer">
-            <Button
-              id="CreateReservationBackButton"
-              variant="primary"
-              onClick={() => setShowEventForm(false)}
-            >
-              Back
-            </Button>
-            <Button
-              id="CreateReservationSubmitButton"
-              variant="primary"
-              onClick={handleCreateReservation}
-            >
-              Submit
-            </Button>
-          </div>
+          <div></div>
         )}
       </Modal.Footer>
     </Modal>
