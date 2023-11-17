@@ -169,10 +169,22 @@ app.post("/api/RetrieveEvents", async(req, res) => {
 
   const db = client.db("Reserv");
   const returnArray = [];
-  const eventList = await db
+  var eventList;
+
+  if (RSOID == undefined)
+  {
+    eventList = await db
+    .collection("Events")
+    .find({})
+    .toArray();
+  }
+  else
+  {
+    eventList = await db
     .collection("Events")
     .find({ RSOID: RSOID })
     .toArray();
+  }
 
   eventList.forEach((event) => {
     returnArray.push({
