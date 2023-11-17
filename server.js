@@ -266,6 +266,40 @@ app.post("/api/adminLogin", async (req, res) => {
   }
 });
 
+app.post("/api/checkUniFields", async (req, res) => {
+  // Get the token from the request headers
+  const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ error: "Unauthorized: Token not provided" });
+  }
+
+  try {
+    // Decode the token to get the UniID
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
+    const UniID = decodedToken.UniID;
+
+    // Fetch the university from the database based on UniID
+    const db = client.db("Reserv");
+    const uni = await db.collection("University").findOne({ UniID: new ObjectId(UniID) });
+
+    if (!uni) {
+      return res.status(400).json({ error: "University not found" });
+    }
+
+    // Check if all fields are not empty
+    const fieldsNotEmpty = Object.values(uni).every(field => field !== "");
+
+    res.status(200).json({ fieldsNotEmpty });
+  } catch (error) {
+    console.error("Error during checkFieldsNotEmpty:", error);
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({ error: "Unauthorized: Token expired" });
+    }
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 app.post("/api/updateUniversityInfo", async (req, res) => {
   const update = {
     UniName: req.body.UniName,
@@ -277,9 +311,20 @@ app.post("/api/updateUniversityInfo", async (req, res) => {
 
   const db = client.db("Reserv");
 
+  // Get the token from the request headers
+  const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ error: "Unauthorized: Token not provided" });
+  }
+
   try {
+    // Decode the token to get the UniID
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
+    const UniID = decodedToken.UniID;
+
     let result = await db.collection("University").updateOne(
-      { UniID: new ObjectId(req.body.UniID) }, // Ensure UniID is an ObjectId
+      { UniID: new ObjectId(UniID) },
       { $set: update }
     );
 
@@ -288,8 +333,12 @@ app.post("/api/updateUniversityInfo", async (req, res) => {
     } else {
       return res.status(400).json({ error: "No document updated. UniID may not exist." });
     }
-  } catch (e) {
-    return res.status(500).json({ error: e.toString() });
+  } catch (error) {
+    console.error("Error during updateUniversityInfo:", error);
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({ error: "Unauthorized: Token expired" });
+    }
+    return res.status(500).json({ error: "Internal server error" });
   }
 });
 
