@@ -114,7 +114,7 @@ function UniCompleteProfile() {
       /><br />
 
       <span id="uni-profile-discretion-text">
-        I understand that if I am not a registered and recognized university with the United States Government, I will not be allowed to manage reservations through Reserv. Reserv is not responsible for any disputes regarding reservations through our platform.
+        I understand that if I am not a registered and recognized university within the United States Goverment, I will not be allowed to manage reservations through Reserv. Reserv is not responsible for any disputes regarding reservations through our platform.
       </span>
 
       <label id="uni-profile-checkbox-message">
