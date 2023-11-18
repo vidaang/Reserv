@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+// import Cookies from 'js-cookies';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import format from "date-fns/format";
 import parse from "date-fns/parse";
@@ -27,12 +28,10 @@ function LargeCalendar()
     const [opened, { open, close }] = useDisclosure(false);
     const [events, setEvents] = useState([]);
     
-    var storedData = JSON.parse(localStorage.getItem("userInfo"));
-    var RSOID = storedData.RSOID;
+    // var RSOID = Cookies.get('RSOID');
 
     const handleEventClick = (event) => {
         setSelectedEvent(event);
-        console.log(event.eventID);
         open();
     };
 
@@ -42,33 +41,38 @@ function LargeCalendar()
         var events = new Set();
 
         eventList.forEach(event => {
-            
-            var dateParts = event.Date.split('-');
-            var month = parseInt(dateParts[0], 10);
-            var day = parseInt(dateParts[1], 10);
-            var year = parseInt(dateParts[2], 10);
-            var start = event.StartEnd[0];
-            var end = event.StartEnd[1];
+            if (event.EventName === undefined)
+            {
+                console.log("Undefined");
+            }
+            else {
+                var dateParts = event.Date.split('-');
+                var month = parseInt(dateParts[0], 10);
+                var day = parseInt(dateParts[1], 10);
+                var year = parseInt(dateParts[2], 10);
+                var start = event.StartEnd[0];
+                var end = event.StartEnd[1];
 
-            events.add(
-                {
-                    id: event.EventID,
-                    title: event.EventName,
-                    allDay: false,
-                    date: new Date(year, month - 1, day),
-                    start: new Date(year, month - 1, day, start, 0, 0),
-                    end: new Date(year, month - 1, day, end, 0, 0),
-                    eventType: event.EventType,
-                    numAttendees: event.NumAttendees,
-                    description: event.Description,
-                    atriumOccupy: event.AtriumOccupy,
-                    atriumBuilding: event.AtriumBuilding,
-                    room: event.RoomID, 
-                    eventID: event.EventID
-                }
-            );
+                events.add(
+                    {
+                        id: event.EventID,
+                        title: event.EventName,
+                        allDay: false,
+                        date: new Date(year, month - 1, day),
+                        start: new Date(year, month - 1, day, start, 0, 0),
+                        end: new Date(year, month - 1, day, end, 0, 0),
+                        eventType: event.EventType,
+                        numAttendees: event.NumAttendees,
+                        description: event.Description,
+                        atriumOccupy: event.AtriumOccupy,
+                        atriumBuilding: event.AtriumBuilding,
+                        room: event.RoomID, 
+                        eventID: event.EventID
+                    }
+                );
+            }
         });
-        
+        console.log(events);
         setEvents(events);
     };
 
@@ -78,12 +82,7 @@ function LargeCalendar()
         
         const getEventList = async () =>
         {
-            if (!RSOID)
-            {
-                return;
-            }
-
-            var obj = { RSOID:RSOID };
+            var obj = { RSOID:undefined };
             var js = JSON.stringify(obj);
             console.log(js);
             try
@@ -93,6 +92,7 @@ function LargeCalendar()
                 body:js,
                 headers:{'Content-Type':'application/json'}});
                 var res = await response.json();
+                console.log(res.eventList);
                 return res.eventList;
             }
             catch(e)
@@ -110,7 +110,7 @@ function LargeCalendar()
 
         fetchEventData();
 
-    }, [RSOID]);
+    }, []);
 
     
 

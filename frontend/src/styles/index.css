@@ -6,7 +6,7 @@
   --color-1: #61ff7e;
   --color-2: #F0E9D390;
   --color-3: #8e8a8850;
-  --color-4: #526760;
+  --color-8: #526760;
   --color-5: #95d07d;
   --color-6: #1C1018;
   --color-7: #eaeaea;
@@ -19,7 +19,8 @@
 
 #page-container{
   background-color: #ffffff;
-  max-height: 100%;
+  height: 100vh;
+  overflow-y: hidden;
 }
 
 
@@ -115,8 +116,8 @@ body {
   font-weight: bold;
   font-family: 'Gabarito', sans-serif;
   padding: 6px 17px;
-  color: var(--color-4);
-  border: 2px solid var(--color-4);
+  color: var(--color-8);
+  border: 2px solid var(--color-8);
   border-radius: 50px;
   background-color: transparent;
   transition: all 0.3s ease-in-out;
@@ -134,8 +135,8 @@ body {
   font-weight: bold;
   color: white;
   padding: 5px 13px;
-  background-color: var(--color-4);
-  border: 2px solid var(--color-4);
+  background-color: var(--color-8);
+  border: 2px solid var(--color-8);
   border-radius: 50px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
@@ -238,11 +239,14 @@ body {
   border-radius: 25px;
 }
 
-.side-image-container {
-  background-image: url(../images/lecture-hall.jpg);
+.side-image-container, .side-image-container-uni {
+  background-image: url(../images/organization-login.jpg);
   background-size: cover;
   height: 100vh;
   width: 100%;
+}
+.side-image-container-uni {
+  background-image: url(../images/university-login.jpg);
 }
 
 
@@ -281,8 +285,8 @@ body {
   color: white;
   font-family: 'Gabarito', sans-serif;
   font-size: 18px;
-  border: 2px solid var(--color-4);
-  background-color: var(--color-4);
+  border: 2px solid var(--color-8);
+  background-color: var(--color-8);
   transition: 0.3s;
 }
 
@@ -291,17 +295,17 @@ body {
 }
 
 #landing-university-button {
-  color: var(--color-4);
+  color: var(--color-8);
   font-family: 'Gabarito', sans-serif;
   font-weight: bold;
   font-size: 18px;
-  border: 2px solid var(--color-4);
+  border: 2px solid var(--color-8);
   background-color: transparent;
   transition: 0.3s;
 }
 
 #landing-university-button:hover {
-  background-color: var(--color-4);
+  background-color: var(--color-8);
   color: white;
 }
 
@@ -618,7 +622,7 @@ output[for="timeRange"] {
 
 /* SEARCH PAGE MODAL */
 .roomDetailsModal{
-  min-width: max-content;
+  min-width: min-content;
   max-height: 90%;
   overflow-y: scroll;
   background-color: transparent;
@@ -628,6 +632,7 @@ output[for="timeRange"] {
   margin: 10px 0;
   padding: 5px;
   display: flex;
+  min-width: max-content;
   flex-direction: row;
 }
 
@@ -703,6 +708,8 @@ output[for="timeRange"] {
   border: 1px solid #e1e1e1;
   border-radius: 10px;
   padding: 10px;
+  min-width: min-content;
+  overflow-x: wrap;
 }
 
 .availableTimeDayButton{
@@ -754,7 +761,51 @@ output[for="timeRange"] {
   min-height: 580px;
 }
 
+/* DELETE RESERVATION */
+
+#cancel-modal-container h1 {
+  font-family: 'Gabarito', sans-serif;
+  font-size: 24px;
+  text-align: center;
+}
+
+#cancel-modal-buttons {
+  margin-top: 1%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#cancel-modal-buttons button {
+  border-radius: 25px;
+  padding: 5px 15px;
+}
+
+#cancel-back-button {
+  background-color: transparent;
+  transition: 0.3s;
+}
+
+#cancel-back-button:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+#cancel-confirm-button {
+  border: 2px solid red;
+  background-color: red;
+  color: white;
+  transition: 0.3s;
+}
+
+#cancel-confirm-button:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+}
+
 /* RESERVATION PAGE POPUP / EDIT RESERVATION */
+
+#OrgEditReservationsPageDiv h1{
+  margin-top: 1%;
+}
 
 #reservation-popup-content {
   font-family: 'Gabarito', sans-serif;
@@ -773,15 +824,42 @@ output[for="timeRange"] {
 }
 
 #reservation-popup-button-container button {
-  margin: 0 10px;
   border-radius: 25px;
+  padding: 7px 18px;
+}
+
+#EditReservationButtonDiv {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#EditReservationButtonDiv button {
+  margin: 0 10px;
+  border-radius: 5px;
   padding: 7px 15px;
+  margin-bottom: 3%;
+}
+
+#edit-reservation-cancel-button {
+  background-color: transparent;
+  border: 2px solid var(--color-8);
+  font-weight: bold;
+  color: var(--color-8);
+}
+
+#edit-reservation-confirm-button {
+  background-color: var(--color-8);
+  border: 2px solid var(--color-8);
+  color: white;
+  font-weight: bold;
 }
 
 #popup-edit-button {
   border: 2px solid gold;
   background-color: transparent;
   transition: 0.2s;
+  margin-right: 3%;
 }
 
 #popup-edit-button:hover {
@@ -1020,6 +1098,42 @@ output[for="timeRange"] {
 
 /* COMPLETE RESERVATION FORM */
 
+#CompleteReservationContainer {
+  border: 1px solid gray;
+  border-radius: 15px;
+  min-width: min-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 1%;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+}
+
+#CreateReservationButtonContainer {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  margin-bottom: 1%;
+}
+
+#CreateReservationBackButton {
+  margin-left: 2%;
+  margin-bottom: 1%;
+  background-color: transparent;
+  color: #007bff;
+  border: solid 2px;
+  transition: 0.3s;
+}
+
+#CreateReservationBackButton:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+#CreateReservationSubmitButton {
+  margin-right: 2%;
+  margin-bottom: 1%;
+}
+
 #OrgCompleteReservationsPageDiv {
   display: flex !important;
   flex-direction: column !important;
@@ -1093,6 +1207,26 @@ output[for="timeRange"] {
 #complete-reservation-create-button:active {
   background-color: #004292; /* Adjust as desired */
 }
+
+.complete-reservation-checkbox {
+  margin-left: 2%;
+  margin-bottom: 2%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.complete-reservation-checkbox span {
+  align-items: left;
+  justify-content: left;
+}
+
+.complete-reservation-checkbox input {
+  margin-left: 100px;
+  align-items: right;
+  justify-content: right;
+}
+
 
 #OrgEditReservationsPageDiv {
   display: flex !important;
