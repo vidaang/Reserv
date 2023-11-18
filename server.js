@@ -402,6 +402,7 @@ function authenticateJWT(req, res, next) {
 
     jwt.verify(token, secretKey, (err, user) => {
       if (err) {
+        console.error('JWT Verification Error:', err);
         return res.sendStatus(403); // Forbidden
       }
 
