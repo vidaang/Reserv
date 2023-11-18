@@ -74,7 +74,6 @@ const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const { env } = require("process");
 
-//-----------------------------------------------------------------------------------------------------------------------------
 app.put("/api/createRSO", async (req, res) => {
   const { Email, Password } = req.body;
 
@@ -238,8 +237,6 @@ app.post("/api/updateRSOInfo", async (req, res) => {
   }
 });
 
-//-----------------------------------------------------------------------------------------------------------------------------
-
 app.post("/api/RetrieveEvents", async (req, res) => {
   const { RSOID } = req.body;
   var eventListReturn = {};
@@ -275,12 +272,14 @@ app.post("/api/RetrieveEvents", async (req, res) => {
 app.post("/api/RetrieveRSO", async (req, res) => {
   const { UniID, VerificationFlag } = req.body;
   var RSOListReturn = {};
+  var uniObjectID = new ObjectId(UniID);
+
 
   const db = client.db("Reserv");
   const returnArray = [];
   const RSOList = await db
     .collection("RSO")
-    .find({ UniID: UniID, Verification: VerificationFlag })
+    .find({ UniID: uniObjectID, Verification: VerificationFlag })
     .toArray();
   console.log(RSOList);
 
@@ -290,9 +289,10 @@ app.post("/api/RetrieveRSO", async (req, res) => {
       AdvisorEmail: rso.advisorEmail,
       AdvisorName: rso.AdvisorName,
       Email: rso.Email,
-      OfficerLastName: rso.OfficerFirstName,
+      Phone: rso.Phone,
+      OfficerFirstName: rso.OfficerFirstName,
       OfficerLastName: rso.OfficerLastName,
-      RSOID: rso.RSOID,
+      RSOID: rso._id,
       RSOName: rso.RSOName,
       UniID: rso.UniID,
       Verification: rso.Verification,
@@ -325,7 +325,7 @@ app.delete("/api/DeleteEvent", async (req, res) => {
 
   const update = await db
     .collection("Events")
-    .deleteOne({ EventID: eventObjectId });
+    .deleteOne({ _id: eventObjectId });
   res.status(200).json(update);
 });
 
