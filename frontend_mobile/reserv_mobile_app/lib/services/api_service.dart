@@ -14,7 +14,6 @@ class ApiService {
       'Email': Email,
       'Password': Password,
     };
-
     final response = await http.post(
       uri,
       body: jsonEncode(requestBody),
@@ -122,7 +121,6 @@ class ApiService {
       'SecondaryContactEmail': SecondaryContactEmail,
       'SecondaryContactPhone': SecondaryContactPhone,
     };
-
     final response = await http.post(
       uri,
       body: jsonEncode(requestBody),
@@ -144,50 +142,6 @@ class ApiService {
       throw Exception('Update RSO Info failed with status code: ${response.statusCode}');
     }
   }
-
-  // static Future<Map<String, dynamic>> updateRSOInfo({
-  //   required String token,
-  //   required String RSOName,
-  //   required String OfficerFirstName,
-  //   required String OfficerLastName,
-  //   required String OfficerEmail,
-  //   required String Phone,
-  //   required String AdvisorName,
-  //   required String AdvisorEmail,
-  //   required String SecondaryContactName,
-  //   required String SecondaryContactEmail,
-  //   required String SecondaryContactPhone,
-  // }) async {
-  //   final Uri uri = Uri.parse('$baseUrl/api/updateRSOInfo');
-    
-  //   final Map<String, String> requestBody = {
-  //     'RSOName': RSOName,
-  //     'OfficerFirstName': OfficerFirstName,
-  //     'OfficerLastName': OfficerLastName,
-  //     'OfficerEmail': OfficerEmail,
-  //     'Phone': Phone,
-  //     'AdvisorName': AdvisorName,
-  //     'AdvisorEmail': AdvisorEmail,
-  //     'SecondaryContactName': SecondaryContactName,
-  //     'SecondaryContactEmail': SecondaryContactEmail,
-  //     'SecondaryContactPhone': SecondaryContactPhone,
-  //   };
-
-  //   final response = await http.post(
-  //     uri,
-  //     body: jsonEncode(requestBody),
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'Authorization': 'Bearer $token',
-  //     },
-  //   );
-
-  //   if (response.statusCode == 200) {
-  //     return jsonDecode(response.body);
-  //   } else {
-  //     throw Exception('Update RSO Info failed with status code: ${response.statusCode}');
-  //   }
-  // }
 
   // Handling for Search Rooms API
   static Future<Map<String, dynamic>> retrieveRooms(String latitude, String longitude) async {

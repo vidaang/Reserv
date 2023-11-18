@@ -180,7 +180,6 @@ class _LoginFormState extends State<LoginForm> {
                                       _message = 'checkRSO failed: $e';
                                     });
                                   }
-
                                 } else {
                                   // Login failed, show an error message
                                   setState(() {
