@@ -52,9 +52,14 @@ function LoginInfo() {
   return (
     <div>
       <h2>User Settings</h2>
-      <label>Change Username: <input type="text" /></label><br />
-      <label>Change Password: <input type="password" /></label><br />
-      <label>Delete Account: <button>Delete</button></label>
+      <form id="ChangeUsernameForm">
+        <label>Change Username: <input type="text" required/></label>
+        <button type='submit' id="username-change-button">Change</button><br />
+      </form>
+      <form id="ChangePasswordForm">
+        <label>Change Password: <input type="password" required/></label>
+        <button type='submit' id="password-change-button">Change</button><br  />
+      </form>
     </div>
   );
 }
