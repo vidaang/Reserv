@@ -4,8 +4,11 @@ import '../styles/index.css';
 
 function LandingPage()
 {
-    const handleClick = () => {
-        alert("Button clicked!");
+    const handleUniClick = () => {
+        window.location.href = "/UniLogin";
+    }
+    const handleOrgClick = () => {
+        window.location.href = "/OrgLogin";
     }
 
     return (
@@ -21,8 +24,8 @@ function LandingPage()
                 <h2 id="sub-title">University Room Reservations</h2>
             </header>
             <div id="landing-button-container">
-                <button id="landing-university-button" onClick={handleClick}>I'm a University</button>
-                <button id="landing-reserve-button" onClick={handleClick}>Reserve a Room</button>   
+                <button id="landing-university-button" onClick={handleUniClick}>I'm a University</button>
+                <button id="landing-reserve-button" onClick={handleOrgClick}>I'm a Organization</button>   
             </div>
         </div>
     );

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import OrgLogin from '../components/OrgLogin';
+import React from 'react';
+import UniLogin from '../components/UniLogin';
 import NavBar from '../components/NavBar';
 
-const LoginPage = () =>
+const UniLoginPage = () =>
 {
 
     return(
@@ -12,14 +12,14 @@ const LoginPage = () =>
             </div>
             <div id="user-authentication-container">
                 <div id="user-authentication-container-elements">
-                    <h1 id="user-authetication-title">Organization Login</h1>
-                    <OrgLogin />
+                    <h1 id="user-authetication-title">University Login</h1>
+                    <UniLogin />
                 </div>   
 
-                <div className='side-image-container'></div>           
+                <div className='side-image-container-uni'></div>           
             </div>
             
         </div>
     );
 };
-export default LoginPage;
+export default UniLoginPage;

@@ -9,8 +9,10 @@ const NavBar = () => {
 
     const showIcons = 
           location.pathname === '/' || 
-          location.pathname === '/Login' || 
-          location.pathname === '/CreateAccount';
+          location.pathname === '/OrgLogin' || 
+          location.pathname === '/OrgCreateAccount' ||
+          location.pathname === '/UniLogin' || 
+          location.pathname === '/UniCreateAccount';
 
     const showOrgNav = 
           location.pathname === '/OrgHomePage' || 
@@ -61,7 +63,7 @@ const NavBar = () => {
           { showIcons ? 
           (
             <ul className="navbar-links">
-              <li className="navbar-button">
+              {/* <li className="navbar-button">
                 <Link to="/Login">
                   <button className="navbar-sign-in-button">Sign In</button>
                 </Link>
@@ -70,7 +72,7 @@ const NavBar = () => {
                   <Link to="/CreateAccount">
                     <button className="navbar-sign-up-button">Sign Up</button>
                   </Link>
-              </li>
+              </li> */}
             </ul>
           ):(
             <ul className="navbar-links" onClick={stopPropagation} ref={menuRef}>
@@ -84,9 +86,9 @@ const NavBar = () => {
           {isMenuOpen && showOrgNav && (
             <div className="navbar-menu">
 
-              <Link to="/OrgHomePage">
+              {/* <Link to="/OrgHomePage">
                 <button className="navbar-menu-text" onClick={toggleMenu}>Home</button>
-              </Link>
+              </Link> */}
               <Link to="/OrgSearchPage">
                 <button className="navbar-menu-text" onClick={toggleMenu}>Search for Rooms</button>
               </Link>
@@ -105,9 +107,9 @@ const NavBar = () => {
           {isMenuOpen && showUniNav && (
             <div className="navbar-menu">
 
-              <Link to="/UniHomePage">
+              {/* <Link to="/UniHomePage">
                 <button className="navbar-menu-text" onClick={toggleMenu}>Home</button>
-              </Link>
+              </Link> */}
               <Link to="/UniVerificationPage">
                 <button className="navbar-menu-text" onClick={toggleMenu}>Manage Organizations</button>
               </Link>

@@ -81,3 +81,29 @@
   background-color: white;
   height: 100%;
 }
+#password-change-button {
+  border-radius: 20px;
+  padding: 4px 20px;
+  margin-right: 1%;
+  border: 2px solid green;
+  background-color: transparent;
+  transition: 0.2s;
+}
+
+#password-change-button:hover {
+  background-color: green;
+  color: white;
+}
+#username-change-button {
+  border-radius: 20px;
+  padding: 4px 20px;
+  margin-right: 1%;
+  border: 2px solid green;
+  background-color: transparent;
+  transition: 0.2s;
+}
+
+#username-change-button:hover {
+  background-color: green;
+  color: white;
+}

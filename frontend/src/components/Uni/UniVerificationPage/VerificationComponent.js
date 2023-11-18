@@ -11,6 +11,31 @@ function VerificationComponent({ org })
 {
     const [opened, { open, close }] = useDisclosure(false);
 
+    const verifyRSO = async () => {
+        var obj = { RSOID:org.id };
+        var js = JSON.stringify(obj);
+        console.log(js);
+        try
+        {
+            await fetch('http://localhost:5000/api/VerifyRSO',
+            {
+                method:'PUT',
+                body:js,
+                headers:{'Content-Type':'application/json'}
+            });
+        }
+        catch(e)
+        {
+            alert(e.toString());
+            return;
+        }
+    };
+
+    const handleAcceptClick = async () => {
+        await verifyRSO();
+        window.location.reload();
+    };
+
     return (
         <div id="verification-container">
             <h1>{ org.name }</h1>
@@ -28,7 +53,7 @@ function VerificationComponent({ org })
                 </div>
             </Modal>
             <div id="verification-button-div">
-                <button id="verification-accept-button" onClick={handleClick}>Accept</button>
+                <button id="verification-accept-button" onClick={handleAcceptClick}>Accept</button>
                 <button id="verification-deny-button" onClick={handleClick}>Deny</button>
             </div>
         </div>
