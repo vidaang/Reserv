@@ -3,8 +3,9 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { DropdownButton, Dropdown, Modal, Button } from 'react-bootstrap';
+import ReservationsForm from './ReservationsForm';
 import '../../../styles/index.css';
-import { format } from "date-fns";
+import { format, setDate } from "date-fns";
 import {
   IconUsers,
   IconFriends,
@@ -23,11 +24,18 @@ function RoomDetails(props) {
   const [view, setView] = useState('month');
   const [intervals, setIntervals] = useState(0);
   const [roomDetails, setRoomDetails] = useState(null);
+  const [showEventForm, setShowEventForm] = useState(false);
   const [formattedDate, setFormattedDate] = useState(null);
   const [selectedDate, setSelectedDate] = useState();
+  const [dateForCreate, setDateForCreate] = useState();
   const [availableTimes, setAvailableTimes] = useState([]);
+  const [selectedTime, setSelectedTime] = useState(null);
   const [formattedAvailability, setFormattedAvailability] = useState([]);
   const [timeRange, setTimeRange] = useState({ hours: 0, minutes: 30 });
+
+
+  var storedData = JSON.parse(localStorage.getItem("userInfo"));
+  var userToken = localStorage.getItem("userToken");
 
   const getAvailability = async () => {
     var date = selectedDate.split('-');
@@ -44,7 +52,7 @@ function RoomDetails(props) {
         method: 'GET',
         headers: {
           'Content-Type':'application/json',
-          'Authorization': 'temp'
+          'Authorization': `Bearer ${userToken}`,
         }
       });
     }
@@ -65,6 +73,7 @@ function RoomDetails(props) {
     var month = date[1];
     var day = date[2];
 
+    setDateForCreate(month + "-" + day + "-" + year);
     return format(new Date(year, month - 1, day), "MMMM d, yyyy");
   };
 
@@ -137,8 +146,68 @@ function RoomDetails(props) {
     setRoomDetails(roomData);
   }, []);
 
-  function handleCreateReservation() {
+  var eventName;
+  var eventType;
+  var numAttendees;
+  var description;
+  var atriumOccupy; // CHANGE THIS
+  var atriumBuilding = room.BuildingID;
+  var startEnd = [];
+  var eventAgreement; // CHANGE THESE
+  var mediaEquip;
+  var RSOID = JSON.parse(localStorage.getItem("userInfo")).RSOID;
+  var roomID = room.RoomID;
+
+  const createEvent = async (time) => {
+    console.log("Creating event...")
+
+    startEnd = [time.start, time.end];
+
+    var obj = {
+      Date: dateForCreate, 
+      EventName: eventName.value,
+      EventType: eventType.value,
+      NumAttendees: numAttendees.value,
+      Description: description.value,
+      AtriumOccupy: atriumOccupy.checked,
+      AtriumBuilding: atriumBuilding,
+      StartEnd: startEnd,
+      EventAgreement: eventAgreement.checked,
+      MediaEquip: mediaEquip.checked,
+      RSOID: RSOID,
+      RoomID: roomID,
+    };
+
+    var js = JSON.stringify(obj);
+    console.log(js);
+    try
+    {  
+       var response = await fetch(`http://localhost:5000/api/createEvent`, {
+        method: 'POST',
+        body: js,
+        headers: {
+          'Content-Type':'application/json',
+          'Authorization': `Bearer ${userToken}`,
+        }
+      });
+    }
+    catch (error)
+    {
+      console.error(error);
+    }
+    
+    const data = await response.json();
+    console.log(data);
+  };
+
+  function handleCreateReservation(e) {
     // PASS IN ROOM INFORMATION
+    e.preventDefault();
+    console.log(selectedDate);
+    console.log("Index: " + selectedTime);
+    console.log(availableTimes[selectedTime]);
+    createEvent(availableTimes[selectedTime]);
+    window.location.reload();
   }
 
   return (
@@ -149,7 +218,7 @@ function RoomDetails(props) {
       </Modal.Header>
 
       <Modal.Body id="roomDetailsModalBody">
-        {roomDetails && (
+        {roomDetails && (!showEventForm ? (
           <>
             {/* Room Description Section */}
             <div className="roomDescription">
@@ -232,6 +301,7 @@ function RoomDetails(props) {
                         key={index}
                         id={`timeButton${index}`}
                         className="availableTimeDayButton"
+                        onClick={() => setSelectedTime(index)}
                       >
                         {time}
                       </Button>
@@ -240,19 +310,71 @@ function RoomDetails(props) {
                 </div>
             </div>
           </>
-        )}
+        ) : ( 
+          <form onSubmit={handleCreateReservation}>
+            <div id="CompleteReservationContainer">
+              {/*CHANGE TO A FORM AND REMOVE FOOTER*/}
+              <div className="complete-reservation-input-label">
+                  <label htmlFor="eventName">Event Name:</label>
+                  <input type="text" id="eventName" placeholder="Enter Event Name" ref={(c) => (eventName = c)} required/>
+              </div>
+              <div className="complete-reservation-input-label">
+                  <label htmlFor="eventType">Event Type:</label>
+                  <input type="text" id="eventType" placeholder="Enter Event Type" ref={(c) => (eventType = c)} required/>
+              </div>
+              <div className="complete-reservation-input-label">
+                  <label htmlFor="eventDescription">Event Description:</label>
+                  <input type="text" id="eventDescription" placeholder="Enter Event Description" ref={(c) => (description = c)} required/>
+              </div>
+              <div className="complete-reservation-input-label">
+                  <label htmlFor="eventAttendees">Number of Attendees:</label>
+                  <input type="text" id="eventAttendees" placeholder="Enter Number of Attendees" ref={(c) => (numAttendees = c)} required/>
+              </div>
+              <div className="complete-reservation-checkbox">
+                  <span htmlFor="eventAtriumLobby">Atrium or Lobby Needed:</span>
+                  <input type="checkbox" id="eventAtriumLobby" ref={(c) => (atriumOccupy = c)}/>
+              </div>
+              <div className="complete-reservation-checkbox">
+                  <span htmlFor="eventMediaEquip">Need use of Media Equipment:</span>
+                  <input type="checkbox" id="eventMediaEquip" ref={(c) => (mediaEquip = c)}/>
+              </div>
+              <div className="complete-reservation-checkbox">
+                  <span htmlFor="eventAgreement">Agree to Event Terms:</span>
+                  <input type="checkbox" id="eventAgreement" ref={(c) => (eventAgreement = c)} required/>
+              </div>
+              <div id="CreateReservationButtonContainer">
+              <Button
+                id="CreateReservationBackButton"
+                variant="primary"
+                onClick={() => setShowEventForm(false)}
+              >
+                Back
+              </Button>
+              <Button
+                id="CreateReservationSubmitButton"
+                variant="primary"
+                type="submit"
+              >
+                Submit
+              </Button>
+            </div>
+          </div>
+        </form>
+        ))}
       </Modal.Body>
 
       <Modal.Footer>
-        <Link to="/OrgCompleteReservationPage">
+        {!showEventForm ? (
           <Button
             id="CreateReservationButton"
             variant="primary"
-            onClick={handleCreateReservation}
+            onClick={() => setShowEventForm(true)}
           >
             Create Reservation
-          </Button>
-        </Link>
+          </Button> 
+        ) : (
+          <div></div>
+        )}
       </Modal.Footer>
     </Modal>
   );

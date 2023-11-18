@@ -238,19 +238,32 @@ app.post("/api/updateRSOInfo", async (req, res) => {
 });
 
 app.post("/api/RetrieveEvents", async (req, res) => {
+
   const { RSOID } = req.body;
   var eventListReturn = {};
 
   const db = client.db("Reserv");
   const returnArray = [];
-  const eventList = await db
+  var eventList;
+
+  if (RSOID == undefined)
+  {
+    eventList = await db
+    .collection("Events")
+    .find({})
+    .toArray();
+  }
+  else
+  {
+    eventList = await db
     .collection("Events")
     .find({ RSOID: RSOID })
     .toArray();
+  }
 
   eventList.forEach((event) => {
     returnArray.push({
-      EventID: event.EventID,
+      EventID: event._id,
       EventName: event.EventName,
       Date: event.Date,
       EventType: event.EventType,
@@ -312,7 +325,7 @@ app.put("/api/UpdateEvent", async (req, res) => {
   const update = await db
     .collection("Events")
     .updateOne(
-      { EventID: eventObjectId },
+      { _id: eventObjectId },
       { $set: { EventName: EventName, Description: Description } }
     );
   res.status(200).json(update);
@@ -418,6 +431,7 @@ app.post("/api/createEvent", authenticateJWT, async (req, res) => {
     RoomID,
   } = req.body;
 
+
   const db = client.db("Reserv");
 
   // If they are not verified block them out.
@@ -503,7 +517,7 @@ function isValidId(id) {
 // Other APIs still need JWT.
 app.get(
   "/api/availability/:roomID/:date/:intervals",
-  //authenticateJWT,
+  authenticateJWT,
   async (req, res) => {
     // Convert RoomID to integer
     const roomID = req.params.roomID;

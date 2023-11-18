@@ -622,7 +622,7 @@ output[for="timeRange"] {
 
 /* SEARCH PAGE MODAL */
 .roomDetailsModal{
-  min-width: max-content;
+  min-width: min-content;
   max-height: 90%;
   overflow-y: scroll;
   background-color: transparent;
@@ -632,6 +632,7 @@ output[for="timeRange"] {
   margin: 10px 0;
   padding: 5px;
   display: flex;
+  min-width: max-content;
   flex-direction: row;
 }
 
@@ -707,6 +708,8 @@ output[for="timeRange"] {
   border: 1px solid #e1e1e1;
   border-radius: 10px;
   padding: 10px;
+  min-width: min-content;
+  overflow-x: wrap;
 }
 
 .availableTimeDayButton{
@@ -1095,6 +1098,42 @@ output[for="timeRange"] {
 
 /* COMPLETE RESERVATION FORM */
 
+#CompleteReservationContainer {
+  border: 1px solid gray;
+  border-radius: 15px;
+  min-width: min-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 1%;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+}
+
+#CreateReservationButtonContainer {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  margin-bottom: 1%;
+}
+
+#CreateReservationBackButton {
+  margin-left: 2%;
+  margin-bottom: 1%;
+  background-color: transparent;
+  color: #007bff;
+  border: solid 2px;
+  transition: 0.3s;
+}
+
+#CreateReservationBackButton:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+#CreateReservationSubmitButton {
+  margin-right: 2%;
+  margin-bottom: 1%;
+}
+
 #OrgCompleteReservationsPageDiv {
   display: flex !important;
   flex-direction: column !important;
@@ -1168,6 +1207,26 @@ output[for="timeRange"] {
 #complete-reservation-create-button:active {
   background-color: #004292; /* Adjust as desired */
 }
+
+.complete-reservation-checkbox {
+  margin-left: 2%;
+  margin-bottom: 2%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.complete-reservation-checkbox span {
+  align-items: left;
+  justify-content: left;
+}
+
+.complete-reservation-checkbox input {
+  margin-left: 100px;
+  align-items: right;
+  justify-content: right;
+}
+
 
 #OrgEditReservationsPageDiv {
   display: flex !important;
