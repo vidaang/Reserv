@@ -38,6 +38,7 @@ function UniCreateAccount() {
         setMessage("API Error: " + res.error);
       } else {
         setMessage('Account Created');
+        alert('Account created successfully! Please check your email to verify your account!');
       }
     }
     catch (e) {
