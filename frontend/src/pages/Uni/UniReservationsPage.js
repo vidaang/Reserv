@@ -1,15 +1,11 @@
 import React from 'react';
 import NavBar from '../../components/NavBar';
 import '../../styles/index.css';
-import LargeCalendar from '../../components/Org/OrgReservationsPage/LargeCalendar';
+import LargeCalendar from '../../components/Uni/UniReservationsPage/LargeCalendar';
 
 
 function UniReservationsPage()
 {
-    const handleClick = () => {
-        alert("Button clicked!");
-    }
-
     return (
         <div id="OrgHomePageDiv">
             <link rel="preconnect" href="https://fonts.googleapis.com"/>

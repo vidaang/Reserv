@@ -8,7 +8,7 @@ function ReservationsForm() {
     };
 
     return (
-        <div id="CompleteProfileContainer">
+        <div id="CompleteReservationContainer">
             <div className="complete-reservation-input-label">
                 <label htmlFor="eventName">Event Name:</label>
                 <input type="text" id="eventName" placeholder="Enter Event Name" />
@@ -46,27 +46,8 @@ function ReservationsForm() {
                 <input type="text" id="setupTime" placeholder="Enter Setup Time" />
             </div>
             <div className="complete-reservation-input-label">
-                <label htmlFor="startTime">Start Time:</label>
-                <input type="text" id="startTime" placeholder="Enter Start Time" />
-            </div>
-            <div className="complete-reservation-input-label">
-                <label htmlFor="endTime">End Time:</label>
-                <input type="text" id="endTime" placeholder="Enter End Time" />
-            </div>
-            <div className="complete-reservation-input-label">
                 <label htmlFor="cleanupTime">Cleanup Time:</label>
                 <input type="text" id="cleanupTime" placeholder="Enter Cleanup Time" />
-            </div>
-            <span id="complete-reservation-discretion-text">I understand that if the date I selected above is less than 7 business days in the future, it is unlikely that my request will be reviewed in time for my event. I also understand that the Registrar's Office is unable to accept rush requests.</span>
-            <label id="complete-reservation-checkbox-message">
-                <input type="checkbox" id="complete-reservation-checkbox" />
-                I understand and agree to the statement above
-            </label>
-            <div id="CompleteProfileButtonDiv">
-                <Link to="/OrgSearchPage">
-                    <button id="complete-reservation-cancel-button">Cancel</button>
-                </Link>
-                <button id="complete-reservation-create-button" onClick={handleCreateReservation}>Create Reservation</button>
             </div>
         </div>
     );
