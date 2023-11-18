@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:reserv_mobile_app/screens/signup.dart';
 import '../services/api_service.dart';
 import '../widgets/navbar.dart';
+import '../services/jwt_token.dart';
+import '../screens/complete_profile.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -142,7 +144,8 @@ class _LoginFormState extends State<LoginForm> {
                                     'Please enter both email and password';
                               });
                               return;
-                            } else {
+                            } 
+                            else {
                               try {
                                 final response = await ApiService.login(
                                   _emailController.text,
@@ -151,21 +154,43 @@ class _LoginFormState extends State<LoginForm> {
 
                                 if (response['error'] == null) {
                                   // Login was successful
-                                  Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                        builder: (context) => const NavBar()),
-                                  );
+                                  final Map<String, String?> tokenContents = await JWTToken.getTokenContents();
+                                  print('Token contents: $tokenContents');
+                                  
+                                  final String? token = tokenContents['Token'];
+
+                                  try {
+                                    final bool check = await ApiService.checkRSOFields(token!);
+                                    if (check) {
+                                      Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                            builder: (context) => const NavBar()),
+                                      );
+                                    }
+                                    else {
+                                      Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                            builder: (context) => CompleteProfile()),
+                                      );
+                                    }
+                                  }
+                                  catch (e) {
+                                    // Handle network or other errors
+                                    setState(() {
+                                      _message = 'checkRSO failed: $e';
+                                    });
+                                  }
                                 } else {
                                   // Login failed, show an error message
                                   setState(() {
                                     _message =
-                                        'Login failed: ${response['error']}';
+                                        'Login failed! Ensure your email and RSO are verified!';
                                   });
                                 }
                               } catch (e) {
                                 // Handle network or other errors
                                 setState(() {
-                                  _message = 'An error occurred: $e';
+                                  _message = 'Login failed! Ensure your email and RSO are verified!';
                                 });
                               }
                             }
