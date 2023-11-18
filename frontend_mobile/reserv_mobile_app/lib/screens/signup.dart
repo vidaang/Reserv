@@ -26,15 +26,9 @@ class _SignUpFormState extends State<SignUpForm> {
   String _message = '';
 
   // final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _EmailController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
   final TextEditingController _retypePassController = TextEditingController();
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _orgNameController = TextEditingController();
-  final TextEditingController _orgPhoneController = TextEditingController();
-  final TextEditingController _advNameController = TextEditingController();
-  final TextEditingController _advEmailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +51,7 @@ class _SignUpFormState extends State<SignUpForm> {
                                 const BorderRadius.all(Radius.circular(23))),
                         // size of the rectangle, will need to change
                         width: 306.0,
-                        height: 800.0,
+                        height: 400,
                         child: Column(children: <Widget>[
                           const SizedBox(height: 17.0),
                           Text(
@@ -97,11 +91,11 @@ class _SignUpFormState extends State<SignUpForm> {
                                     borderSide: const BorderSide(
                                         color: Color(0xFFDFDFDF))),
                               ),
-                              controller: _emailController,
+                              controller: _EmailController,
                               validator: (value) {
                                 if (value?.isEmpty ??
                                     true || !value!.contains('@')) {
-                                  return 'Please enter a organization email address';
+                                  return 'Please enter a organization Email address';
                                 }
                                 return null;
                               },
@@ -138,7 +132,7 @@ class _SignUpFormState extends State<SignUpForm> {
                               obscureText: true,
                               validator: (value) {
                                 if (value?.isEmpty ?? true) {
-                                  return 'Please enter a password';
+                                  return 'Please enter a Password';
                                 }
                                 return null;
                               },
@@ -183,222 +177,223 @@ class _SignUpFormState extends State<SignUpForm> {
                               },
                             ),
                           ),
-                          const SizedBox(height: 16.0),
-                          Align(
-                            alignment: const Alignment(-.6, 0),
-                            child: SizedBox(
-                              width: 140,
-                              height: 20,
-                              child: Text(
-                                'Officer First Name',
-                                style: GoogleFonts.rubik(
-                                  textStyle: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 262,
-                            height: 28,
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(53.0),
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFFDFDFDF))),
-                              ),
-                              controller: _firstNameController,
-                              validator: (value) {
-                                if (value?.isEmpty ?? true) {
-                                  return 'Please enter officer first name';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                          const SizedBox(height: 16.0),
-                          Align(
-                            alignment: const Alignment(-.6, 0),
-                            child: SizedBox(
-                              width: 140,
-                              height: 20,
-                              child: Text(
-                                'Officer Last Name',
-                                style: GoogleFonts.rubik(
-                                  textStyle: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 262,
-                            height: 28,
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(53.0),
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFFDFDFDF))),
-                              ),
-                              controller: _lastNameController,
-                              validator: (value) {
-                                if (value?.isEmpty ?? true) {
-                                  return 'Please enter officer last name';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                          const SizedBox(height: 16.0),
-                          Align(
-                            alignment: const Alignment(-.6, 0),
-                            child: SizedBox(
-                              width: 150,
-                              height: 20,
-                              child: Text(
-                                'Organization Name',
-                                style: GoogleFonts.rubik(
-                                  textStyle: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 262,
-                            height: 28,
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(53.0),
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFFDFDFDF))),
-                              ),
-                              controller: _orgNameController,
-                              validator: (value) {
-                                if (value?.isEmpty ?? true) {
-                                  return 'Please enter Organization name';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                          const SizedBox(height: 16.0),
-                          Align(
-                            alignment: const Alignment(-.3, 0),
-                            child: SizedBox(
-                              width: 215,
-                              height: 20,
-                              child: Text(
-                                'Organization Phone number',
-                                style: GoogleFonts.rubik(
-                                  textStyle: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 262,
-                            height: 28,
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(53.0),
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFFDFDFDF))),
-                              ),
-                              controller: _orgPhoneController,
-                              validator: (value) {
-                                if (value?.isEmpty ?? true) {
-                                  return 'Please enter Organization phone number';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                          const SizedBox(height: 16.0),
-                          Align(
-                            alignment: const Alignment(-.65, 0),
-                            child: SizedBox(
-                              width: 115,
-                              height: 20,
-                              child: Text(
-                                'Advisor Name',
-                                style: GoogleFonts.rubik(
-                                  textStyle: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 262,
-                            height: 28,
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(53.0),
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFFDFDFDF))),
-                              ),
-                              controller: _advNameController,
-                              validator: (value) {
-                                if (value?.isEmpty ?? true) {
-                                  return 'Please enter Advisor name';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                          const SizedBox(height: 16.0),
-                          Align(
-                            alignment: const Alignment(-.5, 0),
-                            child: SizedBox(
-                              width: 175,
-                              height: 20,
-                              child: Text(
-                                'Advisor Email Address',
-                                style: GoogleFonts.rubik(
-                                  textStyle: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 262,
-                            height: 28,
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(53.0),
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFFDFDFDF))),
-                              ),
-                              controller: _advEmailController,
-                              validator: (value) {
-                                if (value?.isEmpty ?? true) {
-                                  return 'Please enter Advisor email address';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
+
+                          // const SizedBox(height: 16.0),
+                          // Align(
+                          //   alignment: const Alignment(-.6, 0),
+                          //   child: SizedBox(
+                          //     width: 140,
+                          //     height: 20,
+                          //     child: Text(
+                          //       'Officer First Name',
+                          //       style: GoogleFonts.rubik(
+                          //         textStyle: const TextStyle(
+                          //           fontSize: 14,
+                          //           fontWeight: FontWeight.bold,
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+                          // SizedBox(
+                          //   width: 262,
+                          //   height: 28,
+                          //   child: TextFormField(
+                          //     decoration: InputDecoration(
+                          //       enabledBorder: OutlineInputBorder(
+                          //           borderRadius: BorderRadius.circular(53.0),
+                          //           borderSide: const BorderSide(
+                          //               color: Color(0xFFDFDFDF))),
+                          //     ),
+                          //     controller: _firstNameController,
+                          //     validator: (value) {
+                          //       if (value?.isEmpty ?? true) {
+                          //         return 'Please enter officer first name';
+                          //       }
+                          //       return null;
+                          //     },
+                          //   ),
+                          // ),
+                          // const SizedBox(height: 16.0),
+                          // Align(
+                          //   alignment: const Alignment(-.6, 0),
+                          //   child: SizedBox(
+                          //     width: 140,
+                          //     height: 20,
+                          //     child: Text(
+                          //       'Officer Last Name',
+                          //       style: GoogleFonts.rubik(
+                          //         textStyle: const TextStyle(
+                          //           fontSize: 14,
+                          //           fontWeight: FontWeight.bold,
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+                          // SizedBox(
+                          //   width: 262,
+                          //   height: 28,
+                          //   child: TextFormField(
+                          //     decoration: InputDecoration(
+                          //       enabledBorder: OutlineInputBorder(
+                          //           borderRadius: BorderRadius.circular(53.0),
+                          //           borderSide: const BorderSide(
+                          //               color: Color(0xFFDFDFDF))),
+                          //     ),
+                          //     controller: _lastNameController,
+                          //     validator: (value) {
+                          //       if (value?.isEmpty ?? true) {
+                          //         return 'Please enter officer last name';
+                          //       }
+                          //       return null;
+                          //     },
+                          //   ),
+                          // ),
+                          // const SizedBox(height: 16.0),
+                          // Align(
+                          //   alignment: const Alignment(-.6, 0),
+                          //   child: SizedBox(
+                          //     width: 150,
+                          //     height: 20,
+                          //     child: Text(
+                          //       'Organization Name',
+                          //       style: GoogleFonts.rubik(
+                          //         textStyle: const TextStyle(
+                          //           fontSize: 14,
+                          //           fontWeight: FontWeight.bold,
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+                          // SizedBox(
+                          //   width: 262,
+                          //   height: 28,
+                          //   child: TextFormField(
+                          //     decoration: InputDecoration(
+                          //       enabledBorder: OutlineInputBorder(
+                          //           borderRadius: BorderRadius.circular(53.0),
+                          //           borderSide: const BorderSide(
+                          //               color: Color(0xFFDFDFDF))),
+                          //     ),
+                          //     controller: _orgNameController,
+                          //     validator: (value) {
+                          //       if (value?.isEmpty ?? true) {
+                          //         return 'Please enter Organization name';
+                          //       }
+                          //       return null;
+                          //     },
+                          //   ),
+                          // ),
+                          // const SizedBox(height: 16.0),
+                          // Align(
+                          //   alignment: const Alignment(-.3, 0),
+                          //   child: SizedBox(
+                          //     width: 215,
+                          //     height: 20,
+                          //     child: Text(
+                          //       'Organization Phone number',
+                          //       style: GoogleFonts.rubik(
+                          //         textStyle: const TextStyle(
+                          //           fontSize: 14,
+                          //           fontWeight: FontWeight.bold,
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+                          // SizedBox(
+                          //   width: 262,
+                          //   height: 28,
+                          //   child: TextFormField(
+                          //     decoration: InputDecoration(
+                          //       enabledBorder: OutlineInputBorder(
+                          //           borderRadius: BorderRadius.circular(53.0),
+                          //           borderSide: const BorderSide(
+                          //               color: Color(0xFFDFDFDF))),
+                          //     ),
+                          //     controller: _orgPhoneController,
+                          //     validator: (value) {
+                          //       if (value?.isEmpty ?? true) {
+                          //         return 'Please enter Organization phone number';
+                          //       }
+                          //       return null;
+                          //     },
+                          //   ),
+                          // ),
+                          // const SizedBox(height: 16.0),
+                          // Align(
+                          //   alignment: const Alignment(-.65, 0),
+                          //   child: SizedBox(
+                          //     width: 115,
+                          //     height: 20,
+                          //     child: Text(
+                          //       'Advisor Name',
+                          //       style: GoogleFonts.rubik(
+                          //         textStyle: const TextStyle(
+                          //           fontSize: 14,
+                          //           fontWeight: FontWeight.bold,
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+                          // SizedBox(
+                          //   width: 262,
+                          //   height: 28,
+                          //   child: TextFormField(
+                          //     decoration: InputDecoration(
+                          //       enabledBorder: OutlineInputBorder(
+                          //           borderRadius: BorderRadius.circular(53.0),
+                          //           borderSide: const BorderSide(
+                          //               color: Color(0xFFDFDFDF))),
+                          //     ),
+                          //     controller: _advNameController,
+                          //     validator: (value) {
+                          //       if (value?.isEmpty ?? true) {
+                          //         return 'Please enter Advisor name';
+                          //       }
+                          //       return null;
+                          //     },
+                          //   ),
+                          // ),
+                          // const SizedBox(height: 16.0),
+                          // Align(
+                          //   alignment: const Alignment(-.5, 0),
+                          //   child: SizedBox(
+                          //     width: 175,
+                          //     height: 20,
+                          //     child: Text(
+                          //       'Advisor Email Address',
+                          //       style: GoogleFonts.rubik(
+                          //         textStyle: const TextStyle(
+                          //           fontSize: 14,
+                          //           fontWeight: FontWeight.bold,
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+                          // SizedBox(
+                          //   width: 262,
+                          //   height: 28,
+                          //   child: TextFormField(
+                          //     decoration: InputDecoration(
+                          //       enabledBorder: OutlineInputBorder(
+                          //           borderRadius: BorderRadius.circular(53.0),
+                          //           borderSide: const BorderSide(
+                          //               color: Color(0xFFDFDFDF))),
+                          //     ),
+                          //     controller: _advEmailController,
+                          //     validator: (value) {
+                          //       if (value?.isEmpty ?? true) {
+                          //         return 'Please enter Advisor Email address';
+                          //       }
+                          //       return null;
+                          //     },
+                          //   ),
+                          // ),
                           const SizedBox(height: 16.0),
                           SizedBox(
                             width: 186,
@@ -414,53 +409,29 @@ class _SignUpFormState extends State<SignUpForm> {
                                               color: Color(0xFFDFDFDF))))),
                               onPressed: () async {
                                 // changed this if condition from using formKey
-                                if (_firstNameController.text.isNotEmpty &&
-                                    _lastNameController.text.isNotEmpty &&
-                                    _emailController.text.isNotEmpty &&
-                                    _passController.text.isNotEmpty &&
-                                    _orgNameController.text.isNotEmpty &&
-                                    _orgPhoneController.text.isNotEmpty &&
-                                    _advNameController.text.isNotEmpty &&
-                                    _advEmailController.text.isNotEmpty) {
+                                if (_EmailController.text.isNotEmpty &&
+                                    _passController.text.isNotEmpty) {
                                   // Retrieve user input from form fields
-                                  String firstName = _firstNameController.text;
-                                  String lastName = _lastNameController.text;
-                                  String email = _emailController.text;
-                                  String password = _passController.text;
-                                  String orgName = _orgNameController.text;
-                                  String orgPhone = _orgPhoneController.text;
-                                  String advName = _advNameController.text;
-                                  String advEmail = _advEmailController.text;
+                                  String Email = _EmailController.text;
+                                  String Password = _passController.text;
 
                                   // Call the API for sign-up
                                   try {
                                     final response = await ApiService.signUp(
-                                      email: email,
-                                      password: password,
-                                      officerFirstName: firstName,
-                                      officerLastName: lastName,
-                                      rsoName: orgName,
-                                      phone: orgPhone,
-                                      advisorName: advName,
-                                      advisorEmail: advEmail,
+                                      Email: Email,
+                                      Password: Password,
                                     );
 
                                     // Handle the response from the API
-                                    if (response['error'] == "") {
+                                    if (response.containsKey('success') && response['success']) {
                                       // Sign-up was successful, reset the form and show success message
                                       setState(() {
                                         _message =
                                             'Account created successfully';
                                       });
-                                      _firstNameController.clear();
-                                      _lastNameController.clear();
-                                      _emailController.clear();
+                                      _EmailController.clear();
                                       _passController.clear();
                                       _retypePassController.clear();
-                                      _orgNameController.clear();
-                                      _orgPhoneController.clear();
-                                      _advNameController.clear();
-                                      _advEmailController.clear();
 
                                       // Redirect to the navbar
                                       Navigator.of(context).pushReplacement(
@@ -489,7 +460,7 @@ class _SignUpFormState extends State<SignUpForm> {
                                 }
                               },
                               child: Text(
-                                'Sign Up Here',
+                                'Sign Up',
                                 style: GoogleFonts.rubik(
                                   textStyle: const TextStyle(
                                       fontSize: 16,

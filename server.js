@@ -105,7 +105,7 @@ app.put("/api/createRSO", async (req, res) => {
 
     return res.status(201).json({ success: true, message: "RSO created successfully" });
   } catch (e) {
-    console.error("Error during createAdmin:", e);
+    console.error("Error during createRSO:", e);
     return res.status(500).json({ success: false, error: "Failed to create account" });
   }
 });
