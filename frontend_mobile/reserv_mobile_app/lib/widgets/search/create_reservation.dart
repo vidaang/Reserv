@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import '../../services/api_service.dart';
 import '../navbar.dart';
+import '../../services/jwt_token.dart';
 
 class CreateReservation extends StatefulWidget {
   final String date;
@@ -46,6 +47,12 @@ class _CreateReservationState extends State<CreateReservation> {
     String EventName, String EventType, String Description, int? Attendees, bool AtriumOccupy, 
     bool MediaEquip, bool EventAgreement, List<num> StartEnd) async {
     try {
+      final String? token = await JWTToken.getToken('Token');
+
+      if (token == null) {
+        throw Exception('JWT token not available');
+      }
+
       await ApiService.createEvent(
         token,
         RSOID,
@@ -60,6 +67,7 @@ class _CreateReservationState extends State<CreateReservation> {
         EventAgreement,
         StartEnd
       );
+
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -80,7 +88,8 @@ class _CreateReservationState extends State<CreateReservation> {
           );
         },
       );
-      } catch (e) {
+      } 
+      catch (e) {
       // Handle different exceptions
       showDialog(
         context: context,

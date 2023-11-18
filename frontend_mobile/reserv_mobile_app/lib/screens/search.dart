@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element, unused_field
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../widgets/search/buildings.dart';
@@ -5,6 +7,7 @@ import '../widgets/search/room_list.dart';
 import '../services/api_service.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:async';
+
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);

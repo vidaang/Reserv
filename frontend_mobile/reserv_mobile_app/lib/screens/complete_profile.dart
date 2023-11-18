@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:reserv_mobile_app/screens/signup.dart';
 import '../services/api_service.dart';
 import '../widgets/navbar.dart';
 import '../services/jwt_token.dart';
-import '../screens/complete_profile.dart';
-
 class CompleteProfile extends StatefulWidget {
   @override
   _CompleteProfileState createState() => _CompleteProfileState();

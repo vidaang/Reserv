@@ -40,10 +40,10 @@ class _RoomDetailsState extends State<RoomDetails> {
 
   Future<void> checkVerificationFunction(String rsoName) async {
     try {
-      bool verificationResult = await ApiService.checkVerification(rsoName);
+      //bool verificationResult = await ApiService.checkVerification(rsoName);
       // Check if a time is selected before navigating && rso is verified
       if (selectedTime != null && startTime != []) {
-        if (verificationResult) {
+        // if (verificationResult) {
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -56,25 +56,25 @@ class _RoomDetailsState extends State<RoomDetails> {
               ),
             ),
           );
-        } else {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Verification Error'),
-                content: const Text('Could not verify organization. Ensure organization is verified with university!'),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
-              );
-            },
-          );
-        }
+        // } else {
+        //   showDialog(
+        //     context: context,
+        //     builder: (BuildContext context) {
+        //       return AlertDialog(
+        //         title: const Text('Verification Error'),
+        //         content: const Text('Could not verify organization. Ensure organization is verified with university!'),
+        //         actions: <Widget>[
+        //           TextButton(
+        //             onPressed: () {
+        //               Navigator.of(context).pop();
+        //             },
+        //             child: const Text('OK'),
+        //           ),
+        //         ],
+        //       );
+        //     },
+        //   );
+        // }
       } else {
         showDialog(
           context: context,
