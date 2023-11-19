@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   IconBellRinging,
   IconKey,
@@ -18,16 +18,52 @@ const data = [
   // { link: '', label: 'Other Settings', icon: IconSettings },
 ];
 
+
+
+
 function UniversityInfo() {
+
+  const [uniData, SetUniData] = useState(null);
+  useEffect(() => {
+    console.log("Here");
+      const GetUniInfo = async () =>
+      {
+        var obj = { UniversityID: "6556511f2276482310c2503a" };
+        var js = JSON.stringify(obj);
+        try
+        {
+            const response = await fetch('http://localhost:5000/api/GetUniInfo',
+            {method:'POST',
+            body:js,
+            headers:{'Content-Type':'application/json'}});
+            var res = await response.json();
+            console.log(res.responseObject);
+            return res;
+
+        }
+        catch(e)
+        {
+            alert(e.toString());
+            return;
+        }
+    };
+    const fetchUniInfo = async () => {
+      var data = await GetUniInfo();
+      console.log(data);
+      SetUniData(data);
+    }
+    fetchUniInfo();
+  }, []);
+
   return (
     <div>
       <h2>University</h2>
-      <p>University Name: University of Central Florida</p>
-      <p>Address: 3400 Quadrangle Blvd, Orlando, FL 32817</p>
-      <p>Phone Number: (407) 266-3627</p>
-      <p>Email: Your University Email</p>
+      <p>University Name: {uniData.UniName}</p>
+      <p>Address: {uniData.Address}</p>
+      <p>Phone Number: {uniData.Phone}</p>
+      <p>Email: {uniData.EmailDomain}</p>
       <p>Hours: M-F 8AM-7PM</p>
-      <p>Website: ucf.edu</p>
+      <p>Website: {uniData.Website}</p>
     </div>
   );
 }

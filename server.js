@@ -188,6 +188,26 @@ app.post("/api/checkRSOFields", async (req, res) => {
   }
 });
 
+app.post("/api/GetUniInfo", async(req, res) => {
+  const { UniversityID } = req.body;
+  console.log("entered");
+  const db = client.db("Reserv");
+  const uniObjectID = new ObjectId(UniversityID)
+  const university = await db.collection("University").findOne({ _id : uniObjectID });
+  console.log(university);
+
+  const responseObject = {
+    // token: token, // remeber to add JWT
+    UniName: university.UniName,
+    Address: university.Address,
+    EmailDomain: university.EmailDomain,
+    Website: university.Website,
+    Phone: university.Phone
+  };
+
+  res.status(200).json(responseObject);
+});
+
 app.post("/api/updateRSOInfo", async (req, res) => {
   const update = {
     RSOName: req.body.RSOName,
