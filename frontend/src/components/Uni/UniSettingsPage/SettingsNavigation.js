@@ -23,12 +23,21 @@ const data = [
 
 function UniversityInfo() {
 
-  const [uniData, SetUniData] = useState(null);
+  const initialUni = 
+  {
+    UniName: "",
+    Address: "",
+    Phone: "",
+    EmailDomain: "",
+    Website: ""
+  }
+
+  const [uniData, SetUniData] = useState(initialUni);
   useEffect(() => {
     console.log("Here");
       const GetUniInfo = async () =>
       {
-        var obj = { UniversityID: "6556511f2276482310c2503a" };
+        var obj = { UniversityID: "655673b363bf110ce2b499ee" };
         var js = JSON.stringify(obj);
         try
         {
