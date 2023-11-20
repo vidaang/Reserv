@@ -716,7 +716,7 @@ app.post("/api/adminLogin", async (req, res) => {
     if (!uni.EmailVerification) {
       return res.status(400).json({ error: "Email is not verified. Please verify your email." });
     }
-
+ 
     const passwordMatch = await bcrypt.compare(Password, uni.Password);
 
     if (!passwordMatch) {
@@ -742,6 +742,39 @@ app.post("/api/adminLogin", async (req, res) => {
     console.error("Error during adminLogin:", e);
     res.status(500).json({ error: "Internal server error" });
   }
+});
+
+app.put("/api/adminChangePassword", async (req, res) => {
+  const { UniID, Password, NewPassword } = req.body;
+  const uniObjectID = new ObjectId(UniID)
+  let result
+
+  try {
+    const db = client.db("Reserv");
+    const uni = await db.collection("Admin").findOne({ _id: uniObjectID});
+
+    if (!uni) {
+      return res.status(400).json({ error: "University does not exist! Please make an account." });
+    }
+
+    const passwordMatch = await bcrypt.compare(Password, uni.Password);
+
+    if (!passwordMatch) {
+      return res.status(400).json({ error: "Incorrect password" });
+    }
+
+    const hashedPassword = await bcrypt.hash(NewPassword, 10); // 10 is the salt rounds
+    
+    result = await db.collection("Admin").updateOne(
+      { _id: uniObjectID },
+      { $set: {Password: hashedPassword} }
+    );
+
+  } catch (e) {
+    console.error("Error during password Reset:", e);
+    res.status(500).json({ error: "Internal server error" });
+  }
+  res.status(200).json(result);
 });
 
 app.post("/api/checkUniFields", async (req, res) => {
