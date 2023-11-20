@@ -70,12 +70,14 @@ async function run() {
 // Running connection function.
 run().catch(console.dir);
 
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { env } = require("process");
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 app.put("/api/createRSO", async (req, res) => {
-  const { Email, Password } = req.body;
+  const { Email, Password, UniID } = req.body;
 
   try {
     const db = client.db("Reserv");
@@ -98,15 +100,68 @@ app.put("/api/createRSO", async (req, res) => {
       SecondaryContactPhone: "",
       EmailVerification: false,
       Verification: false,
-      UniID: new ObjectId(req.body.UniID),
+      UniID: new ObjectId(UniID),
     };
 
     await db.collection("RSO").insertOne(newRSO);
 
-    return res.status(201).json({ success: true, message: "RSO created successfully" });
+    const user = await db.collection("RSO").findOne({ Email: Email });
+
+    // Generate a verification token
+    const token = jwt.sign(
+      { userId: user.RSOID },
+      process.env.SECRET_KEY, // Ensure you have a secret key in your environment variables
+      { expiresIn: "24h" } // Token expires in 24 hours
+    );
+
+    // Email message setup
+    const msg = {
+      to: user.Email,
+      from: "poosdreserv@gmail.com",
+      subject: "Email Verification",
+      html: `Please click on this link to verify your email: <a href="http://yourfrontenddomain.com/verify?token=${token}">Verify Email</a>`,
+    };
+
+    // Send the email
+    sgMail
+      .send(msg)
+      .then(() => {
+        console.log("Email sent");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+    return res
+      .status(201)
+      .json({ success: true, message: "RSO created successfully" });
   } catch (e) {
-    console.error("Error during createAdmin:", e);
-    return res.status(500).json({ success: false, error: "Failed to create account" });
+    console.error("Error during createRSO:", e);
+    return res
+      .status(500)
+      .json({ success: false, error: "Failed to create account" });
+  }
+});
+
+app.post("/api/verify-email", async (req, res) => {
+  try {
+    const { token } = req.body;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decoded.userId;
+
+    // Update user status in the database
+    const user = await db.collection("RSO").findOne({ RSOID: userId });
+
+    if (user) {
+      await db
+        .collection("RSO")
+        .updateOne({ RSOID: userId }, { $set: { EmailVerification: true } });
+      res.status(200).send("Email successfully verified.");
+    } else {
+      res.status(400).send("User not found.");
+    }
+  } catch (error) {
+    res.status(400).send("Invalid or expired token.");
   }
 });
 
@@ -118,12 +173,16 @@ app.post("/api/login", async (req, res) => {
     const rso = await db.collection("RSO").findOne({ Email: Email });
 
     if (!rso) {
-      return res.status(400).json({ error: "RSO does not exist! Please make an account." });
+      return res
+        .status(400)
+        .json({ error: "RSO does not exist! Please make an account." });
     }
 
     // Check if the email is verified
     if (!rso.EmailVerification) {
-      return res.status(400).json({ error: "Email is not verified. Please verify your email." });
+      return res
+        .status(400)
+        .json({ error: "Email is not verified. Please verify your email." });
     }
 
     const passwordMatch = await bcrypt.compare(Password, rso.Password);
@@ -140,12 +199,12 @@ app.post("/api/login", async (req, res) => {
 
     const token = jwt.sign(jwtPayload, secretKey, { expiresIn: "1h" }); // Token expires in 1 hour
 
-  // Construct response JSON object
-  const responseObject = {
-    token: token,
-    RSOID: rso.RSOID,
-    UniID: rso.UniID,
-  };
+    // Construct response JSON object
+    const responseObject = {
+      token: token,
+      RSOID: rso.RSOID,
+      UniID: rso.UniID,
+    };
 
     res.status(200).json(responseObject);
   } catch (e) {
@@ -156,7 +215,8 @@ app.post("/api/login", async (req, res) => {
 
 app.post("/api/checkRSOFields", async (req, res) => {
   // Get the token from the request headers
-  const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
+  const token =
+    req.headers.authorization && req.headers.authorization.split(" ")[1];
 
   if (!token) {
     return res.status(401).json({ error: "Unauthorized: Token not provided" });
@@ -169,19 +229,21 @@ app.post("/api/checkRSOFields", async (req, res) => {
 
     // Fetch the rso from the database based on RSOID
     const db = client.db("Reserv");
-    const rso = await db.collection("RSO").findOne({ RSOID: new ObjectId(RSOID) });
+    const rso = await db
+      .collection("RSO")
+      .findOne({ RSOID: new ObjectId(RSOID) });
 
     if (!rso) {
       return res.status(400).json({ error: "RSO not found" });
     }
 
     // Check if all fields are not empty
-    const fieldsNotEmpty = Object.values(rso).every(field => field !== "");
+    const fieldsNotEmpty = Object.values(rso).every((field) => field !== "");
 
     res.status(200).json({ fieldsNotEmpty });
   } catch (error) {
     console.error("Error during checkFieldsNotEmpty:", error);
-    if (error.name === 'TokenExpiredError') {
+    if (error.name === "TokenExpiredError") {
       return res.status(401).json({ error: "Unauthorized: Token expired" });
     }
     return res.status(500).json({ error: "Internal server error" });
@@ -205,7 +267,8 @@ app.post("/api/updateRSOInfo", async (req, res) => {
   const db = client.db("Reserv");
 
   // Get the token from the request headers
-  const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
+  const token =
+    req.headers.authorization && req.headers.authorization.split(" ")[1];
 
   if (!token) {
     return res.status(401).json({ error: "Unauthorized: Token not provided" });
@@ -217,20 +280,21 @@ app.post("/api/updateRSOInfo", async (req, res) => {
     const RSOID = decodedToken.RSOID;
     console.log(RSOID);
 
-    let result = await db.collection("RSO").updateOne(
-      { RSOID: new ObjectId(RSOID) },
-      { $set: update }
-    );
+    let result = await db
+      .collection("RSO")
+      .updateOne({ RSOID: new ObjectId(RSOID) }, { $set: update });
 
     if (result.modifiedCount === 1) {
       return res.status(200).json({ success: true });
     } else {
       console.log("No log");
-      return res.status(400).json({ error: "No document updated. RSOID may not exist." });
+      return res
+        .status(400)
+        .json({ error: "No document updated. RSOID may not exist." });
     }
   } catch (error) {
     console.error("Error during updateRSOInfo:", error);
-    if (error.name === 'TokenExpiredError') {
+    if (error.name === "TokenExpiredError") {
       return res.status(401).json({ error: "Unauthorized: Token expired" });
     }
     return res.status(500).json({ error: "Internal server error" });
@@ -238,7 +302,6 @@ app.post("/api/updateRSOInfo", async (req, res) => {
 });
 
 app.post("/api/RetrieveEvents", async (req, res) => {
-
   const { RSOID } = req.body;
   var eventListReturn = {};
 
@@ -246,19 +309,10 @@ app.post("/api/RetrieveEvents", async (req, res) => {
   const returnArray = [];
   var eventList;
 
-  if (RSOID == undefined)
-  {
-    eventList = await db
-    .collection("Events")
-    .find({})
-    .toArray();
-  }
-  else
-  {
-    eventList = await db
-    .collection("Events")
-    .find({ RSOID: RSOID })
-    .toArray();
+  if (RSOID == undefined) {
+    eventList = await db.collection("Events").find({}).toArray();
+  } else {
+    eventList = await db.collection("Events").find({ RSOID: RSOID }).toArray();
   }
 
   eventList.forEach((event) => {
@@ -287,7 +341,6 @@ app.post("/api/RetrieveRSO", async (req, res) => {
   var RSOListReturn = {};
   var uniObjectID = new ObjectId(UniID);
 
-
   const db = client.db("Reserv");
   const returnArray = [];
   const RSOList = await db
@@ -305,7 +358,7 @@ app.post("/api/RetrieveRSO", async (req, res) => {
       Phone: rso.Phone,
       OfficerFirstName: rso.OfficerFirstName,
       OfficerLastName: rso.OfficerLastName,
-      RSOID: rso._id,
+      RSOID: rso.RSOID,
       RSOName: rso.RSOName,
       UniID: rso.UniID,
       Verification: rso.Verification,
@@ -402,7 +455,7 @@ function authenticateJWT(req, res, next) {
 
     jwt.verify(token, secretKey, (err, user) => {
       if (err) {
-        console.error('JWT Verification Error:', err);
+        console.error("JWT Verification Error:", err);
         return res.sendStatus(403); // Forbidden
       }
 
@@ -432,7 +485,6 @@ app.post("/api/createEvent", authenticateJWT, async (req, res) => {
     RoomID,
   } = req.body;
 
-
   const db = client.db("Reserv");
 
   // If they are not verified block them out.
@@ -451,7 +503,7 @@ app.post("/api/createEvent", authenticateJWT, async (req, res) => {
   const id = new ObjectId(idString);
 
   // Fetch the document with the specified _id
-  const document = await db.collection("RSO").findOne({ _id: id });
+  const document = await db.collection("RSO").findOne({ RSOID: id });
 
   if (document == false) {
     return res.status(400).json({ error: "RSO does not exist!" });
@@ -675,10 +727,15 @@ app.put("/api/createAdmin", async (req, res) => {
     };
     await db.collection("University").insertOne(universityData);
 
-    return res.status(201).json({ success: true, message: "Admin and University created successfully" });
+    return res.status(201).json({
+      success: true,
+      message: "Admin and University created successfully",
+    });
   } catch (e) {
     console.error("Error during createAdmin:", e);
-    return res.status(500).json({ success: false, error: "Failed to create account" });
+    return res
+      .status(500)
+      .json({ success: false, error: "Failed to create account" });
   }
 });
 
@@ -690,12 +747,16 @@ app.post("/api/adminLogin", async (req, res) => {
     const uni = await db.collection("Admin").findOne({ Email: Email });
 
     if (!uni) {
-      return res.status(400).json({ error: "University does not exist! Please make an account." });
+      return res
+        .status(400)
+        .json({ error: "University does not exist! Please make an account." });
     }
 
     // Check if the email is verified
     if (!uni.EmailVerification) {
-      return res.status(400).json({ error: "Email is not verified. Please verify your email." });
+      return res
+        .status(400)
+        .json({ error: "Email is not verified. Please verify your email." });
     }
 
     const passwordMatch = await bcrypt.compare(Password, uni.Password);
@@ -727,7 +788,8 @@ app.post("/api/adminLogin", async (req, res) => {
 
 app.post("/api/checkUniFields", async (req, res) => {
   // Get the token from the request headers
-  const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
+  const token =
+    req.headers.authorization && req.headers.authorization.split(" ")[1];
 
   if (!token) {
     return res.status(401).json({ error: "Unauthorized: Token not provided" });
@@ -740,19 +802,21 @@ app.post("/api/checkUniFields", async (req, res) => {
 
     // Fetch the university from the database based on UniID
     const db = client.db("Reserv");
-    const uni = await db.collection("University").findOne({ UniID: new ObjectId(UniID) });
+    const uni = await db
+      .collection("University")
+      .findOne({ UniID: new ObjectId(UniID) });
 
     if (!uni) {
       return res.status(400).json({ error: "University not found" });
     }
 
     // Check if all fields are not empty
-    const fieldsNotEmpty = Object.values(uni).every(field => field !== "");
+    const fieldsNotEmpty = Object.values(uni).every((field) => field !== "");
 
     res.status(200).json({ fieldsNotEmpty });
   } catch (error) {
     console.error("Error during checkFieldsNotEmpty:", error);
-    if (error.name === 'TokenExpiredError') {
+    if (error.name === "TokenExpiredError") {
       return res.status(401).json({ error: "Unauthorized: Token expired" });
     }
     return res.status(500).json({ error: "Internal server error" });
@@ -771,7 +835,8 @@ app.post("/api/updateUniversityInfo", async (req, res) => {
   const db = client.db("Reserv");
 
   // Get the token from the request headers
-  const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
+  const token =
+    req.headers.authorization && req.headers.authorization.split(" ")[1];
 
   if (!token) {
     return res.status(401).json({ error: "Unauthorized: Token not provided" });
@@ -782,19 +847,20 @@ app.post("/api/updateUniversityInfo", async (req, res) => {
     const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const UniID = decodedToken.UniID;
 
-    let result = await db.collection("University").updateOne(
-      { UniID: new ObjectId(UniID) },
-      { $set: update }
-    );
+    let result = await db
+      .collection("University")
+      .updateOne({ UniID: new ObjectId(UniID) }, { $set: update });
 
     if (result.modifiedCount === 1) {
       return res.status(200).json({ success: true });
     } else {
-      return res.status(400).json({ error: "No document updated. UniID may not exist." });
+      return res
+        .status(400)
+        .json({ error: "No document updated. UniID may not exist." });
     }
   } catch (error) {
     console.error("Error during updateUniversityInfo:", error);
-    if (error.name === 'TokenExpiredError') {
+    if (error.name === "TokenExpiredError") {
       return res.status(401).json({ error: "Unauthorized: Token expired" });
     }
     return res.status(500).json({ error: "Internal server error" });
@@ -827,15 +893,16 @@ app.post("/api/updateUniversityLogin", async (req, res) => {
   const db = client.db("Reserv");
 
   try {
-    let result = await db.collection("Admin").updateOne(
-      { UniID: new ObjectId(req.body.UniID) },
-      { $set: update }
-    );
+    let result = await db
+      .collection("Admin")
+      .updateOne({ UniID: new ObjectId(req.body.UniID) }, { $set: update });
 
     if (result.modifiedCount === 1) {
       return res.status(200).json({ success: true });
     } else {
-      return res.status(400).json({ error: "No document updated. UniID may not exist." });
+      return res
+        .status(400)
+        .json({ error: "No document updated. UniID may not exist." });
     }
   } catch (e) {
     return res.status(500).json({ error: e.toString() });
