@@ -165,6 +165,68 @@ app.post("/api/verify-email", async (req, res) => {
   }
 });
 
+app.post("/api/request-password-reset", async (req, res) => {
+  const { Email } = req.body;
+  const user = await db.collection("RSO").findOne({ Email: Email });
+
+  if (!user) {
+    return res.status(404).send("User not found.");
+  }
+
+  const token = jwt.sign(
+    { userId: user.RSOID },
+    process.env.SECRET_KEY, // Your secret key
+    { expiresIn: "1h" } // Token expires in 1 hour
+  );
+
+  const resetPasswordUrl = `http://yourfrontenddomain.com/reset-password?token=${token}`;
+
+  const msg = {
+    to: user.Email,
+    from: "poosdreserv@gmail.com",
+    subject: "Password Reset",
+    html: `Please click on this link to reset your password: <a href="${resetPasswordUrl}">Reset Password</a>`,
+  };
+
+  sgMail
+    .send(msg)
+    .then(() => {
+      console.log("Password reset email sent");
+      res.status(200).send("Password reset email sent.");
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send("Error sending password reset email.");
+    });
+});
+
+app.post("/api/reset-password", async (req, res) => {
+  const { token, newPassword } = req.body;
+
+  try {
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    const userId = decoded.userId;
+
+    const user = await db.collection("RSO").findOne({ RSOID: userId });
+
+    if (!user) {
+      return res.status(404).send("User not found.");
+    }
+
+    // Hash the new password before storing it
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await db
+      .collection("RSO")
+      .updateOne({ RSOID: userId }, { $set: { Password: hashedPassword } });
+
+    res.status(200).send("Password has been reset successfully.");
+  } catch (error) {
+    console.error(error);
+    res.status(400).send("Invalid or expired token.");
+  }
+});
+
 app.post("/api/login", async (req, res) => {
   const { Email, Password } = req.body;
 
