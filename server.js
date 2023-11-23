@@ -515,6 +515,62 @@ function isValidId(id) {
   return id && id.length === 24 && /^[0-9a-fA-F]{24}$/.test(id);
 }
 
+app.put("/api/createEventMobile", authenticateJWT, async (req, res) => {
+  const newEvent = {
+    Date: req.body.Date,
+    EventName: req.body.EventName,
+    EventType: req.body.EventType,
+    NumAttendees: req.body.NumAttendees,
+    Description: req.body.Description,
+    AtriumOccupy: req.body.AtriumOccupy,
+    AtriumBuilding: req.body.AtriumBuilding,
+    StartEnd: req.body.StartEnd,
+    EventAgreement: req.body.EventAgreement,
+    MediaEquip: req.body.MediaEquip,
+    RoomID: req.body.RoomID,
+    BuildingID: req.body.BuildingID,
+    RoomNumber: req.body.RoomNumber,
+  };
+
+  const db = client.db("Reserv");
+
+  // Get the token from the request headers
+  const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ error: "Unauthorized: Token not provided" });
+  }
+
+  try {
+    // Decode the token to get the RSOID
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
+    const RSOID = decodedToken.RSOID;
+    console.log(RSOID);
+
+    let rso = await db.collection("RSO").findOne({ RSOID: new ObjectId(RSOID) });
+
+    if (rso == null) {
+      return res.status(400).json({ error: "RSO does not exist!" });
+    }
+
+    try {
+      const result = await db.collection("Events").insertOne({
+        ...newEvent,
+        RSOID: new ObjectId(RSOID),
+      });
+      return res.status(200).json({ success: true, eventId: result.insertedId });
+    } catch (e) {
+      return res.status(500).json({ error: e.toString() });
+    }
+  } catch (error) {
+    console.error("Error during createEventMobile", error);
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({ error: "Unauthorized: Token expired" });
+    }
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 // Other APIs still need JWT.
 app.get(
   "/api/availability/:roomID/:date/:intervals",
