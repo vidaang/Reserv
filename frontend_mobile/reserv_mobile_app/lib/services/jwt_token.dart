@@ -19,15 +19,3 @@ class JWTToken {
     return {'Token': token, 'RSOID': rsoID, 'UniID': uniID};
   }
 }
-
-// class JWTToken {
-//   static Future<void> setToken(String key, String value) async {
-//     final SharedPreferences prefs = await SharedPreferences.getInstance();
-//     prefs.setString(key, value);
-//   }
-
-//   static Future<String?> getToken(String key) async {
-//     final SharedPreferences prefs = await SharedPreferences.getInstance();
-//     return prefs.getString(key);
-//   }
-// }

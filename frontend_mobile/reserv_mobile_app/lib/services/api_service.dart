@@ -167,13 +167,21 @@ class ApiService {
     }
   }
 
-  static Future<Map<String, dynamic>> getAvailability(String roomID, String date, int intervals) async {
+  static Future<Map<String, dynamic>> getAvailability(String roomID, String date, int intervals, String? token) async {
     // Construct the API endpoint URL
     final apiUrl = "$baseUrl/api/availability/$roomID/$date/$intervals";
 
     try {
-      // Make the API request
-      final response = await http.get(Uri.parse(apiUrl));
+      if (token == null) {
+        // Handle the case where the token is not available
+        throw Exception('JWT token not available');
+      }
+
+      // Make the API request with the JWT token in the headers
+      final response = await http.get(
+        Uri.parse(apiUrl),
+        headers: {'Authorization': 'Bearer $token'},
+      );
 
       if (response.statusCode == 200) {
         // Parse and return the response JSON
@@ -189,54 +197,32 @@ class ApiService {
     }
   }
 
-  static Future<bool> checkVerification(String rsoName) async {
+  static Future<void> createEvent(String? token, String RSOID, String RoomID, String Date, String EventName, String EventType, String Description, int? Attendees, bool AtriumOccupy, bool MediaEquip, bool EventAgreement, List<num> StartEnd) async {
     try {
-      final response = await http.post(
-        Uri.parse('$baseUrl/api/checkVerification'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'RSOName': rsoName}),
-      );
-
-      if (response.statusCode == 200) {
-        Map<String, dynamic> data = jsonDecode(response.body);
-
-        bool verificationResult = data['result'] ?? false;
-
-        return verificationResult;
-      } else {
-        throw Exception('Failed to check verification: ${response.statusCode}');
+      if (token == null) {
+        // Handle the case where the token is not available
+        throw Exception('JWT token not available');
       }
-    } catch (e) {
-      print('Exception during verification check: $e');
-      return false;
-    }
-  }
 
-  static Future<void> createEvent(String token, String RSOID, String RoomID, String Date, 
-    String EventName, String EventType, String Description, int? Attendees, bool AtriumOccupy, 
-    bool MediaEquip, bool EventAgreement, List<num> StartEnd) async {
+      Map<String, dynamic> requestBody = {
+        'RSOID': RSOID,
+        'RoomID': RoomID,
+        'Date': Date,
+        'StartEnd': StartEnd,
+        'EventName': EventName,
+        'EventType': EventType,
+        'Description': Description,
+        'Attendees': Attendees,
+        'AtriumOccupy': AtriumOccupy,
+        'MediaEqip': MediaEquip,  // Fix typo: 'MediaEqip' to 'MediaEquip'
+        'EventAgreement': EventAgreement,
+      };
 
-    Map<String, dynamic> requestBody = {
-      'RSOID': RSOID,
-      'RoomID': RoomID,
-      'Date': Date,
-      'StartEnd': StartEnd,
-      'EventName': EventName,
-      'EventType': EventType,
-      'Description': Description,
-      'Attendees': Attendees,
-      'AtriumOccupy': AtriumOccupy,
-      'MediaEqip': MediaEquip,
-      'EventAgreement': EventAgreement,
-    };
-
-    // Make the API request
-    try {
       final response = await http.post(
         Uri.parse('$baseUrl/api/createEvent'),
         headers: {
           'Content-Type': 'application/json',
-          // 'Authorization': 'Bearer $token',
+          'Authorization': 'Bearer $token',
         },
         body: jsonEncode(requestBody),
       );
@@ -251,4 +237,49 @@ class ApiService {
       throw Exception('Failed to create event. Error: $e');
     }
   }
+
+  // static Future<void> createEvent(String? token, String RSOID, String RoomID, String Date, 
+  //   String EventName, String EventType, String Description, int? Attendees, bool AtriumOccupy, 
+  //   bool MediaEquip, bool EventAgreement, List<num> StartEnd) async {
+
+  //   // Make the API request
+  //   try {
+  //     if (token == null) {
+  //       // Handle the case where the token is not available
+  //       throw Exception('JWT token not available');
+  //     }
+
+  //     Map<String, dynamic> requestBody = {
+  //       'RSOID': RSOID,
+  //       'RoomID': RoomID,
+  //       'Date': Date,
+  //       'StartEnd': StartEnd,
+  //       'EventName': EventName,
+  //       'EventType': EventType,
+  //       'Description': Description,
+  //       'Attendees': Attendees,
+  //       'AtriumOccupy': AtriumOccupy,
+  //       'MediaEquip': MediaEquip,
+  //       'EventAgreement': EventAgreement,
+  //     };
+
+  //     final response = await http.post(
+  //       Uri.parse('$baseUrl/api/createEvent'),
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'Authorization': 'Bearer $token',
+  //       },
+  //       body: jsonEncode(requestBody),
+  //     );
+
+  //     if (response.statusCode == 200) {
+  //       final Map<String, dynamic> responseData = json.decode(response.body);
+  //       print('Event created successfully! Event ID: ${responseData['eventId']}');
+  //     } else {
+  //       throw Exception('Failed to create event. Status code: ${response.statusCode}, Body: ${response.body}');
+  //     }
+  //   } catch (e) {
+  //     throw Exception('Failed to create event. Error: $e');
+  //   }
+  // }
 }

@@ -1,6 +1,9 @@
+// ignore_for_file: use_build_context_synchronously, avoid_print
+
 import 'package:flutter/material.dart';
 import '../../services/api_service.dart';
 import 'room_details.dart';
+import '../../services/jwt_token.dart';
 
 class RoomList extends StatelessWidget {
   final Map<String, dynamic> data;
@@ -37,28 +40,35 @@ class RoomList extends StatelessWidget {
                   const Text('Capacity: '),
                 ],
               ),
-              onTap: () {
+              onTap: () async {
                 // Handle the tap on a room, you can navigate to a detailed page or perform other actions
                 print('Selecting ${room['BuildingID']} ' ' ${room['RoomNumber']}...');
                 
                 try {
-                  // Instantiate the RoomDetails widget and pass the availabilityData
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => RoomDetails(
-                        buildingID: room['BuildingID'],
-                        roomNumber: room['RoomNumber'],
-                        roomType: room['RoomType'],
-                        roomInfo: room['RoomInfo'],
-                        mediaEquip: room['MediaEquip'],
-                        capacity: room['Capacity'],
-                        date: "11-25-2023",
-                        interval: 1,
-                        availabilityData: ApiService.getAvailability(room['RoomID'], "11-25-2023", 1),
+                  final String? token = await JWTToken.getToken('Token');
+
+                  if (token != null) {
+                    // Instantiate the RoomDetails widget and pass the availabilityData
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RoomDetails(
+                          buildingID: room['BuildingID'],
+                          roomNumber: room['RoomNumber'],
+                          roomType: room['RoomType'],
+                          roomInfo: room['RoomInfo'],
+                          mediaEquip: room['MediaEquip'],
+                          capacity: room['Capacity'],
+                          date: "11-25-2023",
+                          interval: 1,
+                          availabilityData: ApiService.getAvailability(room['RoomID'], "11-25-2023", 1, token),
+                        ),
                       ),
-                    ),
-                  );
+                    );
+                  }
+                  else {
+                    throw Exception('JWT token not available');
+                  }
                 } catch (error) {
                   // Handle errors
                   print(error.toString());
