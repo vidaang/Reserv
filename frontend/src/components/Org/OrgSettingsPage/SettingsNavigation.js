@@ -33,7 +33,38 @@ function OrganizationInfo() {
   });
 
   const fetchOrganizationData = async () => {
-    // GET API REQUEST HERE
+    const storedData = JSON.parse(localStorage.getItem("userInfo"));
+
+    var obj = { RSOID:storedData.RSOID };
+    var js = JSON.stringify(obj);
+    var response;
+
+    try {
+      //const response = await fetch("https://knightsreserv-00cde8777914.herokuapp.com/api/RetrieveRSO", {
+      response = await fetch('http://localhost:5000/api/RetrieveRSO', {
+        method: "POST",
+        body: js,
+        headers: { "Content-Type": "application/json", },
+      });
+    }
+    catch (e) {
+      alert(e.toString());
+      return;
+    }
+    
+    var data = await response.json();
+    setOrganizationData({
+      organizationName: data.RSOName,
+      description: '',
+      authorizedOfficerFirstName: data.OfficerFirstName,
+      authorizedOfficerLastName: data.OfficerLastName,
+      phoneNumber: data.Phone,
+      facultyAdvisor: data.AdvisorName,
+      facultyAdvisorEmail: data.AdvisorEmail,
+      secondaryContactName: data.SecondaryContactName,
+      secondaryContactEmail: data.SecondaryContactEmail,
+    });
+    console.log(organizationData);
   };
 
   useEffect(() => {
@@ -45,10 +76,38 @@ function OrganizationInfo() {
       ...prevData,
       [field]: value,
     }));
+    console.log(organizationData);
   };
 
-  const handleConfirmChanges = () => {
-    // POST API REQUEST HERE
+  const handleConfirmChanges = async () => {
+    
+    var userToken = localStorage.getItem('userToken');
+
+    var obj = {
+      RSOName: organizationData.organizationName,
+      OfficerFirstName: organizationData.authorizedOfficerFirstName,
+      OfficerLastName: organizationData.authorizedOfficerLastName,
+      Phone: organizationData.phoneNumber,
+      AdvisorName: organizationData.facultyAdvisor,
+      AdvisorEmail: organizationData.facultyAdvisorEmail,
+      SecondaryContactName: organizationData.secondaryContactName,
+      SecondaryContactEmail: organizationData.secondaryContactEmail,
+    };
+    var js = JSON.stringify(obj);
+    console.log(js);
+
+    try {
+      //const response = await fetch("https://knightsreserv-00cde8777914.herokuapp.com/api/updateRSOInfo", {
+      const response = await fetch('http://localhost:5000/api/updateRSOInfo', {
+        method: "POST",
+        body: js,
+        headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${userToken}`, },
+      });
+    }
+    catch (e) {
+      alert(e.toString());
+      return;
+    }
   };
 
   return (

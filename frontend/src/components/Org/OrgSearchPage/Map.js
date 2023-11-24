@@ -49,13 +49,6 @@ function Map( { toggleList, isListOpen} )
 
         setRoomList(roomListReturn);
     }
-
-    const ToggleListInternal = async () => {
-        if (roomList.size !== 0)
-        {
-            toggleList();
-        }
-    };
     
     const clearRooms = () => {
         setRoomList(new Set());
