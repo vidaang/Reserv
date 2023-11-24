@@ -4,9 +4,11 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import './create_reservation.dart';
 import '../../services/api_service.dart';
+import '../../services/jwt_token.dart';
 
 class RoomDetails extends StatefulWidget {
   final Future<Map<String, dynamic>> availabilityData;
+  final String roomID;
   final String buildingID;
   final int? roomNumber;
   final String roomType;
@@ -18,6 +20,7 @@ class RoomDetails extends StatefulWidget {
 
   const RoomDetails({
     super.key,
+    required this.roomID,
     required this.buildingID,
     required this.roomNumber,
     required this.roomType,
@@ -36,11 +39,13 @@ class RoomDetails extends StatefulWidget {
 
 class _RoomDetailsState extends State<RoomDetails> {
   String? selectedTime;
+  String selectedDate = "";
+  String selectedTimeString = "";
+  int selectedIntervalNum = -1;
   List<num> startTime = [];
 
   Future<void> checkVerificationFunction(String rsoName) async {
     try {
-      //bool verificationResult = await ApiService.checkVerification(rsoName);
       // Check if a time is selected before navigating && rso is verified
       if (selectedTime != null && startTime != []) {
         // if (verificationResult) {
@@ -48,7 +53,8 @@ class _RoomDetailsState extends State<RoomDetails> {
             context,
             MaterialPageRoute(
               builder: (context) => CreateReservation(
-                date: widget.date,
+                roomID: widget.roomID,
+                date: selectedDate,
                 time: selectedTime,
                 startEnd: startTime,
                 buildingID: widget.buildingID,
@@ -56,25 +62,6 @@ class _RoomDetailsState extends State<RoomDetails> {
               ),
             ),
           );
-        // } else {
-        //   showDialog(
-        //     context: context,
-        //     builder: (BuildContext context) {
-        //       return AlertDialog(
-        //         title: const Text('Verification Error'),
-        //         content: const Text('Could not verify organization. Ensure organization is verified with university!'),
-        //         actions: <Widget>[
-        //           TextButton(
-        //             onPressed: () {
-        //               Navigator.of(context).pop();
-        //             },
-        //             child: const Text('OK'),
-        //           ),
-        //         ],
-        //       );
-        //     },
-        //   );
-        // }
       } else {
         showDialog(
           context: context,
@@ -142,15 +129,52 @@ class _RoomDetailsState extends State<RoomDetails> {
               child: Center(
                 child: Column(
                   children: [
+                    // Display the room information at the top of the page
                     Text('${widget.buildingID} ${widget.roomNumber}'),
                     Text('Room Type: ${widget.roomType}'),
                     Text('Room Info: ${widget.roomInfo}'),
                     Text('Media Equip: ${widget.mediaEquip}'), // CHANGE
                     Text('Capacity: ${widget.capacity}'), // CHANGE
                     Text('Date: ${widget.date}'),
-                    Text('Interval: ${widget.interval}'), // CHANGE
+                    Text('Interval: ${widget.interval}'),
+/*
+                    // ------------------------------------------------------------------------------------------------------------------------------- //
+                    // SEARCH BAR FOR ROOM DETAILS PAGE
+                    SizedBox(
+                      height: 150,
+                      // CALENDAR WIDGET THAT ALLOWS USERS TO SELECT A SINGLE DATE
 
-                    // Dropdown menu for selecting an available time
+
+
+                      // DROP DOWN MENU THAT ALLOWS USERS TO SELECT AN AVAILABLE INTERVAL
+                          // variables needed to be set: String selectedDate (11-24-2023), String selectedTimeString (1 hour, 30 mins), int selectedTimeNum (3)
+                          // will need to pass selected time string to the next screen create reservation
+                      child: DropdownButton<String>(
+
+                      ),
+
+
+
+                      // SUBMIT BUTTON PROCESSES THE REQUEST TO THE API AND REFRESHES AVAILABLE TIMES LIST
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () async {
+                          // Call the createEvent function
+                          try {
+                            final String? token = await JWTToken.getToken('Token');
+                            if (token != null) {
+                              await ApiService.getAvailability(widget.roomID, selectedDate, selectedIntervalNum, token);
+                            }
+                          } catch (e) {
+                            print('Error searching for available times: $e');
+                          }
+                        },
+                        child: const Text('Search for Times'),
+                      ),
+                    ),
+                    // -------------------------------------------------------------------------------------------------------------------- //
+*/
+                    // Dropdown menu of available times to select
                     SizedBox(
                       height: 50,
                       child: DropdownButton<String>(
@@ -181,7 +205,7 @@ class _RoomDetailsState extends State<RoomDetails> {
                     ),
                     const SizedBox(height: 20),
 
-                    // Button to navigate to CreateReservation
+                    // Button to navigate to Create Reservation
                     ElevatedButton(
                       onPressed: () async {
                         await checkVerificationFunction("test");

@@ -197,29 +197,38 @@ class ApiService {
     }
   }
 
-  static Future<void> createEvent(String? token, String RSOID, String RoomID, String Date, String EventName, String EventType, String Description, int? Attendees, bool AtriumOccupy, bool MediaEquip, bool EventAgreement, List<num> StartEnd) async {
+  static Future<void> createEvent(String? token,String RoomID, String Date, String EventName, 
+    String EventType, String Description, int? Attendees, bool AtriumOccupy, bool MediaEquip, bool EventAgreement, 
+    List<num> StartEnd, String BuildingID, int? RoomNumber) async {
     try {
       if (token == null) {
         // Handle the case where the token is not available
         throw Exception('JWT token not available');
       }
 
+      if (token == "") {
+        // Handle the case where the token is not available
+        throw Exception('JWT token is empty');
+      }
+
       Map<String, dynamic> requestBody = {
-        'RSOID': RSOID,
-        'RoomID': RoomID,
         'Date': Date,
-        'StartEnd': StartEnd,
         'EventName': EventName,
         'EventType': EventType,
+        'NumAttendees': Attendees,
         'Description': Description,
-        'Attendees': Attendees,
         'AtriumOccupy': AtriumOccupy,
-        'MediaEqip': MediaEquip,  // Fix typo: 'MediaEqip' to 'MediaEquip'
+        'AtriumBuilding': false,
+        'StartEnd': StartEnd,
         'EventAgreement': EventAgreement,
+        'MediaEquip': MediaEquip,
+        'RoomID': RoomID,
+        'BuildingID': BuildingID,
+        'RoomNumber': RoomNumber,
       };
 
-      final response = await http.post(
-        Uri.parse('$baseUrl/api/createEvent'),
+      final response = await http.put(
+        Uri.parse('$baseUrl/api/createEventMobile'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -237,49 +246,4 @@ class ApiService {
       throw Exception('Failed to create event. Error: $e');
     }
   }
-
-  // static Future<void> createEvent(String? token, String RSOID, String RoomID, String Date, 
-  //   String EventName, String EventType, String Description, int? Attendees, bool AtriumOccupy, 
-  //   bool MediaEquip, bool EventAgreement, List<num> StartEnd) async {
-
-  //   // Make the API request
-  //   try {
-  //     if (token == null) {
-  //       // Handle the case where the token is not available
-  //       throw Exception('JWT token not available');
-  //     }
-
-  //     Map<String, dynamic> requestBody = {
-  //       'RSOID': RSOID,
-  //       'RoomID': RoomID,
-  //       'Date': Date,
-  //       'StartEnd': StartEnd,
-  //       'EventName': EventName,
-  //       'EventType': EventType,
-  //       'Description': Description,
-  //       'Attendees': Attendees,
-  //       'AtriumOccupy': AtriumOccupy,
-  //       'MediaEquip': MediaEquip,
-  //       'EventAgreement': EventAgreement,
-  //     };
-
-  //     final response = await http.post(
-  //       Uri.parse('$baseUrl/api/createEvent'),
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'Authorization': 'Bearer $token',
-  //       },
-  //       body: jsonEncode(requestBody),
-  //     );
-
-  //     if (response.statusCode == 200) {
-  //       final Map<String, dynamic> responseData = json.decode(response.body);
-  //       print('Event created successfully! Event ID: ${responseData['eventId']}');
-  //     } else {
-  //       throw Exception('Failed to create event. Status code: ${response.statusCode}, Body: ${response.body}');
-  //     }
-  //   } catch (e) {
-  //     throw Exception('Failed to create event. Error: $e');
-  //   }
-  // }
 }

@@ -53,6 +53,7 @@ class RoomList extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => RoomDetails(
+                          roomID: room['RoomID'],
                           buildingID: room['BuildingID'],
                           roomNumber: room['RoomNumber'],
                           roomType: room['RoomType'],
