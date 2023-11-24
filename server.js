@@ -477,7 +477,7 @@ app.post("/api/createEvent", authenticateJWT, async (req, res) => {
   const id = new ObjectId(idString);
 
   // Fetch the document with the specified _id
-  const document = await db.collection("RSO").findOne({ _id: id });
+  const document = await db.collection("RSO").findOne({ RSOID: id });
 
   if (document == false) {
     return res.status(400).json({ error: "RSO does not exist!" });
