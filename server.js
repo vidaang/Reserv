@@ -290,8 +290,9 @@ app.post("/api/RetrieveRSO", async (req, res) => {
 
   const db = client.db("Reserv");
   
-  if (UniID && VerificationFlag)
+  if (!RSOID)
   {
+    console.log(VerificationFlag);
     const returnArray = [];
     const RSOList = await db
       .collection("RSO")
@@ -889,7 +890,7 @@ app.put("/api/VerifyRSO", async (req, res) => {
 
   const update = await db
     .collection("RSO")
-    .updateOne({ RSOID: rsoObjectID }, { $set: { Verification: true } });
+    .updateOne({ _id: rsoObjectID }, { $set: { Verification: true } });
   res.status(200).json(update);
 });
 
