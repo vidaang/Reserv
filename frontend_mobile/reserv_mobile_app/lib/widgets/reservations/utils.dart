@@ -26,22 +26,32 @@ final kEvents = LinkedHashMap<DateTime, List<Event>>(
   hashCode: getHashCode,
 )..addAll(_kEventSource);
 
-final _kEventSource = { for (var item in List.generate(50, (index) => index)) DateTime.utc(kFirstDay.year, kFirstDay.month, item * 5) : List.generate(
-        item % 4 + 1, (index) => Event(
-            'Event $item | ${index + 1}',
-            time: DateTime.now().add(Duration(days: item, hours: index)),
-            place: 'Some Location'
-          ),
-        ),  
-      }..addAll({
-    kToday: [
-      Event('Today\'s Event 1', time: DateTime.now(), place: 'Some Location'),
-      Event('Today\'s Event 2', time: DateTime.now(), place: 'Some Location'),
-    ],
-  });
+final _kEventSource = fetchEvents();
 
 int getHashCode(DateTime key) {
   return key.day * 1000000 + key.month * 10000 + key.year;
+}
+
+Future<List<dynamic>> fetchEvents() async {
+  try {
+    final response = await eventApiService.retrieveEvents();
+    final List<dynamic> eventList = response['eventList'];
+
+    for (var eventMap in eventList) {
+      final DateTime eventDate = DateTime.parse(eventMap['Date']);
+      final Event event = Event(
+        eventMap['EventName'],
+        time: eventDate,
+        place: eventMap['AtriumBuilding'],
+      );
+
+      kEvents[eventDate] = kEvents[eventDate] ?? [];
+      kEvents[eventDate].add(event);
+    }
+    return list;
+  } catch (e) {
+    print('Error fetching events: $e');
+  }
 }
 
 /// Returns a list of [DateTime] objects from [first] to [last], inclusive.
