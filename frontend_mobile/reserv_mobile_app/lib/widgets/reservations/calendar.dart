@@ -23,7 +23,8 @@ class _ReservationsCalendarState extends State<ReservationsCalendar> {
   @override
   void initState() {
     super.initState();
-
+    clearEventSource();
+    fetchEvents();
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
   }

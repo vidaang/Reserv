@@ -1,15 +1,12 @@
-// Copyright 2019 Aleksander Woźniak
-// SPDX-License-Identifier: Apache-2.0
-
 import 'dart:collection';
 import '../../services/api_service.dart';
-
+import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 /// Example event class.
 class Event {
   final String title;
-  final DateTime time;
+  final String time;
   final String place;
 
   const Event(this.title, {required this.time, required this.place});
@@ -21,37 +18,59 @@ class Event {
 /// Example events.
 ///
 /// Using a [LinkedHashMap] is highly recommended if you decide to use a map.
-final kEvents = LinkedHashMap<DateTime, List<Event>>(
-  equals: isSameDay,
-  hashCode: getHashCode,
-)..addAll(_kEventSource);
 
-final _kEventSource = fetchEvents();
+var _kEventSource = LinkedHashMap<DateTime, List<Event>>();
 
 int getHashCode(DateTime key) {
   return key.day * 1000000 + key.month * 10000 + key.year;
 }
 
-Future<List<dynamic>> fetchEvents() async {
-  try {
-    final response = await eventApiService.retrieveEvents();
-    final List<dynamic> eventList = response['eventList'];
+final DateFormat dateFormat = DateFormat("MM-dd-yyyy");
 
+Future<void> fetchEvents() async {
+  try {
+    print("Fetching...");
+    final response = await ApiService.retrieveEvents();
+    final eventList = response['eventList'];
+    var count = 0;
     for (var eventMap in eventList) {
-      final DateTime eventDate = DateTime.parse(eventMap['Date']);
+      print(eventMap);
+      final eventDate = eventMap['Date'].split('-');
+      final year = int.parse(eventDate[2]);
+      final month = int.parse(eventDate[0]);
+      final day = int.parse(eventDate[1]);
+      final calendarDate = DateTime(year, month, day);
+      final formattedDate = dateFormat.format(calendarDate);
       final Event event = Event(
         eventMap['EventName'],
-        time: eventDate,
+        time: formattedDate,
         place: eventMap['AtriumBuilding'],
       );
-
-      kEvents[eventDate] = kEvents[eventDate] ?? [];
-      kEvents[eventDate].add(event);
+      _kEventSource[calendarDate] = _kEventSource[calendarDate] ?? [];
+      _kEventSource[calendarDate]?.add(event);
+      setEvents(_kEventSource);
     }
-    return list;
   } catch (e) {
     print('Error fetching events: $e');
   }
+}
+
+LinkedHashMap<DateTime, List<Event>> kEvents = LinkedHashMap<DateTime, List<Event>>(
+  equals: isSameDay,
+  hashCode: getHashCode,
+);
+
+void setEvents(LinkedHashMap<DateTime, List<Event>> source)
+{
+  kEvents = LinkedHashMap<DateTime, List<Event>>(
+    equals: isSameDay,
+    hashCode: getHashCode,
+  )..addAll(source);
+}
+
+void clearEventSource()
+{
+  _kEventSource = LinkedHashMap<DateTime, List<Event>>();
 }
 
 /// Returns a list of [DateTime] objects from [first] to [last], inclusive.
