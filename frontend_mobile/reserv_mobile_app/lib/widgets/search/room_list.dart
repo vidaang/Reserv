@@ -26,6 +26,7 @@ class RoomList extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Available Rooms'),
+        backgroundColor: Colors.white,
       ),
       body: ListView.builder(
         itemCount: roomList.length,

@@ -127,6 +127,7 @@ class _CreateReservationState extends State<CreateReservation> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Create Reservation'),
+        backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         child: Padding(
