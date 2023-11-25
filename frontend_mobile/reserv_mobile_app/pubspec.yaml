@@ -32,6 +32,8 @@ dependencies:
     sdk: flutter
   google_fonts: ^6.1.0
   intl: ^0.18.1
+  flutter_styled_toast: ^2.0.1
+  flutter_sliding_up_panel: 2.1.1
 
 
   # The following adds the Cupertino Icons font to your application.

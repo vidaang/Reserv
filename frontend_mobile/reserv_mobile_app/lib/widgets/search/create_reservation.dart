@@ -167,7 +167,7 @@ class _CreateReservationState extends State<CreateReservation> {
                       });
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: atriumLobbyNeeded ? Colors.green : null,
+                      backgroundColor: atriumLobbyNeeded ? Colors.green : null,
                     ),
                     child: const Text('Yes'),
                   ),
@@ -178,7 +178,7 @@ class _CreateReservationState extends State<CreateReservation> {
                       });
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: !atriumLobbyNeeded ? Colors.red : null,
+                      backgroundColor: !atriumLobbyNeeded ? Colors.red : null,
                     ),
                     child: const Text('No'),
                   ),
@@ -197,7 +197,7 @@ class _CreateReservationState extends State<CreateReservation> {
                       });
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: multimediaEquipmentNeeded ? Colors.green : null,
+                      backgroundColor: multimediaEquipmentNeeded ? Colors.green : null,
                     ),
                     child: const Text('Yes'),
                   ),
@@ -209,7 +209,7 @@ class _CreateReservationState extends State<CreateReservation> {
                       });
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: !multimediaEquipmentNeeded ? Colors.red : null,
+                      backgroundColor: !multimediaEquipmentNeeded ? Colors.red : null,
                     ),
                     child: const Text('No'),
                   ),

@@ -170,7 +170,7 @@ class _LoginFormState extends State<LoginForm> {
                                     else {
                                       Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
-                                            builder: (context) => CompleteProfile()),
+                                            builder: (context) => const CompleteProfile()),
                                       );
                                     }
                                   }

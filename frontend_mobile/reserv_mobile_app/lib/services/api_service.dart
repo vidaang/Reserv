@@ -2,6 +2,7 @@
 
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:intl/intl.dart';
 import 'jwt_token.dart';
 
 class ApiService {
@@ -167,7 +168,13 @@ class ApiService {
     }
   }
 
-  static Future<Map<String, dynamic>> getAvailability(String roomID, String date, int intervals, String? token) async {
+
+  static Future<Map<String, dynamic>> getAvailability(
+    String roomID,
+    String date,
+    int intervals,
+    String? token,
+  ) async {
     // Construct the API endpoint URL
     final apiUrl = "$baseUrl/api/availability/$roomID/$date/$intervals";
 
@@ -183,19 +190,79 @@ class ApiService {
         headers: {'Authorization': 'Bearer $token'},
       );
 
+      print('Response Body: ${response.body}');
+
       if (response.statusCode == 200) {
-        // Parse and return the response JSON
-        return json.decode(response.body);
+        // Parse the response JSON
+        List<Map<String, num>> availabilityList = (json.decode(response.body)['continuousAvailability'] as List<dynamic>)
+            .map((dynamic item) => {
+                  'start': item['start'] as num,
+                  'end': item['end'] as num,
+                })
+            .toList();
+
+        // Process the parsed data as needed
+        List<List<num>> unformatted = [];
+        List<String> timesFormatted = [];
+
+        for (Map<String, num> availability in availabilityList) {
+          num start = availability['start']!;
+          num end = availability['end']!;
+
+          DateTime startTime = DateTime(2023, 1, 1, start.floor(), (start % 1 * 60).round());
+          DateTime endTime = DateTime(2023, 1, 1, end.floor(), (end % 1 * 60).round());
+
+          String formattedSlot = '${DateFormat.jm().format(startTime)} - ${DateFormat.jm().format(endTime)}';
+
+          unformatted.add([start, end]);
+          timesFormatted.add(formattedSlot);
+        }
+
+        // Return the parsed data in a Map (you can modify this based on your needs)
+        return {
+          'unformatted': unformatted,
+          'formatted': timesFormatted,
+        };
       } else {
         // If the server did not return a 200 OK response,
         // throw an exception with the error message.
-        throw Exception('Failed to load availability');
+        throw Exception('Failed to load availability. Status code: ${response.statusCode}');
       }
     } catch (error) {
       // Handle network errors or other exceptions
-      throw Exception('Failed to connect to the server. Please check your internet connection.');
+      throw Exception('Failed to create availability: $error');
     }
   }
+
+  // static Future<Map<String, dynamic>> getAvailability(String roomID, String date, int intervals, String? token) async {
+  //   // Construct the API endpoint URL
+  //   final apiUrl = "$baseUrl/api/availability/$roomID/$date/$intervals";
+
+  //   try {
+  //     if (token == null) {
+  //       // Handle the case where the token is not available
+  //       throw Exception('JWT token not available');
+  //     }
+
+  //     // Make the API request with the JWT token in the headers
+  //     final response = await http.get(
+  //       Uri.parse(apiUrl),
+  //       headers: {'Authorization': 'Bearer $token'},
+  //     );
+
+  //     if (response.statusCode == 200) {
+  //       // Parse and return the response JSON
+  //       return json.decode(response.body);
+  //     } else {
+  //       // If the server did not return a 200 OK response,
+  //       // throw an exception with the error message.
+  //       throw Exception('Failed to load availability');
+  //     }
+  //   } catch (error) {
+  //     // Handle network errors or other exceptions
+  //     throw Exception('Failed to connect to the server. Please check your internet connection.');
+  //   }
+  // }
 
   static Future<void> createEvent(String? token,String RoomID, String Date, String EventName, 
     String EventType, String Description, int? Attendees, bool AtriumOccupy, bool MediaEquip, bool EventAgreement, 
