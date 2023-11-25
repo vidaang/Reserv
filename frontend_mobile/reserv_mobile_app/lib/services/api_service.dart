@@ -212,6 +212,22 @@ class ApiService {
     }
   }
 
+  static Future<Map<String, dynamic>> retrieveEvents({String? rsoId}) async {
+    final Map<String, dynamic> requestBody = {'RSOID': rsoId};
+
+    final response = await http.post(
+      Uri.parse('$baseUrl/api/RetrieveEvents'),
+      body: jsonEncode(requestBody),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to retrieve events');
+    }
+  }
+
   static Future<void> createEvent(String token, String RSOID, String RoomID, String Date, 
     String EventName, String EventType, String Description, int? Attendees, bool AtriumOccupy, 
     bool MediaEquip, bool EventAgreement, List<num> StartEnd) async {
