@@ -442,6 +442,7 @@ app.post("/api/RetrieveRooms", async (req, res) => {
       ResrveTimes: room.ResrveTimes,
       UniID: room.UniID,
       BuildingID: room.BuildingID,
+      Capacity: room.Capacity,
     });
 
     roomListReturn = { roomList: returnArray };
