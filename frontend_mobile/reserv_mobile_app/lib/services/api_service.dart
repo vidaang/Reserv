@@ -233,6 +233,33 @@ class ApiService {
     }
   }
 
+  static Future<Map<String, dynamic>> retrieveEvents(String? token) async {
+    try {
+      if (token == null) {
+        throw Exception('JWT token not available');
+      }
+
+      if (token == "") {
+        throw Exception('JWT token is empty');
+      }
+      final response = await http.post(
+        Uri.parse('$baseUrl/api/RetrieveEventsMobile'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        throw Exception('EVENTS WACK GO FIX IT DUMMY CODER!');
+      }
+    } catch (e) {
+      throw Exception('Failed to retrieve event. Error: $e');
+    }
+  }
+
   static Future<void> createEvent(String? token,String RoomID, String Date, String EventName, 
     String EventType, String Description, int? Attendees, bool AtriumOccupy, bool MediaEquip, bool EventAgreement, 
     List<num> StartEnd, String BuildingID, int? RoomNumber) async {
