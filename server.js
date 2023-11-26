@@ -303,19 +303,13 @@ app.post("/api/RetrieveEventsMobile", async (req, res) => {
     const returnArray = [];
     var eventList;
 
-    if (RSOID == undefined || RSOID == "" || RSOID == null)
-    {
+    if (RSOID) {
       eventList = await db
-      .collection("Events")
-      .find({})
-      .toArray();
-    }
-    else
-    {
-      eventList = await db
-      .collection("Events")
-      .find({ RSOID: new ObjectId(RSOID) })
-      .toArray();
+        .collection("Events")
+        .find({ RSOID: new ObjectId(RSOID) })
+        .toArray();
+    } else {
+      eventList = [];  // Set eventList to an empty array when RSOID is not present
     }
 
     eventList.forEach((event) => {
