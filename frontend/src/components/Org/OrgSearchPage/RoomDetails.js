@@ -182,6 +182,7 @@ function RoomDetails(props) {
     console.log(js);
     try
     {  
+      //var response = await fetch(`https://knightsreserv-00cde8777914.herokuapp.com/api/createEvent`,
        var response = await fetch(`http://localhost:5000/api/createEvent`, {
         method: 'POST',
         body: js,
@@ -313,7 +314,6 @@ function RoomDetails(props) {
         ) : ( 
           <form onSubmit={handleCreateReservation}>
             <div id="CompleteReservationContainer">
-              {/*CHANGE TO A FORM AND REMOVE FOOTER*/}
               <div className="complete-reservation-input-label">
                   <label htmlFor="eventName">Event Name:</label>
                   <input type="text" id="eventName" placeholder="Enter Event Name" ref={(c) => (eventName = c)} required/>
