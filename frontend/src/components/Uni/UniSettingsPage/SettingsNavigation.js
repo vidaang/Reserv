@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   IconBellRinging,
   IconKey,
@@ -18,16 +18,61 @@ const data = [
   // { link: '', label: 'Other Settings', icon: IconSettings },
 ];
 
+
+
+
 function UniversityInfo() {
+
+  const initialUni = 
+  {
+    UniName: "",
+    Address: "",
+    Phone: "",
+    EmailDomain: "",
+    Website: ""
+  }
+
+  const [uniData, SetUniData] = useState(initialUni);
+  useEffect(() => {
+    console.log("Here");
+      const GetUniInfo = async () =>
+      {
+        var obj = { UniversityID: "655673b363bf110ce2b499ee" };
+        var js = JSON.stringify(obj);
+        try
+        {
+            const response = await fetch('http://localhost:5000/api/GetUniInfo',
+            {method:'POST',
+            body:js,
+            headers:{'Content-Type':'application/json'}});
+            var res = await response.json();
+            console.log(res.responseObject);
+            return res;
+
+        }
+        catch(e)
+        {
+            alert(e.toString());
+            return;
+        }
+    };
+    const fetchUniInfo = async () => {
+      var data = await GetUniInfo();
+      console.log(data);
+      SetUniData(data);
+    }
+    fetchUniInfo();
+  }, []);
+
   return (
     <div>
       <h2>University</h2>
-      <p>University Name: University of Central Florida</p>
-      <p>Address: 3400 Quadrangle Blvd, Orlando, FL 32817</p>
-      <p>Phone Number: (407) 266-3627</p>
-      <p>Email: Your University Email</p>
+      <p>University Name: {uniData.UniName}</p>
+      <p>Address: {uniData.Address}</p>
+      <p>Phone Number: {uniData.Phone}</p>
+      <p>Email: {uniData.EmailDomain}</p>
       <p>Hours: M-F 8AM-7PM</p>
-      <p>Website: ucf.edu</p>
+      <p>Website: {uniData.Website}</p>
     </div>
   );
 }
@@ -49,21 +94,43 @@ function UniversityInfo() {
 // }
 
 function LoginInfo() {
+  var oldPassword;
+  var newPassword;
+
+  const ChangePassword = async() =>
+  {
+    var obj = { UniversityID: "655673b363bf110ce2b499ee", Password: oldPassword, NewPassword: oldPassword};
+    var js = JSON.stringify(obj);
+    try
+        {
+            const response = await fetch('http://localhost:5000/api/adminChangePassword',
+            {method:'POST',
+            body:js,
+            headers:{'Content-Type':'application/json'}});
+            var res = await response.json();
+            console.log(res.responseObject);
+            return res;
+
+        }
+        catch(e)
+        {
+            alert(e.toString());
+            return;
+        }
+  }
+
   return (
     <div>
       <h2>User Settings</h2>
-      <form id="ChangeUsernameForm">
-        <label>Change Username: <input type="text" required/></label>
-        <button type='submit' id="username-change-button">Change</button><br />
-      </form>
       <form id="ChangePasswordForm">
-        <label>Change Password: <input type="password" required/></label>
-        <button type='submit' id="password-change-button">Change</button><br  />
+        <label>Previous Password: <input type="password" ref={(c) => (oldPassword = c)} required/></label><br/>
+        <label>New Password: <input type="password" ref={(c) => (newPassword = c)} required/></label>
+        <button type='submit' id="password-change-button" onClick={ChangePassword}>Change</button><br/>
       </form>
     </div>
   );
 }
-
+7
 function OtherSettings() {
   const [darkMode, setDarkMode] = useState(false);
 
