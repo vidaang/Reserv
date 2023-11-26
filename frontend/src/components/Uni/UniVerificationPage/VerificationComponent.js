@@ -17,7 +17,8 @@ function VerificationComponent({ org })
         console.log(js);
         try
         {
-            await fetch('http://localhost:5000/api/VerifyRSO',
+            await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/VerifyRSO',
+            // await fetch('http://localhost:5000/api/VerifyRSO',
             {
                 method:'PUT',
                 body:js,

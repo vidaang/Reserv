@@ -48,7 +48,8 @@ function RoomDetails(props) {
     
     try
     {  
-       response = await fetch(`http://localhost:5000/api/availability/${room.RoomID}/${apiFormattedDate}/${intervals}`, {
+       response = await fetch(`https://knightsreserv-00cde8777914.herokuapp.com/api/availability/${room.RoomID}/${apiFormattedDate}/${intervals}`, {
+       // response = await fetch(`http://localhost:5000/api/availability/${room.RoomID}/${apiFormattedDate}/${intervals}`, {
         method: 'GET',
         headers: {
           'Content-Type':'application/json',
@@ -182,8 +183,8 @@ function RoomDetails(props) {
     console.log(js);
     try
     {  
-      //var response = await fetch(`https://knightsreserv-00cde8777914.herokuapp.com/api/createEvent`,
-       var response = await fetch(`http://localhost:5000/api/createEvent`, {
+       var response = await fetch(`https://knightsreserv-00cde8777914.herokuapp.com/api/createEvent`, {
+       // var response = await fetch(`http://localhost:5000/api/createEvent`, {
         method: 'POST',
         body: js,
         headers: {
