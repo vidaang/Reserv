@@ -2,6 +2,7 @@ import 'dart:collection';
 import '../../services/api_service.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
+import '../../services/jwt_token.dart';
 
 /// Example event class.
 class Event {
@@ -30,25 +31,33 @@ final DateFormat dateFormat = DateFormat("MM-dd-yyyy");
 Future<void> fetchEvents() async {
   try {
     print("Fetching...");
-    final response = await ApiService.retrieveEvents();
-    final eventList = response['eventList'];
-    var count = 0;
-    for (var eventMap in eventList) {
-      print(eventMap);
-      final eventDate = eventMap['Date'].split('-');
-      final year = int.parse(eventDate[2]);
-      final month = int.parse(eventDate[0]);
-      final day = int.parse(eventDate[1]);
-      final calendarDate = DateTime(year, month, day);
-      final formattedDate = dateFormat.format(calendarDate);
-      final Event event = Event(
-        eventMap['EventName'],
-        time: formattedDate,
-        place: eventMap['AtriumBuilding'],
-      );
-      _kEventSource[calendarDate] = _kEventSource[calendarDate] ?? [];
-      _kEventSource[calendarDate]?.add(event);
-      setEvents(_kEventSource);
+
+    final String? token = await JWTToken.getToken('Token');
+
+    if (token != null) {
+      final response = await ApiService.retrieveEvents(token);
+      final eventList = response['eventList'];
+      var count = 0;
+      for (var eventMap in eventList) {
+        print(eventMap);
+        final eventDate = eventMap['Date'].split('-');
+        final year = int.parse(eventDate[2]);
+        final month = int.parse(eventDate[0]);
+        final day = int.parse(eventDate[1]);
+        final calendarDate = DateTime(year, month, day);
+        final formattedDate = dateFormat.format(calendarDate);
+        final Event event = Event(
+          eventMap['EventName'],
+          time: formattedDate,
+          place: eventMap['AtriumBuilding'],
+        );
+        _kEventSource[calendarDate] = _kEventSource[calendarDate] ?? [];
+        _kEventSource[calendarDate]?.add(event);
+        setEvents(_kEventSource);
+      }
+    }
+    else {
+      throw Exception('JWT token not available');
     }
   } catch (e) {
     print('Error fetching events: $e');
