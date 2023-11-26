@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
+import { useDisclosure } from '@mantine/hooks';
+import { Modal } from '@mantine/core';
 
 function OrgCreateAccount() {
   var createAccountEmail;
@@ -7,6 +9,7 @@ function OrgCreateAccount() {
   var retypePassword;
 
   const [message, setMessage] = useState('');
+  const [opened, { open, close }] = useDisclosure(false);
 
   const doCreateAccount = async event => {
     event.preventDefault();
@@ -24,8 +27,8 @@ function OrgCreateAccount() {
     var js = JSON.stringify(obj);
     console.log(js);
     try {
-      // const response = await fetch('http://localhost:5000/api/createRSO',
-      const response = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/createRSO',
+      const response = await fetch('http://localhost:5000/api/createRSO',
+      //const response = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/createRSO',
         {
           method: 'PUT',
           body: js,
@@ -38,7 +41,7 @@ function OrgCreateAccount() {
         setMessage("API Error: " + res.error);
       } else {
         setMessage('Account Created');
-        alert('Account created successfully! Please check your email to verify your account!');
+        open();
       }
     }
     catch (e) {
@@ -54,15 +57,18 @@ function OrgCreateAccount() {
     <div id="loginDiv">
       <form onSubmit={doCreateAccount}>
         <span id="inner-title">Create an account</span><br />
-        <input type="text" className="user-authentication-text-form" id="createAccountEmail" placeholder="Email" ref={(c) => createAccountEmail = c} /><br />
-        <input type="password" className="user-authentication-text-form" id="createAccountPassword" placeholder="Password" ref={(c) => createAccountPassword = c} /><br />
-        <input type="password" className="user-authentication-text-form" id="retypePassword" placeholder="Retype Password" ref={(c) => retypePassword = c} /><br />
+        <input type="text" className="user-authentication-text-form" id="createAccountEmail" placeholder="Email" required ref={(c) => createAccountEmail = c} /><br />
+        <input type="password" className="user-authentication-text-form" id="createAccountPassword" placeholder="Password" required ref={(c) => createAccountPassword = c} /><br />
+        <input type="password" className="user-authentication-text-form" id="retypePassword" placeholder="Retype Password" required ref={(c) => retypePassword = c} /><br />
         <input type="submit" id="loginButton" className="user-authentication-buttons" value="Create Account" />
       </form>
       <Link to="/OrgLogin">
         <button className="navbar-menu-text">Have an Account? Sign In Here!</button>
       </Link>
       <span id="loginResult">{message}</span>
+      <Modal id="email-verification-modal" opened={opened} onClose={close}>
+        <h1 id="email-verification-modal-message">Check your email for verification!</h1>
+      </Modal>
     </div>
   );
 }

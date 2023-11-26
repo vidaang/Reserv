@@ -249,6 +249,13 @@ body {
   background-image: url(../images/university-login.jpg);
 }
 
+#email-verification-modal-message {
+  font-size: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
 /* LANDING PAGE STYLING */
 
@@ -1233,4 +1240,32 @@ output[for="timeRange"] {
   flex-direction: column !important;
   align-items: center !important;
   justify-content: center !important;
+}
+
+/* EMAIL VERIFICATION */
+
+#email-verification-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5%;
+}
+
+#email-verification-container {
+  border: solid rgba(0, 0, 0, 0.4) 1px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 36%;
+  min-height: 20vh;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+  margin: 10px 10px;
+}
+
+#email-verification-art {
+  max-width: 10%;
+  margin-bottom: 2%;
 }

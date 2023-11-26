@@ -119,7 +119,7 @@ app.put("/api/createRSO", async (req, res) => {
       to: user.Email,
       from: "poosdreserv@gmail.com",
       subject: "Email Verification",
-      html: `Please click on this link to verify your email: <a href="http://yourfrontenddomain.com/verify?token=${token}">Verify Email</a>`,
+      html: `Please click on this link to verify your email: <a href="http://localhost:3000/EmailVerification?token=${token}">Verify Email</a>`,
     };
 
     // Send the email
@@ -144,24 +144,30 @@ app.put("/api/createRSO", async (req, res) => {
 });
 
 app.post("/api/verify-email", async (req, res) => {
+
   try {
+    const db = client.db("Reserv");
     const { token } = req.body;
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decoded.userId;
 
-    // Update user status in the database
-    const user = await db.collection("RSO").findOne({ RSOID: userId });
+    const userIdObject = new ObjectId(userId);
+    console.log(userIdObject);
 
+    // Update user status in the database
+    var user = await db.collection("RSO").findOne({ RSOID: userIdObject });
+    
+    
     if (user) {
       await db
         .collection("RSO")
-        .updateOne({ RSOID: userId }, { $set: { EmailVerification: true } });
+        .updateOne({ RSOID: userIdObject }, { $set: { EmailVerification: true } });
       res.status(200).send("Email successfully verified.");
     } else {
-      res.status(400).send("User not found.");
+      res.status(404).send("User not found.");
     }
   } catch (error) {
-    res.status(400).send("Invalid or expired token.");
+    res.status(405).send("Invalid or expired token.");
   }
 });
 
