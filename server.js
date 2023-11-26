@@ -282,6 +282,70 @@ app.post("/api/RetrieveEvents", async (req, res) => {
   res.status(200).json(eventListReturn);
 });
 
+app.post("/api/RetrieveEventsMobile", async (req, res) => {
+  var eventListReturn = {};
+
+  const db = client.db("Reserv");
+
+  // Get the token from the request headers
+  const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ error: "Unauthorized: Token not provided" });
+  }
+
+  try {
+    // Decode the token to get the RSOID
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
+    const RSOID = decodedToken.RSOID;
+    console.log(RSOID);
+
+    const returnArray = [];
+    var eventList;
+
+    if (RSOID == undefined || RSOID == "" || RSOID == null)
+    {
+      eventList = await db
+      .collection("Events")
+      .find({})
+      .toArray();
+    }
+    else
+    {
+      eventList = await db
+      .collection("Events")
+      .find({ RSOID: RSOID })
+      .toArray();
+    }
+
+    eventList.forEach((event) => {
+      returnArray.push({
+        EventID: event._id,
+        EventName: event.EventName,
+        Date: event.Date,
+        EventType: event.EventType,
+        NumAttendees: event.NumAttendees,
+        Description: event.Description,
+        AtriumOccupy: event.AtriumOccupy,
+        AtriumBuilding: event.AtriumBuilding,
+        StartEnd: event.StartEnd,
+        RSOID: event.RSOID,
+        RoomID: event.RoomID,
+      });
+
+      eventListReturn = { eventList: returnArray };
+    });
+
+    res.status(200).json(eventListReturn);
+  } catch (error) {
+    console.error("Error during RetrieveEvents:", error);
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({ error: "Unauthorized: Token expired" });
+    }
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 app.post("/api/RetrieveRSO", async (req, res) => {
   const { UniID, VerificationFlag } = req.body;
   var RSOListReturn = {};
