@@ -58,7 +58,6 @@ function UniversityInfo() {
     };
     const fetchUniInfo = async () => {
       var data = await GetUniInfo();
-      console.log(data);
       SetUniData(data);
     }
     fetchUniInfo();
@@ -94,43 +93,44 @@ function UniversityInfo() {
 // }
 
 function LoginInfo() {
-  var oldPassword;
-  var newPassword;
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
 
-  const ChangePassword = async() =>
+  const ChangePassword = async (event) =>
   {
-    var obj = { UniversityID: "655673b363bf110ce2b499ee", Password: oldPassword, NewPassword: oldPassword};
+    event.preventDefault();
+    alert("here");
+    var obj = { UniID: "655673b363bf110ce2b499ee", Password: oldPassword, NewPassword: newPassword};
     var js = JSON.stringify(obj);
+    alert(js);
     try
-        {
-            const response = await fetch('http://localhost:5000/api/adminChangePassword',
-            {method:'POST',
-            body:js,
-            headers:{'Content-Type':'application/json'}});
-            var res = await response.json();
-            console.log(res.responseObject);
-            return res;
-
-        }
-        catch(e)
-        {
-            alert(e.toString());
-            return;
-        }
+    {
+        const response = await fetch('http://localhost:5000/api/adminChangePassword',
+        {method:'PUT',
+        body:js,
+        headers:{'Content-Type':'application/json'}});
+        var res = await response.json();
+        console.log(res.responseObject);
+        return res;
+    }
+    catch(e)
+    {
+        alert(e.toString());
+        return;
+    }
   }
-
   return (
     <div>
       <h2>User Settings</h2>
       <form id="ChangePasswordForm">
-        <label>Previous Password: <input type="password" ref={(c) => (oldPassword = c)} required/></label><br/>
-        <label>New Password: <input type="password" ref={(c) => (newPassword = c)} required/></label>
+        <label>Previous Password: <input type="password" value={oldPassword} onChange={(e) => setOldPassword(e.target.value)} required/></label><br/>
+        <label>New Password: <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required/></label>
         <button type='submit' id="password-change-button" onClick={ChangePassword}>Change</button><br/>
       </form>
     </div>
   );
 }
-7
+
 function OtherSettings() {
   const [darkMode, setDarkMode] = useState(false);
 
