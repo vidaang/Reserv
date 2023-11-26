@@ -19,8 +19,8 @@ function OrgEmailVerification()
         console.log(js);
 
         try {
-            await fetch('http://localhost:5000/api/verify-email',
-            //const response = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/verify-email',
+            //await fetch('http://localhost:5000/api/verify-email',
+            await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/verify-email',
               {
                 method: 'POST',
                 body: js,

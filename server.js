@@ -119,7 +119,7 @@ app.put("/api/createRSO", async (req, res) => {
       to: user.Email,
       from: "poosdreserv@gmail.com",
       subject: "Email Verification",
-      html: `Please click on this link to verify your email: <a href="http://localhost:3000/EmailVerification?token=${token}">Verify Email</a>`,
+      html: `Please click on this link to verify your email: <a href="https://knightsreserv-00cde8777914.herokuapp.com/EmailVerification?token=${token}">Verify Email</a>`,
     };
 
     // Send the email
@@ -144,7 +144,6 @@ app.put("/api/createRSO", async (req, res) => {
 });
 
 app.post("/api/verify-email", async (req, res) => {
-
   try {
     const db = client.db("Reserv");
     const { token } = req.body;

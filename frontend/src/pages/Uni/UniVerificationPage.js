@@ -38,8 +38,8 @@ function UniVerificationPage()
             console.log(js);
             try
             {   
-                //const response = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/RetrieveRSO',
-                const response = await fetch('http://localhost:5000/api/RetrieveRSO',
+                const response = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/RetrieveRSO',
+                //const response = await fetch('http://localhost:5000/api/RetrieveRSO',
                 {
                     method:'POST',
                     body:js,

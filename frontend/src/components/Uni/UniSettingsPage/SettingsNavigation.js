@@ -34,14 +34,14 @@ function UniversityInfo() {
 
   const [uniData, SetUniData] = useState(initialUni);
   useEffect(() => {
-    console.log("Here");
       const GetUniInfo = async () =>
       {
         var obj = { UniversityID: "655673b363bf110ce2b499ee" };
         var js = JSON.stringify(obj);
         try
         {
-            const response = await fetch('http://localhost:5000/api/GetUniInfo',
+            const response = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/GetUniInfo',
+            //const response = await fetch('http://localhost:5000/api/GetUniInfo',
             {method:'POST',
             body:js,
             headers:{'Content-Type':'application/json'}});
@@ -58,7 +58,7 @@ function UniversityInfo() {
     };
     const fetchUniInfo = async () => {
       var data = await GetUniInfo();
-      console.log(data);
+      //console.log(data);
       SetUniData(data);
     }
     fetchUniInfo();
@@ -70,7 +70,7 @@ function UniversityInfo() {
       <p>University Name: {uniData.UniName}</p>
       <p>Address: {uniData.Address}</p>
       <p>Phone Number: {uniData.Phone}</p>
-      <p>Email: {uniData.EmailDomain}</p>
+      <p>Email Domain: {uniData.EmailDomain}</p>
       <p>Hours: M-F 8AM-7PM</p>
       <p>Website: {uniData.Website}</p>
     </div>
@@ -103,7 +103,8 @@ function LoginInfo() {
     var js = JSON.stringify(obj);
     try
         {
-            const response = await fetch('http://localhost:5000/api/adminChangePassword',
+            const response = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/adminChangePassword',
+            /*const response = await fetch('http://localhost:5000/api/adminChangePassword',*/
             {method:'POST',
             body:js,
             headers:{'Content-Type':'application/json'}});
