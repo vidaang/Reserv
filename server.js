@@ -314,7 +314,7 @@ app.post("/api/RetrieveEventsMobile", async (req, res) => {
     {
       eventList = await db
       .collection("Events")
-      .find({ RSOID: RSOID })
+      .find({ RSOID: RSOID: new ObjectId(RSOID) })
       .toArray();
     }
 
