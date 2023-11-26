@@ -463,37 +463,62 @@ app.post("/api/RetrieveEventsMobile", async (req, res) => {
 });
 
 app.post("/api/RetrieveRSO", async (req, res) => {
-  const { UniID, VerificationFlag } = req.body;
+  const { UniID, VerificationFlag, RSOID } = req.body;
   var RSOListReturn = {};
   var uniObjectID = new ObjectId(UniID);
 
   const db = client.db("Reserv");
-  const returnArray = [];
-  const RSOList = await db
-    .collection("RSO")
-    .find({ UniID: uniObjectID, Verification: VerificationFlag })
-    .toArray();
-  console.log(RSOList);
+  
+  if (UniID && VerificationFlag)
+  {
+    const returnArray = [];
+    const RSOList = await db
+      .collection("RSO")
+      .find({ UniID: uniObjectID, Verification: VerificationFlag })
+      .toArray();
+    console.log(RSOList);
 
-  RSOList.forEach((rso) => {
-    returnArray.push({
-      AdminID: rso.AdminID,
-      AdvisorEmail: rso.advisorEmail,
-      AdvisorName: rso.AdvisorName,
-      Email: rso.Email,
-      Phone: rso.Phone,
-      OfficerFirstName: rso.OfficerFirstName,
-      OfficerLastName: rso.OfficerLastName,
-      RSOID: rso.RSOID,
-      RSOName: rso.RSOName,
-      UniID: rso.UniID,
-      Verification: rso.Verification,
+    RSOList.forEach((rso) => {
+      returnArray.push({
+        AdminID: rso.AdminID,
+        AdvisorEmail: rso.advisorEmail,
+        AdvisorName: rso.AdvisorName,
+        Email: rso.Email,
+        Phone: rso.Phone,
+        OfficerFirstName: rso.OfficerFirstName,
+        OfficerLastName: rso.OfficerLastName,
+        RSOID: rso._id,
+        RSOName: rso.RSOName,
+        UniID: rso.UniID,
+        Verification: rso.Verification,
+      });
+      
+      RSOListReturn = { RSOList: returnArray };
     });
 
-    RSOListReturn = { RSOList: returnArray };
-  });
-
-  res.status(200).json(RSOListReturn);
+    res.status(200).json(RSOListReturn);
+  }
+  else if (RSOID)
+  {
+    const RSOobj = new ObjectId(RSOID);
+    const RSOInfo = await db.collection("RSO").findOne({ RSOID:RSOobj });
+    const returnRSO = {
+      RSOName: RSOInfo.RSOName,
+      OfficerFirstName: RSOInfo.OfficerFirstName,
+      OfficerLastName: RSOInfo.OfficerLastName,
+      OfficerEmail: RSOInfo.Email,
+      Phone: RSOInfo.Phone,
+      AdvisorName: RSOInfo.AdvisorName,
+      AdvisorEmail: RSOInfo.AdvisorEmail,
+      SecondaryContactName: RSOInfo.SecondaryContactName,
+      SecondaryContactEmail: RSOInfo.SecondaryContactEmail,
+      SecondaryContactPhone: RSOInfo.SecondaryContactPhone,
+    }
+    res.status(200).json(returnRSO);
+  }
+  else
+    res.status(404).json({ error: "No RSO found."});
+  
 });
 
 app.put("/api/UpdateEvent", async (req, res) => {
