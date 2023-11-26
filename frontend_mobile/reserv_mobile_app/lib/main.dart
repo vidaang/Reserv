@@ -1,5 +1,6 @@
 // main.dart
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import './screens/landing.dart';
 
 void main() { 
@@ -14,6 +15,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) { 
     return MaterialApp( 
       title: 'Reserv App', 
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        textTheme: GoogleFonts.lexendDecaTextTheme(),
+      ),
       debugShowCheckedModeBanner: false, 
       initialRoute: '/landing',
       routes: {

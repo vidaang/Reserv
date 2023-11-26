@@ -24,6 +24,10 @@ class RoomList extends StatelessWidget {
     final List<dynamic> roomList = data['roomList'];
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Available Rooms'),
+        backgroundColor: Colors.white,
+      ),
       body: ListView.builder(
         itemCount: roomList.length,
         itemBuilder: (context, index) {
@@ -53,15 +57,13 @@ class RoomList extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => RoomDetails(
+                          roomID: room['RoomID'],
                           buildingID: room['BuildingID'],
                           roomNumber: room['RoomNumber'],
                           roomType: room['RoomType'],
                           roomInfo: room['RoomInfo'],
                           mediaEquip: room['MediaEquip'],
                           capacity: room['Capacity'],
-                          date: "11-25-2023",
-                          interval: 1,
-                          availabilityData: ApiService.getAvailability(room['RoomID'], "11-25-2023", 1, token),
                         ),
                       ),
                     );

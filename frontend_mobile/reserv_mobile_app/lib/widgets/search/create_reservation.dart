@@ -5,6 +5,7 @@ import '../navbar.dart';
 import '../../services/jwt_token.dart';
 
 class CreateReservation extends StatefulWidget {
+  final String roomID;
   final String date;
   final List<num> startEnd;
   final String? time;
@@ -14,6 +15,7 @@ class CreateReservation extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
   CreateReservation({
     Key? key,
+    required this.roomID,
     required this.date,
     required this.time, // time to display to screen
     required this.startEnd, // array to pass to endpoint
@@ -43,53 +45,52 @@ class _CreateReservationState extends State<CreateReservation> {
   }
 
   // calling the create reservation endpoint
-  Future<void> createReservationFunction(String token, String RSOID, String RoomID, String Date, 
-    String EventName, String EventType, String Description, int? Attendees, bool AtriumOccupy, 
-    bool MediaEquip, bool EventAgreement, List<num> StartEnd) async {
+  Future<void> createReservationFunction(String RoomID, String Date, String EventName, String EventType, String Description, 
+    int? Attendees, bool AtriumOccupy, bool MediaEquip, bool EventAgreement, List<num> StartEnd, String BuildingID, int? RoomNumber) async {
     try {
       final String? token = await JWTToken.getToken('Token');
 
-      if (token == null) {
-        throw Exception('JWT token not available');
+      if (token != null) {
+
+        await ApiService.createEvent(
+          token,
+          RoomID,
+          Date,
+          EventName,
+          EventType,
+          Description,
+          Attendees,
+          AtriumOccupy,
+          MediaEquip,
+          EventAgreement,
+          StartEnd,
+          BuildingID, 
+          RoomNumber,
+        );
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Event Created'),
+              content: const Text('Your event was sucessfully created!'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                          builder: (context) => const NavBar()),
+                    );
+                  },
+                  child: const Text('Return to Home'),
+                ),
+              ],
+            );
+          },
+        );
       }
-
-      await ApiService.createEvent(
-        token,
-        RSOID,
-        RoomID,
-        Date,
-        EventName,
-        EventType,
-        Description,
-        Attendees,
-        AtriumOccupy,
-        MediaEquip,
-        EventAgreement,
-        StartEnd
-      );
-
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Event Created'),
-            content: const Text('Your event was sucessfully created!'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                        builder: (context) => const NavBar()),
-                  );
-                },
-                child: const Text('Back to Home'),
-              ),
-            ],
-          );
-        },
-      );
-      } 
-      catch (e) {
+    } 
+    catch (e) {
       // Handle different exceptions
       showDialog(
         context: context,
@@ -126,144 +127,173 @@ class _CreateReservationState extends State<CreateReservation> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Create Reservation'),
+        backgroundColor: Colors.white,
       ),
-
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Room: ${widget.buildingID} ${widget.roomNumber}'),
-            Text('Date: ${widget.date}'),
-            Text('Selected Time: ${widget.time}'),
-            const SizedBox(height: 20),
-            TextFormField(
-              controller: eventNameController,
-              decoration: const InputDecoration(labelText: 'Event Name'),
-            ),
-            TextFormField(
-              controller: eventTypeController,
-              decoration: const InputDecoration(labelText: 'Event Type'),
-            ),
-            TextFormField(
-              controller: descriptionController,
-              decoration: const InputDecoration(labelText: 'Description'),
-            ),
-            TextFormField(
-              controller: attendeesController,
-              decoration: const InputDecoration(labelText: 'Attendees'),
-              keyboardType: TextInputType.number,
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const Text('Will you need a part of the atrium or lobby?'),
-                ElevatedButton(
-                  onPressed: () {
-                    // Update the state when "Yes" button is pressed
-                    setState(() {
-                      atriumLobbyNeeded = true;
-                    });
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: atriumLobbyNeeded ? Colors.green : null,
-                  ),
-                  child: const Text('Yes'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    // Update the state when "No" button is pressed
-                    setState(() {
-                      atriumLobbyNeeded = false;
-                    });
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: !atriumLobbyNeeded ? Colors.red : null,
-                  ),
-                  child: const Text('No'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const Text('Will you need multimedia equipment?'),
-                ElevatedButton(
-                  onPressed: () {
-                    // Update the state when "Yes" button is pressed
-                    setState(() {
-                      multimediaEquipmentNeeded = true;
-                    });
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: multimediaEquipmentNeeded ? Colors.green : null,
-                  ),
-                  child: const Text('Yes'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    // Update the state when "No" button is pressed
-                    setState(() {
-                      multimediaEquipmentNeeded = false;
-                    });
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: !multimediaEquipmentNeeded ? Colors.red : null,
-                  ),
-                  child: const Text('No'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            const Text(
-                'I understand that if the date I selected above is less than 7 business days in the future, it is unlikely that my request will be reviewed in time for my event. I also understand that the Registrar\'s Office is unable to accept rush requests.',
-            ),
-            CheckboxListTile(
-              value: agreeToStatement,
-              onChanged: (value) {
-                // Update the state when the checkbox is changed
-                setState(() {
-                  agreeToStatement = value ?? false;
-                });
-              },
-              title: const Text(
-                'I agree to the statement above.',
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Room: ${widget.buildingID} ${widget.roomNumber}'),
+              Text('Date: ${widget.date}'),
+              Text('Selected Time: ${widget.time}'),
+              const SizedBox(height: 20),
+              TextFormField(
+                controller: eventNameController,
+                decoration: const InputDecoration(labelText: 'Event Name'),
               ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: isFormValid()
-                  ? () async {
-                      // Call the createEvent function
-                      try {
-                        await ApiService.createEvent(
-                          'REPLACE WITH REAL TOKEN',
-                          'REPLACE WITH REAL RSO ID',
-                          'REPLACE WITH REAL ROOM ID',
-                          widget.date,
-                          eventNameController.text,
-                          eventTypeController.text,
-                          descriptionController.text,
-                          int.parse(attendeesController.text),
-                          atriumLobbyNeeded,
-                          multimediaEquipmentNeeded,
-                          agreeToStatement,
-                          widget.startEnd, 
-                        );
-                        print('Reservation created successfully!');
-                      } catch (e) {
-                        print('Error creating reservation: $e');
+              TextFormField(
+                controller: eventTypeController,
+                decoration: const InputDecoration(labelText: 'Event Type'),
+              ),
+              TextFormField(
+                controller: descriptionController,
+                decoration: const InputDecoration(labelText: 'Description'),
+              ),
+              TextFormField(
+                controller: attendeesController,
+                decoration: const InputDecoration(labelText: 'Attendees'),
+                keyboardType: TextInputType.number,
+              ),
+              const SizedBox(height: 30),
+              const Text('Will you need a part of the atrium or lobby?'),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        atriumLobbyNeeded = true;
+                      });
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: atriumLobbyNeeded ? Color.fromARGB(200, 149, 208, 125) : Colors.white,
+                    ),
+                    child: Text(
+                      'Yes',
+                      style: TextStyle(
+                        color: atriumLobbyNeeded ? Colors.white : Colors.black,
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        atriumLobbyNeeded = false;
+                      });
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: !atriumLobbyNeeded ? const Color.fromARGB(255, 232, 85, 75) : Colors.white,
+                    ),
+                    child: Text(
+                      'No',
+                      style: TextStyle(
+                        color: !atriumLobbyNeeded ? Colors.white : Colors.black,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 30),
+              const Text('Will you need multimedia equipment?'),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      // Update the state when "Yes" button is pressed
+                      setState(() {
+                        multimediaEquipmentNeeded = true;
+                      });
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: multimediaEquipmentNeeded ? Color.fromARGB(200, 149, 208, 125) : Colors.white,
+                    ),
+                    child: Text(
+                      'Yes',
+                      style: TextStyle(
+                        color: multimediaEquipmentNeeded ? Colors.white : Colors.black,
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Update the state when "No" button is pressed
+                      setState(() {
+                        multimediaEquipmentNeeded = false;
+                      });
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: !multimediaEquipmentNeeded ? const Color.fromARGB(255, 232, 85, 75) : Colors.white,
+                    ),
+                    child: Text(
+                      'No',
+                      style: TextStyle(
+                        color: !multimediaEquipmentNeeded ? Colors.white : Colors.black,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 30),
+              const Text(
+                  'I understand that if the date I selected above is less than 7 business days in the future, it is unlikely that my request will be reviewed in time for my event. I also understand that the Registrar\'s Office is unable to accept rush requests.',
+              ),
+              CheckboxListTile(
+                value: agreeToStatement,
+                onChanged: (value) {
+                  // Update the state when the checkbox is changed
+                  setState(() {
+                    agreeToStatement = value ?? false;
+                  });
+                },
+                title: const Text(
+                  'I agree to the statement above.',
+                ),
+              ),
+              const SizedBox(height: 30),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 92, 138, 153),
+                ),
+                onPressed: isFormValid()
+                    ? () async {
+                        // Call the createEvent function
+                        try {
+                          await createReservationFunction(
+                            widget.roomID,
+                            widget.date, 
+                            eventNameController.text, 
+                            eventTypeController.text, 
+                            descriptionController.text, 
+                            int.parse(attendeesController.text), 
+                            atriumLobbyNeeded, 
+                            multimediaEquipmentNeeded, 
+                            agreeToStatement, 
+                            widget.startEnd,
+                            widget.buildingID,
+                            widget.roomNumber,
+                          );
+                        } catch (e) {
+                          print('Error creating reservation: $e');
+                        }
                       }
-                    }
-                  : null,
-              child: const Text('Create Reservation'),
-            ),
-
-          ],
+                    : null,
+                child: const 
+                  Text(
+                    'Create Reservation',
+                    style: TextStyle(
+                    color: Colors.white,
+                  ),
+                  ),
+              ),
+            ],
+          ),
         ),
-      ),
+      )
     );
   }
 }

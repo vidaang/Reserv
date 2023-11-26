@@ -14,7 +14,7 @@ class Building {
     required this.snippet,
   });
 }
-
+// CHANGE ALL THESE ENDPOINTS TO MATCH THOSE IN THE DATABASE
 final List<Building> buildingbuildings = [
   Building(
     buildingId: 'ARNA',
@@ -42,13 +42,13 @@ final List<Building> buildingbuildings = [
   ),
   Building(
     buildingId: 'CB1',
-    position: const LatLng(28.60369, -81.200455),
+    position: const LatLng(28.60357583199511, -81.2004572711885),
     title: 'CB1 - Classroom Building I',
     snippet: 'Description for Classroom Building I',
   ),
   Building(
     buildingId: 'CB2',
-    position: const LatLng(28.604255, -81.200146),
+    position: const LatLng(28.60433512239654, -81.20035015046597),
     title: 'CB2 - Classroom Building II',
     snippet: 'Description for Classroom Building II',
   ),
@@ -66,8 +66,8 @@ final List<Building> buildingbuildings = [
   ),
   Building(
   buildingId: 'ENG2',
-  position: const LatLng(28.601831, -81.198465),
-  title: 'Engineering II F7',
+  position: const LatLng(28.601870168169455, -81.19875557720661),
+  title: 'Engineering II',
   snippet: 'Description for Engineering II',
   ),
   Building(
@@ -138,7 +138,7 @@ final List<Building> buildingbuildings = [
   ),
   Building(
     buildingId: 'STUN',
-    position: const LatLng(28.601949, -81.200645),
+    position: const LatLng(28.601915499829556, -81.20051141828299),
     title: 'Student Union',
     snippet: 'Description for Student Union',
   ),

@@ -3,6 +3,8 @@ import '../services/api_service.dart';
 import '../widgets/navbar.dart';
 import '../services/jwt_token.dart';
 class CompleteProfile extends StatefulWidget {
+  const CompleteProfile({super.key});
+
   @override
   _CompleteProfileState createState() => _CompleteProfileState();
 }
@@ -24,14 +26,14 @@ class _CompleteProfileState extends State<CompleteProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Complete Profile"),
+        title: const Text("Complete Profile"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("RSO Name"),
+            const Text("RSO Name"),
             TextField(
               onChanged: (value) {
                 setState(() {
@@ -39,8 +41,8 @@ class _CompleteProfileState extends State<CompleteProfile> {
                 });
               },
             ),
-            SizedBox(height: 16.0),
-            Text("Officer First Name"),
+            const SizedBox(height: 16.0),
+            const Text("Officer First Name"),
             TextField(
               onChanged: (value) {
                 setState(() {
@@ -48,8 +50,8 @@ class _CompleteProfileState extends State<CompleteProfile> {
                 });
               },
             ),
-            SizedBox(height: 16.0),
-            Text("Officer Last Name"),
+            const SizedBox(height: 16.0),
+            const Text("Officer Last Name"),
             TextField(
               onChanged: (value) {
                 setState(() {
@@ -57,8 +59,8 @@ class _CompleteProfileState extends State<CompleteProfile> {
                 });
               },
             ),
-            SizedBox(height: 16.0),
-            Text("Officer Email"),
+            const SizedBox(height: 16.0),
+            const Text("Officer Email"),
             TextField(
               onChanged: (value) {
                 setState(() {
@@ -66,8 +68,8 @@ class _CompleteProfileState extends State<CompleteProfile> {
                 });
               },
             ),
-            SizedBox(height: 16.0),
-            Text("Phone"),
+            const SizedBox(height: 16.0),
+            const Text("Phone"),
             TextField(
               onChanged: (value) {
                 setState(() {
@@ -75,8 +77,8 @@ class _CompleteProfileState extends State<CompleteProfile> {
                 });
               },
             ),
-            SizedBox(height: 16.0),
-            Text("Advisor Name"),
+            const SizedBox(height: 16.0),
+            const Text("Advisor Name"),
             TextField(
               onChanged: (value) {
                 setState(() {
@@ -84,8 +86,8 @@ class _CompleteProfileState extends State<CompleteProfile> {
                 });
               },
             ),
-            SizedBox(height: 16.0),
-            Text("Advisor Email"),
+            const SizedBox(height: 16.0),
+            const Text("Advisor Email"),
             TextField(
               onChanged: (value) {
                 setState(() {
@@ -93,8 +95,8 @@ class _CompleteProfileState extends State<CompleteProfile> {
                 });
               },
             ),
-            SizedBox(height: 16.0),
-            Text("Secondary Contact Name"),
+            const SizedBox(height: 16.0),
+            const Text("Secondary Contact Name"),
             TextField(
               onChanged: (value) {
                 setState(() {
@@ -102,8 +104,8 @@ class _CompleteProfileState extends State<CompleteProfile> {
                 });
               },
             ),
-            SizedBox(height: 16.0),
-            Text("Secondary Contact Email"),
+            const SizedBox(height: 16.0),
+            const Text("Secondary Contact Email"),
             TextField(
               onChanged: (value) {
                 setState(() {
@@ -111,8 +113,8 @@ class _CompleteProfileState extends State<CompleteProfile> {
                 });
               },
             ),
-            SizedBox(height: 16.0),
-            Text("Secondary Contact Phone"),
+            const SizedBox(height: 16.0),
+            const Text("Secondary Contact Phone"),
             TextField(
               onChanged: (value) {
                 setState(() {
@@ -167,7 +169,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
             print('JWTToken failed: Token is null');
           }
         },
-        child: Icon(Icons.check),
+        child: const Icon(Icons.check),
       ),
     );
   }

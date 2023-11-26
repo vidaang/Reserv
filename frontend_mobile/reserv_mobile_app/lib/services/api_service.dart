@@ -2,6 +2,7 @@
 
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:intl/intl.dart';
 import 'jwt_token.dart';
 
 class ApiService {
@@ -144,10 +145,10 @@ class ApiService {
   }
 
   // Handling for Search Rooms API
-  static Future<Map<String, dynamic>> retrieveRooms(String latitude, String longitude) async {
+  static Future<Map<String, dynamic>> retrieveRooms(double latitude, double longitude) async {
     const String uri = "$baseUrl/api/RetrieveRooms";
 
-    final Map<String, String> requestBody = {
+    final Map<String, dynamic> requestBody = {
       'Latitude': latitude,
       'Longitude': longitude,
     };
@@ -167,7 +168,12 @@ class ApiService {
     }
   }
 
-  static Future<Map<String, dynamic>> getAvailability(String roomID, String date, int intervals, String? token) async {
+  static Future<Map<String, dynamic>> getAvailability(
+    String roomID,
+    String date,
+    int intervals,
+    String? token,
+  ) async {
     // Construct the API endpoint URL
     final apiUrl = "$baseUrl/api/availability/$roomID/$date/$intervals";
 
@@ -183,43 +189,82 @@ class ApiService {
         headers: {'Authorization': 'Bearer $token'},
       );
 
+      print('Response Body: ${response.body}');
+
       if (response.statusCode == 200) {
-        // Parse and return the response JSON
-        return json.decode(response.body);
+        // Parse the response JSON
+        List<Map<String, num>> availabilityList = (json.decode(response.body)['continuousAvailability'] as List<dynamic>)
+            .map((dynamic item) => {
+                  'start': item['start'] as num,
+                  'end': item['end'] as num,
+                })
+            .toList();
+
+        // Process the parsed data as needed
+        List<List<num>> unformatted = [];
+        List<String> timesFormatted = [];
+
+        for (Map<String, num> availability in availabilityList) {
+          num start = availability['start']!;
+          num end = availability['end']!;
+
+          DateTime startTime = DateTime(2023, 1, 1, start.floor(), (start % 1 * 60).round());
+          DateTime endTime = DateTime(2023, 1, 1, end.floor(), (end % 1 * 60).round());
+
+          String formattedSlot = '${DateFormat.jm().format(startTime)} - ${DateFormat.jm().format(endTime)}';
+
+          unformatted.add([start, end]);
+          timesFormatted.add(formattedSlot);
+        }
+
+        // Return the parsed data in a Map (you can modify this based on your needs)
+        return {
+          'unformatted': unformatted,
+          'formatted': timesFormatted,
+        };
       } else {
         // If the server did not return a 200 OK response,
         // throw an exception with the error message.
-        throw Exception('Failed to load availability');
+        throw Exception('Failed to load availability. Status code: ${response.statusCode}');
       }
     } catch (error) {
       // Handle network errors or other exceptions
-      throw Exception('Failed to connect to the server. Please check your internet connection.');
+      throw Exception('Failed to create availability: $error');
     }
   }
 
-  static Future<void> createEvent(String? token, String RSOID, String RoomID, String Date, String EventName, String EventType, String Description, int? Attendees, bool AtriumOccupy, bool MediaEquip, bool EventAgreement, List<num> StartEnd) async {
+  static Future<void> createEvent(String? token,String RoomID, String Date, String EventName, 
+    String EventType, String Description, int? Attendees, bool AtriumOccupy, bool MediaEquip, bool EventAgreement, 
+    List<num> StartEnd, String BuildingID, int? RoomNumber) async {
     try {
       if (token == null) {
         // Handle the case where the token is not available
         throw Exception('JWT token not available');
       }
 
+      if (token == "") {
+        // Handle the case where the token is not available
+        throw Exception('JWT token is empty');
+      }
+
       Map<String, dynamic> requestBody = {
-        'RSOID': RSOID,
-        'RoomID': RoomID,
         'Date': Date,
-        'StartEnd': StartEnd,
         'EventName': EventName,
         'EventType': EventType,
+        'NumAttendees': Attendees,
         'Description': Description,
-        'Attendees': Attendees,
         'AtriumOccupy': AtriumOccupy,
-        'MediaEqip': MediaEquip,  // Fix typo: 'MediaEqip' to 'MediaEquip'
+        'AtriumBuilding': false,
+        'StartEnd': StartEnd,
         'EventAgreement': EventAgreement,
+        'MediaEquip': MediaEquip,
+        'RoomID': RoomID,
+        'BuildingID': BuildingID,
+        'RoomNumber': RoomNumber,
       };
 
-      final response = await http.post(
-        Uri.parse('$baseUrl/api/createEvent'),
+      final response = await http.put(
+        Uri.parse('$baseUrl/api/createEventMobile'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -237,49 +282,4 @@ class ApiService {
       throw Exception('Failed to create event. Error: $e');
     }
   }
-
-  // static Future<void> createEvent(String? token, String RSOID, String RoomID, String Date, 
-  //   String EventName, String EventType, String Description, int? Attendees, bool AtriumOccupy, 
-  //   bool MediaEquip, bool EventAgreement, List<num> StartEnd) async {
-
-  //   // Make the API request
-  //   try {
-  //     if (token == null) {
-  //       // Handle the case where the token is not available
-  //       throw Exception('JWT token not available');
-  //     }
-
-  //     Map<String, dynamic> requestBody = {
-  //       'RSOID': RSOID,
-  //       'RoomID': RoomID,
-  //       'Date': Date,
-  //       'StartEnd': StartEnd,
-  //       'EventName': EventName,
-  //       'EventType': EventType,
-  //       'Description': Description,
-  //       'Attendees': Attendees,
-  //       'AtriumOccupy': AtriumOccupy,
-  //       'MediaEquip': MediaEquip,
-  //       'EventAgreement': EventAgreement,
-  //     };
-
-  //     final response = await http.post(
-  //       Uri.parse('$baseUrl/api/createEvent'),
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'Authorization': 'Bearer $token',
-  //       },
-  //       body: jsonEncode(requestBody),
-  //     );
-
-  //     if (response.statusCode == 200) {
-  //       final Map<String, dynamic> responseData = json.decode(response.body);
-  //       print('Event created successfully! Event ID: ${responseData['eventId']}');
-  //     } else {
-  //       throw Exception('Failed to create event. Status code: ${response.statusCode}, Body: ${response.body}');
-  //     }
-  //   } catch (e) {
-  //     throw Exception('Failed to create event. Error: $e');
-  //   }
-  // }
 }
