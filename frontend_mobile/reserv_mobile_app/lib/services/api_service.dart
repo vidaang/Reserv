@@ -145,10 +145,10 @@ class ApiService {
   }
 
   // Handling for Search Rooms API
-  static Future<Map<String, dynamic>> retrieveRooms(String latitude, String longitude) async {
+  static Future<Map<String, dynamic>> retrieveRooms(double latitude, double longitude) async {
     const String uri = "$baseUrl/api/RetrieveRooms";
 
-    final Map<String, String> requestBody = {
+    final Map<String, dynamic> requestBody = {
       'Latitude': latitude,
       'Longitude': longitude,
     };
@@ -167,7 +167,6 @@ class ApiService {
       throw Exception('Failed to retrieve rooms: ${response.statusCode}');
     }
   }
-
 
   static Future<Map<String, dynamic>> getAvailability(
     String roomID,
@@ -233,36 +232,6 @@ class ApiService {
       throw Exception('Failed to create availability: $error');
     }
   }
-
-  // static Future<Map<String, dynamic>> getAvailability(String roomID, String date, int intervals, String? token) async {
-  //   // Construct the API endpoint URL
-  //   final apiUrl = "$baseUrl/api/availability/$roomID/$date/$intervals";
-
-  //   try {
-  //     if (token == null) {
-  //       // Handle the case where the token is not available
-  //       throw Exception('JWT token not available');
-  //     }
-
-  //     // Make the API request with the JWT token in the headers
-  //     final response = await http.get(
-  //       Uri.parse(apiUrl),
-  //       headers: {'Authorization': 'Bearer $token'},
-  //     );
-
-  //     if (response.statusCode == 200) {
-  //       // Parse and return the response JSON
-  //       return json.decode(response.body);
-  //     } else {
-  //       // If the server did not return a 200 OK response,
-  //       // throw an exception with the error message.
-  //       throw Exception('Failed to load availability');
-  //     }
-  //   } catch (error) {
-  //     // Handle network errors or other exceptions
-  //     throw Exception('Failed to connect to the server. Please check your internet connection.');
-  //   }
-  // }
 
   static Future<void> createEvent(String? token,String RoomID, String Date, String EventName, 
     String EventType, String Description, int? Attendees, bool AtriumOccupy, bool MediaEquip, bool EventAgreement, 

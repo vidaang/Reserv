@@ -156,8 +156,9 @@ class _CreateReservationState extends State<CreateReservation> {
                 decoration: const InputDecoration(labelText: 'Attendees'),
                 keyboardType: TextInputType.number,
               ),
+              const SizedBox(height: 30),
               const Text('Will you need a part of the atrium or lobby?'),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -168,9 +169,14 @@ class _CreateReservationState extends State<CreateReservation> {
                       });
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: atriumLobbyNeeded ? Colors.green : null,
+                      backgroundColor: atriumLobbyNeeded ? Color.fromARGB(200, 149, 208, 125) : Colors.white,
                     ),
-                    child: const Text('Yes'),
+                    child: Text(
+                      'Yes',
+                      style: TextStyle(
+                        color: atriumLobbyNeeded ? Colors.white : Colors.black,
+                      ),
+                    ),
                   ),
                   ElevatedButton(
                     onPressed: () {
@@ -179,14 +185,20 @@ class _CreateReservationState extends State<CreateReservation> {
                       });
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: !atriumLobbyNeeded ? Colors.red : null,
+                      backgroundColor: !atriumLobbyNeeded ? const Color.fromARGB(255, 232, 85, 75) : Colors.white,
                     ),
-                    child: const Text('No'),
+                    child: Text(
+                      'No',
+                      style: TextStyle(
+                        color: !atriumLobbyNeeded ? Colors.white : Colors.black,
+                      ),
+                    ),
                   ),
                 ],
               ),
+              const SizedBox(height: 30),
               const Text('Will you need multimedia equipment?'),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -198,9 +210,14 @@ class _CreateReservationState extends State<CreateReservation> {
                       });
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: multimediaEquipmentNeeded ? Colors.green : null,
+                      backgroundColor: multimediaEquipmentNeeded ? Color.fromARGB(200, 149, 208, 125) : Colors.white,
                     ),
-                    child: const Text('Yes'),
+                    child: Text(
+                      'Yes',
+                      style: TextStyle(
+                        color: multimediaEquipmentNeeded ? Colors.white : Colors.black,
+                      ),
+                    ),
                   ),
                   ElevatedButton(
                     onPressed: () {
@@ -210,13 +227,18 @@ class _CreateReservationState extends State<CreateReservation> {
                       });
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: !multimediaEquipmentNeeded ? Colors.red : null,
+                      backgroundColor: !multimediaEquipmentNeeded ? const Color.fromARGB(255, 232, 85, 75) : Colors.white,
                     ),
-                    child: const Text('No'),
+                    child: Text(
+                      'No',
+                      style: TextStyle(
+                        color: !multimediaEquipmentNeeded ? Colors.white : Colors.black,
+                      ),
+                    ),
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 30),
               const Text(
                   'I understand that if the date I selected above is less than 7 business days in the future, it is unlikely that my request will be reviewed in time for my event. I also understand that the Registrar\'s Office is unable to accept rush requests.',
               ),
@@ -232,8 +254,11 @@ class _CreateReservationState extends State<CreateReservation> {
                   'I agree to the statement above.',
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 30),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 92, 138, 153),
+                ),
                 onPressed: isFormValid()
                     ? () async {
                         // Call the createEvent function
@@ -257,7 +282,13 @@ class _CreateReservationState extends State<CreateReservation> {
                         }
                       }
                     : null,
-                child: const Text('Create Reservation'),
+                child: const 
+                  Text(
+                    'Create Reservation',
+                    style: TextStyle(
+                    color: Colors.white,
+                  ),
+                  ),
               ),
             ],
           ),

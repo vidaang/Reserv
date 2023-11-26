@@ -64,7 +64,7 @@ class _SearchPageState extends State<SearchPage> {
               final latitude = building.position.latitude;
               final longitude = building.position.longitude;
 
-              ApiService.retrieveRooms(latitude.toString(), longitude.toString())
+              ApiService.retrieveRooms(latitude, longitude)
                   .then((data) {
                 // Open RoomList with the fetched data
                 Navigator.push(

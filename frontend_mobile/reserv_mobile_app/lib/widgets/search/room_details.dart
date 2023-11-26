@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:google_fonts/google_fonts.dart';
 import './create_reservation.dart';
 import '../../services/api_service.dart';
 import '../../services/jwt_token.dart';
@@ -165,15 +166,33 @@ class _RoomDetailsState extends State<RoomDetails> {
                       ),
                     ),
 
+                    const SizedBox(height: 5),
+
                     CupertinoButton(
-                      child: Text(
-                        'Date: ${DateFormat('MM-dd-yyyy').format(dateTime)}',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min, // Ensure the row takes minimum space
+                        children: [
+                          Text(
+                            'Date: ',
+                            style: GoogleFonts.lexendDeca().copyWith(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Flexible(
+                            child: Text(
+                              '${DateFormat('MM-dd-yyyy').format(dateTime)}',
+                              style: GoogleFonts.lexendDeca().copyWith(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
                       ),
                       color: Color.fromARGB(200, 149, 208, 125),
+                      alignment: Alignment.center,
                       onPressed: () {
                         showCupertinoModalPopup(
                           context: context,
@@ -197,14 +216,29 @@ class _RoomDetailsState extends State<RoomDetails> {
                       },
                     ),
                 
-                    SizedBox(height: 20),
+                    SizedBox(height: 10),
 
-                    CupertinoButton.filled(
-                      child: Text('Time Interval: ${timeIntervals[_intvIndex]}',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    CupertinoButton(
+                      color: Color.fromARGB(200, 149, 208, 125),
+                      alignment: Alignment.center,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max, // Ensure the row takes minimum space
+                        children: [
+                          Text(
+                            'Time Interval: ',
+                            style: GoogleFonts.lexendDeca().copyWith(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            '${timeIntervals[_intvIndex]}',
+                            style: GoogleFonts.lexendDeca().copyWith(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                       onPressed: () => showCupertinoModalPopup(
                         context: context, 
@@ -231,9 +265,12 @@ class _RoomDetailsState extends State<RoomDetails> {
                       ),
                     ),
 
-                    SizedBox(height: 20),
+                    SizedBox(height: 10),
 
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 92, 138, 153),
+                      ),
                       onPressed: () async {
                         // Call the createEvent function
                         try {
@@ -252,7 +289,12 @@ class _RoomDetailsState extends State<RoomDetails> {
                           print('Error searching for available times: $e');
                         }
                       },
-                      child: const Text('Search for Times'),
+                      child: Text(
+                        'Search',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -275,13 +317,30 @@ class _RoomDetailsState extends State<RoomDetails> {
                       ),
                     ),
 
-                    CupertinoButton.filled(
-                      child: Text('Selected Time: $selectedTime',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                    const SizedBox(height: 5),
+
+                    CupertinoButton(
+                      color: Color.fromARGB(200, 149, 208, 125),
+                      alignment: Alignment.center,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min, // Ensure the row takes minimum space
+                          children: [
+                            Text(
+                              'Selected Time: ',
+                              style: GoogleFonts.lexendDeca().copyWith(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              '$selectedTime',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
                       onPressed: () => showCupertinoModalPopup(
                         context: context, 
                         builder: (_) => SizedBox(
@@ -306,17 +365,24 @@ class _RoomDetailsState extends State<RoomDetails> {
                         ),
                       ).then((value) {
                           selectedTime = timesFormatted[_timeIndex];
-                          print(selectedTime);
                       }),
                     ),
 
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
 
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 92, 138, 153),
+                      ),
                       onPressed: () async {
                         await validateFields();
                       },
-                      child: const Text('Continue to Reservation Form'),
+                      child: Text(
+                        'Continue',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ]
                 ),
