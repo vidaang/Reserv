@@ -130,7 +130,7 @@ function LoginInfo() {
     </div>
   );
 }
-7
+
 function OtherSettings() {
   const [darkMode, setDarkMode] = useState(false);
 
