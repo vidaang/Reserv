@@ -49,7 +49,7 @@ function OrgCompleteProfile() {
       }
 
       //const response = await fetch('http://localhost:5000/api/updateRSOInfo', {
-      const response = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/updateRSO', {
+      const response = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/updateRSOInfo', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
