@@ -55,7 +55,7 @@ function VerificationComponent({ org })
             </Modal>
             <div id="verification-button-div">
                 <button id="verification-accept-button" onClick={handleAcceptClick}>Accept</button>
-                <button id="verification-deny-button" onClick={handleClick}>Deny</button>
+                {/* <button id="verification-deny-button" onClick={handleClick}>Deny</button> */}
             </div>
         </div>
     );
