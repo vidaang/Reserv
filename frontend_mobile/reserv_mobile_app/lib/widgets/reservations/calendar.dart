@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import '../../services/api_service.dart';
 
 import 'utils.dart';
 
@@ -82,6 +83,12 @@ class _ReservationsCalendarState extends State<ReservationsCalendar> {
     }
   }
 
+  Future<void>  deleteEvent(Event event) async{
+    final eventIDToDelete =  event.eventID.toString();
+    kEvents.removeWhere((key, value) => "EventID" == event.eventID);
+    await ApiService.deleteEvent(eventIDToDelete);
+  }
+
   void _showEventDetailsDialog(Event event) {
     showDialog(
       context: context,
@@ -93,12 +100,14 @@ class _ReservationsCalendarState extends State<ReservationsCalendar> {
             TextButton(
               child: const Text('Edit'),
               onPressed: () {
+                
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
               child: const Text('Delete'),
               onPressed: () {
+                deleteEvent(event);
                 Navigator.of(context).pop();
               },
             ),

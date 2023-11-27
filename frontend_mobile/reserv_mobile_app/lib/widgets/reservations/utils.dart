@@ -9,8 +9,9 @@ class Event {
   final String title;
   final String time;
   final String place;
+  final String eventID;
 
-  const Event(this.title, {required this.time, required this.place});
+  const Event(this.title, {required this.time, required this.place, required this.eventID});
 
   @override
   String toString() => '$title\nLocation: $place\nTime: $time';
@@ -31,7 +32,6 @@ final DateFormat dateFormat = DateFormat("MM-dd-yyyy");
 Future<void> fetchEvents() async {
   try {
     print("Fetching...");
-
     final String? token = await JWTToken.getToken('Token');
 
     if (token != null) {
@@ -49,7 +49,8 @@ Future<void> fetchEvents() async {
         final Event event = Event(
           eventMap['EventName'],
           time: formattedDate,
-          place: eventMap['AtriumBuilding'],
+          place: eventMap['BuildingID'],
+          eventID: eventMap['EventID']
         );
         _kEventSource[calendarDate] = _kEventSource[calendarDate] ?? [];
         _kEventSource[calendarDate]?.add(event);

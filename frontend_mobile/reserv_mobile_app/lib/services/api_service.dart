@@ -260,6 +260,27 @@ class ApiService {
     }
   }
 
+  static Future<void> deleteEvent(String eventID) async {
+    final url = Uri.parse('http://localhost:5000/api/DeleteEvent');
+    
+    try {
+      final response = await http.delete(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'EventID': eventID}),
+      );
+
+      if (response.statusCode == 200) {
+        print('Event deleted successfully');
+      } else {
+        print('Failed to delete event. Status code: ${response.statusCode}');
+        print('Response body: ${response.body}');
+      }
+    } catch (e) {
+      print('Error deleting event: $e');
+    }
+  }
+
   static Future<void> createEvent(String? token,String RoomID, String Date, String EventName, 
     String EventType, String Description, int? Attendees, bool AtriumOccupy, bool MediaEquip, bool EventAgreement, 
     List<num> StartEnd, String BuildingID, int? RoomNumber) async {
