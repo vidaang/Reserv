@@ -14,9 +14,7 @@ import classes from '../../../styles/SettingsNavigation.module.css';
 const data = [
   { link: '', label: 'Organization Info', icon: IconUser },
   { link: '', label: 'University Info', icon: IconBuildingCommunity },
-  // { link: '', label: 'Notifications', icon: IconBellRinging },
   { link: '', label: 'Login Info', icon: IconKey },
-  // { link: '', label: 'Other Settings', icon: IconSettings },
 ];
 
 function OrganizationInfo() {
@@ -111,104 +109,102 @@ function OrganizationInfo() {
   };
 
   return (
-    <div>
-      <h2>Profile</h2>
-      <hr />
+    <div class="settings-menu-organization">
+      <h2>Organization</h2>
+      <hr class="settings-menu-divider" />
       <h5>Organization Information</h5>
-      <label>
-        Organization Name: 
+      <label class="settings-menu-label">
+        Organization Name:
         <input
           type="text"
+          class="settings-menu-input"
           value={organizationData.organizationName}
           onChange={(e) => handleInputChange('organizationName', e.target.value)}
         />
       </label><br />
-      <label>
-        Description: 
-        <input
-          type="text"
-          value={organizationData.description}
-          onChange={(e) => handleInputChange('description', e.target.value)}
-        />
-      </label><br />
-      <label>
+      <label class="settings-menu-label">
         Phone Number:
         <input
           type="text"
+          class="settings-menu-input"
           value={organizationData.phoneNumber}
           onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
         />
       </label><br />
-      <hr />
+      <hr class="settings-menu-divider" />
       <h5>Officer Information</h5>
-      <label>
+      <label class="settings-menu-label">
         Authorized Officer's First Name:
         <input
           type="text"
+          class="settings-menu-input"
           value={organizationData.authorizedOfficerFirstName}
           onChange={(e) => handleInputChange('authorizedOfficerFirstName', e.target.value)}
         />
       </label><br />
-      <label>
+      <label class="settings-menu-label">
         Authorized Officer's Last Name:
         <input
           type="text"
+          class="settings-menu-input"
           value={organizationData.authorizedOfficerLastName}
           onChange={(e) => handleInputChange('authorizedOfficerLastName', e.target.value)}
         />
       </label><br />
 
-      <hr />
+      <hr class="settings-menu-divider" />
       <h5>Faculty Advisor Information</h5>
-      <label>
+      <label class="settings-menu-label">
         Faculty Advisor:
         <input
           type="text"
+          class="settings-menu-input"
           value={organizationData.facultyAdvisor}
           onChange={(e) => handleInputChange('facultyAdvisor', e.target.value)}
         />
       </label><br />
-      <label>
+      <label class="settings-menu-label">
         Faculty Advisor Email:
         <input
           type="text"
+          class="settings-menu-input"
           value={organizationData.facultyAdvisorEmail}
           onChange={(e) => handleInputChange('facultyAdvisorEmail', e.target.value)}
         />
       </label><br />
-      <hr />
+      <hr class="settings-menu-divider" />
       <h5>Secondary Contact Information</h5>
-      <label>
+      <label class="settings-menu-label">
         Secondary Contact Name:
         <input
           type="text"
+          class="settings-menu-input"
           value={organizationData.secondaryContactName}
           onChange={(e) => handleInputChange('secondaryContactName', e.target.value)}
         />
       </label><br />
-      <label>
+      <label class="settings-menu-label">
         Secondary Contact Email:
         <input
           type="text"
+          class="settings-menu-input"
           value={organizationData.secondaryContactEmail}
           onChange={(e) => handleInputChange('secondaryContactEmail', e.target.value)}
         />
       </label><br />
-      <button onClick={handleConfirmChanges}>Confirm Changes</button>
+      <button class="settings-menu-confirmChanges" onClick={handleConfirmChanges}>Confirm Changes</button>
     </div>
   );
 }
 
 function UniversityInfo() {
   return (
-    <div>
+    <div class="settings-menu-organization">
       <h2>University</h2>
-      <p>University Name: University of Central Florida</p>
-      <p>Address: 3400 Quadrangle Blvd, Orlando, FL 32817</p>
-      <p>Phone Number: (407) 266-3627</p>
-      <p>Email: Your University Email</p>
-      <p>Hours: M-F 8AM-7PM</p>
-      <p>Website: ucf.edu</p>
+      <p>University of Central Florida</p>
+      <p>4098 Libra Dr, Orlando, FL 32816</p>
+      <p>407-823-2000</p>
+      <p>https://www.ucf.edu/</p>
     </div>
   );
 }
@@ -251,42 +247,43 @@ function LoginInfo() {
   const canSubmitPasswordChange = password && newPassword && newPassword === retypeNewPassword;
 
   return (
-    <div>
-      <h2>User Settings</h2>
-      <hr />
+    <div class="settings-menu-organization">
+      <h2>Login Settings</h2>
+      <hr settings-menu-divider/>
       <h5>Change Email</h5>
-      <label>
+      <label class="settings-menu-label">
         Current Email:
-        <input type="text" value={email} onChange={handleEmailChange} />
+        <input type="text" class="settings-menu-input" value={email} onChange={handleEmailChange} />
       </label><br />
-      <label>
+      <label class="settings-menu-label">
         New Email:
-        <input type="text" value={newEmail} onChange={handleNewEmailChange} />
+        <input type="text" class="settings-menu-input" value={newEmail} onChange={handleNewEmailChange} />
       </label><br />
-      <button onClick={handleEmailChange} disabled={!canSubmitEmailChange}>
+      <button onClick={handleEmailChange} class="settings-menu-confirmChanges" disabled={!canSubmitEmailChange}>
         Confirm Email Change
       </button>
-      <hr />
+      <hr settings-menu-divider/>
       <h5>Change Password</h5>
-      <label>
+      <label class="settings-menu-label">
         Current Password:
-        <input type="password" value={password} onChange={handlePasswordChange} />
+        <input type="password" class="settings-menu-input" value={password} onChange={handlePasswordChange} />
       </label><br />
-      <label>
+      <label class="settings-menu-label">
         New Password:
-        <input type="password" value={newPassword} onChange={handleNewPasswordChange} />
+        <input type="password" class="settings-menu-input" value={newPassword} onChange={handleNewPasswordChange} />
       </label><br />
-      <label>
+      <label class="settings-menu-label">
         Retype New Password:
-        <input type="password" value={retypeNewPassword} onChange={handleRetypeNewPasswordChange} />
+        <input type="password" class="settings-menu-input" value={retypeNewPassword} onChange={handleRetypeNewPasswordChange} />
       </label><br />
-      <button onClick={handlePasswordChange} disabled={!canSubmitPasswordChange}>
+      <button onClick={handlePasswordChange} class="settings-menu-confirmChanges" disabled={!canSubmitPasswordChange}>
         Confirm Password Change
       </button>
-      <hr />
+      <hr settings-menu-divider/>
       <h5>Delete Account</h5>
       <h6>After you perform this operation, any and all data stored will be wiped!</h6>
       <button
+        class="settings-menu-confirmChanges"
         onClick={() => {
           if (deleteAccountClicked) {
             setDeleteAccountClicked(false);
