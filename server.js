@@ -171,7 +171,6 @@ app.post("/api/verify-email", async (req, res) => {
 });
 
 app.post("/api/request-password-reset", async (req, res) => {
-  const db = client.db("Reserv");
   const { Email } = req.body;
   const db = client.db("Reserv");
   const user = await db.collection("RSO").findOne({ Email: Email });
