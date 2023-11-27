@@ -7,19 +7,19 @@ import '../services/jwt_token.dart';
 import '../screens/complete_profile.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: Color(0xFF88E19C),
+      backgroundColor: Color.fromARGB(255, 233, 240, 211),
       body: LoginForm(),
     );
   }
 }
 
 class LoginForm extends StatefulWidget {
-  const LoginForm({super.key});
+  const LoginForm({Key? key}) : super(key: key);
 
   @override
   _LoginFormState createState() => _LoginFormState();
@@ -32,32 +32,31 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(42, 214, 42, 0),
-      child: Center(
+    return Center(
+      child: SingleChildScrollView(
+        child: Center(
           child: Column(
-        children: <Widget>[
-          FittedBox(
-              child: Container(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              FittedBox(
+                child: Container(
                   decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
                       color: Colors.white,
-                      border: Border.all(
-                        color: Colors.white,
-                      ),
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(23))),
-                  width: 306.0,
-                  height: 416.0,
+                    ),
+                    borderRadius: const BorderRadius.all(Radius.circular(23)),
+                  ),
+                  width: 275,
+                  height: 450,
                   child: Column(
                     children: <Widget>[
                       const SizedBox(height: 17.0),
                       Text(
                         'Sign In',
-                        style: GoogleFonts.rubik(
-                          textStyle: const TextStyle(
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        style: GoogleFonts.lexendDeca().copyWith(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 16.0),
@@ -65,14 +64,12 @@ class _LoginFormState extends State<LoginForm> {
                         alignment: const Alignment(-.7, 0),
                         child: SizedBox(
                           width: 103,
-                          height: 15,
+                          height: 25,
                           child: Text(
                             'Username',
-                            style: GoogleFonts.rubik(
-                              textStyle: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            style: GoogleFonts.lexendDeca().copyWith(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
@@ -80,13 +77,15 @@ class _LoginFormState extends State<LoginForm> {
                       const SizedBox(height: 4.0),
                       SizedBox(
                         width: 262,
-                        height: 28,
+                        height: 35,
                         child: TextFormField(
                           decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(53.0),
-                                borderSide:
-                                    const BorderSide(color: Color(0xFFDFDFDF))),
+                              borderRadius: BorderRadius.circular(53.0),
+                              borderSide: const BorderSide(
+                                color: Color(0xFFDFDFDF),
+                              ),
+                            ),
                           ),
                           controller: _emailController,
                         ),
@@ -96,14 +95,12 @@ class _LoginFormState extends State<LoginForm> {
                         alignment: const Alignment(-.7, 0),
                         child: SizedBox(
                           width: 103,
-                          height: 15,
+                          height: 25,
                           child: Text(
                             'Password',
-                            style: GoogleFonts.rubik(
-                              textStyle: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            style: GoogleFonts.lexendDeca().copyWith(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
@@ -111,97 +108,107 @@ class _LoginFormState extends State<LoginForm> {
                       const SizedBox(height: 4.0),
                       SizedBox(
                         width: 262,
-                        height: 28,
+                        height: 35,
                         child: TextFormField(
                           decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(53.0),
-                                borderSide:
-                                    const BorderSide(color: Color(0xFFDFDFDF))),
+                              borderRadius: BorderRadius.circular(53.0),
+                              borderSide: const BorderSide(
+                                color: Color(0xFFDFDFDF),
+                              ),
+                            ),
                           ),
                           controller: _passController,
                           obscureText: true,
                         ),
                       ),
                       const SizedBox(height: 47.0),
-                      SizedBox(
-                        width: 186,
-                        height: 40,
-                        child: TextButton(
-                          style: ButtonStyle(
+                      Center(
+                        child: SizedBox(
+                          width: 186,
+                          height: 40,
+                          child: TextButton(
+                            style: ButtonStyle(
                               shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(36.0),
-                                      side: const BorderSide(
-                                          color: Color(0xFFDFDFDF))))),
-                          onPressed: () async {
-                            // Validate the form
-                            if (_emailController.text.isEmpty ||
-                                _passController.text.isEmpty) {
-                              setState(() {
-                                _message =
-                                    'Please enter both email and password';
-                              });
-                              return;
-                            } 
-                            else {
-                              try {
-                                final response = await ApiService.login(
-                                  _emailController.text,
-                                  _passController.text,
-                                );
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(36.0),
+                                  side: const BorderSide(
+                                    color: Color(0xFFDFDFDF),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            onPressed: () async {
+                              // Validate the form
+                              if (_emailController.text.isEmpty ||
+                                  _passController.text.isEmpty) {
+                                setState(() {
+                                  _message = 'Please enter both email and password';
+                                });
+                                return;
+                              } else {
+                                try {
+                                  final response = await ApiService.login(
+                                    _emailController.text,
+                                    _passController.text,
+                                  );
 
-                                if (response['error'] == null) {
-                                  // Login was successful
-                                  final Map<String, String?> tokenContents = await JWTToken.getTokenContents();
-                                  print('Token contents: $tokenContents');
-                                  
-                                  final String? token = tokenContents['Token'];
+                                  if (response['error'] == null) {
+                                    // Login was successful
+                                    final Map<String, String?> tokenContents =
+                                        await JWTToken.getTokenContents();
+                                    print('Token contents: $tokenContents');
 
-                                  try {
-                                    final bool check = await ApiService.checkRSOFields(token!);
-                                    if (check) {
-                                      Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                            builder: (context) => const NavBar()),
-                                      );
+                                    final String? token =
+                                        tokenContents['Token'];
+
+                                    try {
+                                      final bool check =
+                                          await ApiService.checkRSOFields(token!);
+                                      if (check) {
+                                        Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                            builder: (context) => const NavBar(),
+                                          ),
+                                        );
+                                      } else {
+                                        Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const CompleteProfile(),
+                                          ),
+                                        );
+                                      }
+                                    } catch (e) {
+                                      // Handle network or other errors
+                                      setState(() {
+                                        _message = 'checkRSO failed: $e';
+                                      });
                                     }
-                                    else {
-                                      Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                            builder: (context) => const CompleteProfile()),
-                                      );
-                                    }
-                                  }
-                                  catch (e) {
-                                    // Handle network or other errors
+                                  } else {
+                                    // Login failed, show an error message
                                     setState(() {
-                                      _message = 'checkRSO failed: $e';
+                                      _message =
+                                          'Login failed! Ensure your email and RSO are verified!';
                                     });
                                   }
-                                } else {
-                                  // Login failed, show an error message
+                                } catch (e) {
+                                  // Handle network or other errors
                                   setState(() {
                                     _message =
                                         'Login failed! Ensure your email and RSO are verified!';
                                   });
                                 }
-                              } catch (e) {
-                                // Handle network or other errors
-                                setState(() {
-                                  _message = 'Login failed! Ensure your email and RSO are verified!';
-                                });
                               }
-                            }
-                          },
-                          child: Text(
-                            'Login',
-                            style: GoogleFonts.rubik(
-                              textStyle: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
+                            },
+                            child: Text(
+                              'Login',
+                              style: GoogleFonts.lexendDeca().copyWith(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
                             ),
                           ),
                         ),
@@ -216,33 +223,41 @@ class _LoginFormState extends State<LoginForm> {
                         height: 40,
                         child: TextButton(
                           style: ButtonStyle(
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(36.0),
-                                      side: const BorderSide(
-                                          color: Color(0xFFDFDFDF))))),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(36.0),
+                                side: const BorderSide(
+                                  color: Color(0xFFDFDFDF),
+                                ),
+                              ),
+                            ),
+                          ),
                           onPressed: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                  builder: (context) => const SignUpPage()),
+                                builder: (context) => const SignUpPage(),
+                              ),
                             );
                           },
                           child: Text(
                             'Sign Up Here',
-                            style: GoogleFonts.rubik(
-                              textStyle: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
+                            style: GoogleFonts.lexendDeca().copyWith(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
                             ),
                           ),
                         ),
                       ),
                     ],
-                  ))),
-        ],
-      )),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
