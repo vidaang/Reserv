@@ -97,7 +97,7 @@ function OrgLogin() {
   };
 
   const sendResetEmail = async () => {
-    var obj = { Email:resetEmail };
+    var obj = { Email:resetEmail.value };
     var js = JSON.stringify(obj);
     console.log(js);
     var response;
@@ -112,7 +112,7 @@ function OrgLogin() {
       });
       setMessage("Check your email to reset your password!");
     } catch (error) {
-      alert(error.toString());
+      //alert(error.toString());
       setMessage("User not found.");
     }
   };
@@ -164,7 +164,7 @@ function OrgLogin() {
           <span>Please enter the email associated with your account</span>
           <form id="password-email-form" onSubmit={sendResetEmail}>
             <input type="text" placeholder="Email" ref={(c) => (resetEmail = c)} required></input>
-            <button type="submit">Confirm</button>
+            <button type="submit" onClick={sendResetEmail}>Confirm</button>
           </form>
           <span id="reset-message">{emailMessage}</span>
         </div>
