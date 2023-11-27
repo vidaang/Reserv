@@ -103,8 +103,8 @@ function OrgLogin() {
     //console.log(js);
     var response;
     try {
-      //response = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/request-password-reset', {
-      response = await fetch('http://localhost:5000/api/request-password-reset', {
+      response = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/request-password-reset', {
+      // response = await fetch('http://localhost:5000/api/request-password-reset', {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",
