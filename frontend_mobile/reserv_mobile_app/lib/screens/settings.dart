@@ -134,29 +134,8 @@ class SettingsPage extends StatelessWidget {
                                   color: Colors.black),
                             ))),
                           ),
-                          const Divider(
-                  color: Colors.black,
-                ),
-                SizedBox(
-                        width: 272,
-                        height: 60,
-                        child: TextButton(
                           
-                          onPressed: () async {
-                            showDialog(
-              context: context,
-              builder: (BuildContext context) => _buildPopupDialogOtherSettings(context),
-            );
-                          },
-                          child: Text(
-                            'Other Settings',
-                            style: GoogleFonts.rubik(
-                              textStyle: const TextStyle(
-                                  fontSize: 19,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
-                            ))),
-                          ),
+                
                           ],
                         ),
             )),
@@ -245,32 +224,6 @@ Widget _buildPopupDialogNotifications(BuildContext context) {
 Widget _buildPopupDialogLoginInformation(BuildContext context) {
   return AlertDialog(
     title: Text('Login Information', style: GoogleFonts.rubik(
-                              textStyle: TextStyle(
-                                  fontSize: 19,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),)),
-    content: Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text("Hello"),
-      ],
-    ),
-    actions: <Widget>[
-       TextButton(
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-        //textColor: Theme.of(context).primaryColor,
-        child: const Text('Close'),
-      ),
-    ],
-  );
-}
-
-Widget _buildPopupDialogOtherSettings(BuildContext context) {
-  return AlertDialog(
-    title: Text('Other Settings', style: GoogleFonts.rubik(
                               textStyle: TextStyle(
                                   fontSize: 19,
                                   fontWeight: FontWeight.bold,
