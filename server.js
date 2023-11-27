@@ -187,6 +187,7 @@ app.post("/api/request-password-reset", async (req, res) => {
   );
 
   const resetPasswordUrl = `https://knightsreserv-00cde8777914.herokuapp.com/ResetPassword?token=${token}`;
+  //const resetPasswordUrl = `http://localhost:3000/ResetPassword?token=${token}`;
 
   const msg = {
     to: user.Email,
@@ -209,13 +210,15 @@ app.post("/api/request-password-reset", async (req, res) => {
 
 app.post("/api/reset-password", async (req, res) => {
   const { token, newPassword } = req.body;
+  const db = client.db("Reserv");
 
   try {
     const decoded = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decoded.userId;
-
-    const user = await db.collection("RSO").findOne({ RSOID: userId });
-
+    const userIdObject = new ObjectId(userId);
+    
+    const user = await db.collection("RSO").findOne({ RSOID: userIdObject });
+    console.log(user);
     if (!user) {
       return res.status(404).send("User not found.");
     }
@@ -225,7 +228,7 @@ app.post("/api/reset-password", async (req, res) => {
 
     await db
       .collection("RSO")
-      .updateOne({ RSOID: userId }, { $set: { Password: hashedPassword } });
+      .updateOne({ RSOID: userIdObject }, { $set: { Password: hashedPassword } });
 
     res.status(200).send("Password has been reset successfully.");
   } catch (error) {

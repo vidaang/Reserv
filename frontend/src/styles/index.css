@@ -1310,3 +1310,52 @@ output[for="timeRange"] {
   max-width: 10%;
   margin-bottom: 2%;
 }
+
+/* RESET PASSWORD */
+
+#ResetPasswordPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-2);
+  height: 100vh;
+}
+
+#ResetPasswordContainer {
+  margin-top: -20%;
+  min-width: min-content;
+  max-width: max-content;
+  border: 1px solid black;
+  border-radius: 10px;
+  background-color: white;
+  padding: 12px 20px;
+}
+
+#ResetPasswordContainer h1 {
+  font-size: 32px;
+}
+
+#ResetPasswordForm {
+  display: flex;
+  flex-direction: column;
+}
+
+#ResetPasswordForm input {
+  margin: 1% 2%;
+}
+
+#ResetPasswordForm button {
+  margin: 1% auto;
+  border-radius: 20px;
+  padding: 6px 18px;
+  align-content: space-between;
+}
+
+#ResetPasswordContainer span {
+  margin-top: 1%;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
