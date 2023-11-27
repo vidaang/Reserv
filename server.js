@@ -176,6 +176,7 @@ app.post("/api/request-password-reset", async (req, res) => {
   const user = await db.collection("RSO").findOne({ Email: Email });
 
   if (!user) {
+    console.log("No user found");
     return res.status(404).send("User not found.");
   }
 

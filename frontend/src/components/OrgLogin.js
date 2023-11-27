@@ -96,10 +96,11 @@ function OrgLogin() {
     }
   };
 
-  const sendResetEmail = async () => {
+  const sendResetEmail = async (event) => {
+    event.preventDefault();
     var obj = { Email:resetEmail.value };
     var js = JSON.stringify(obj);
-    console.log(js);
+    //console.log(js);
     var response;
     try {
       //response = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/request-password-reset', {
@@ -110,10 +111,12 @@ function OrgLogin() {
         },
         body: js
       });
-      setMessage("Check your email to reset your password!");
+      if (response.status === 404)
+        setEmailMessage("User not found.");
+      else
+        setEmailMessage("Check your email to reset your password!");
     } catch (error) {
-      //alert(error.toString());
-      setMessage("User not found.");
+      alert(error.toString());
     }
   };
 
@@ -164,7 +167,7 @@ function OrgLogin() {
           <span>Please enter the email associated with your account</span>
           <form id="password-email-form" onSubmit={sendResetEmail}>
             <input type="text" placeholder="Email" ref={(c) => (resetEmail = c)} required></input>
-            <button type="submit" onClick={sendResetEmail}>Confirm</button>
+            <button type="submit">Confirm</button>
           </form>
           <span id="reset-message">{emailMessage}</span>
         </div>
