@@ -30,6 +30,21 @@ class _SignUpFormState extends State<SignUpForm> {
   final TextEditingController _passController = TextEditingController();
   final TextEditingController _retypePassController = TextEditingController();
 
+  bool _isEmailValid(String email) {
+    // Add your email validation rules here
+    // For example: You can use a regular expression to check if the email is valid.
+    final RegExp emailRegex = RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$');
+    return emailRegex.hasMatch(email);
+  }
+
+  bool _isPasswordComplex(String password) {
+    // Add your password complexity rules here
+    // For example: At least 8 characters, at least one uppercase letter, one lowercase letter, and one digit.
+    final RegExp passwordRegex =
+        RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$');
+    return passwordRegex.hasMatch(password);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -93,7 +108,8 @@ class _SignUpFormState extends State<SignUpForm> {
                           validator: (value) {
                             if (value?.isEmpty ?? true) {
                               return 'Please enter an organization Email address';
-                            } else if (!value!.contains('@') || !value.contains('.')) {
+                            } else if (!value!.contains('@') ||
+                                !value.contains('.')) {
                               return 'Please enter a valid email address';
                             }
                             return null;
@@ -133,6 +149,8 @@ class _SignUpFormState extends State<SignUpForm> {
                             validator: (value) {
                               if (value?.isEmpty ?? true) {
                                 return 'Please enter a Password';
+                              } else if (!_isPasswordComplex(value!)) {
+                                return 'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one digit.';
                               }
                               return null;
                             },
@@ -193,64 +211,71 @@ class _SignUpFormState extends State<SignUpForm> {
                             ),
                           ),
                           onPressed: () async {
-                            if (_EmailController.text.isNotEmpty && _passController.text.isNotEmpty) {
-                              String Email = _EmailController.text;
-                              String Password = _passController.text;
+                              if (_EmailController.text.isEmpty) {
+                                setState(() {
+                                  _message = 'Please enter an organization email address.';
+                                });
+                                return;
+                              } 
+                              else if (!_isEmailValid(_EmailController.text)) {
+                                setState(() {
+                                  _message = 'Please enter a valid email address.';
+                                });
+                                return;
+                              } 
+                              else if (_passController.text.isEmpty) {
+                                setState(() {
+                                  _message = 'Please enter a password.';
+                                });
+                                return;
+                              } 
+                              else if (!_isPasswordComplex(_passController.text)) {
+                                setState(() {
+                                  _message = 'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one digit.';
+                                });
+                                return;
+                              } 
+                              else if (_retypePassController.text.isEmpty) {
+                                setState(() {
+                                  _message = 'Please re-enter the password.';
+                                });
+                                return;
+                              } 
+                              else if (_retypePassController.text != _passController.text) {
+                                setState(() {
+                                  _message = 'Passwords do not match.';
+                                });
+                                return;
+                              } 
+                              else {
+                                String Email = _EmailController.text;
+                                String Password = _passController.text;
 
-                              try {
-                                final response = await ApiService.signUp(
-                                  Email: Email,
-                                  Password: Password,
-                                );
-
-                                if (response.containsKey('success') && response['success']) {
-                                  setState(() {
-                                    _message =
-                                        'Account created! Please check your email to verify your account.';
-                                  });
-                                  _EmailController.clear();
-                                  _passController.clear();
-                                  _retypePassController.clear();
-
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: const Text('Check your Email'),
-                                        content: const Text(
-                                          'Please check your email to verify your account.',
-                                        ),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pushReplacement(
-                                                MaterialPageRoute(
-                                                  builder: (context) => const LoginScreen(),
-                                                ),
-                                              );
-                                            },
-                                            child: const Text('Return to Login'),
-                                          ),
-                                        ],
-                                      );
-                                    },
+                                try {
+                                  final response = await ApiService.signUp(
+                                    Email: Email,
+                                    Password: Password,
                                   );
-                                } else {
+
+                                  if (response.containsKey('success') && response['success']) {
+                                    setState(() {
+                                      _message =
+                                          'Account created! Please check your email to verify your account.';
+                                    });
+                                    _EmailController.clear();
+                                    _passController.clear();
+                                    _retypePassController.clear();
+                                  } else {
+                                    setState(() {
+                                      _message = 'Sign-up failed: ${response['error']}';
+                                    });
+                                  }
+                                } catch (e) {
                                   setState(() {
-                                    _message = 'Sign-up failed: ${response['error']}';
+                                    _message = 'An error occurred: $e';
                                   });
                                 }
-                              } catch (e) {
-                                setState(() {
-                                  _message = 'An error occurred: $e';
-                                });
                               }
-                            } else {
-                              setState(() {
-                                _message = 'Please fill out all fields.';
-                              });
-                              return;
-                            }
                           },
                           child: Text(
                             'Sign Up',
@@ -264,6 +289,14 @@ class _SignUpFormState extends State<SignUpForm> {
                       ),
                     ],
                   ),
+                ),
+              ),
+              if (_message.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  _message,
+                  style: const TextStyle(color: Colors.red),
                 ),
               ),
             ],
