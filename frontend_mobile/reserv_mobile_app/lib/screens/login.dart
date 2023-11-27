@@ -5,6 +5,7 @@ import '../services/api_service.dart';
 import '../widgets/navbar.dart';
 import '../services/jwt_token.dart';
 import '../screens/complete_profile.dart';
+import '../screens/forgot_password.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -120,6 +121,32 @@ class _LoginFormState extends State<LoginForm> {
                           ),
                           controller: _passController,
                           obscureText: true,
+                        ),
+                      ),
+                      Align(
+                        alignment: const Alignment(-.7, 0),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => const ForgotPasswordPage(),
+                              ),
+                            );
+                          },
+                          child: SizedBox(
+                            width: 200,
+                            height: 25,
+                            child: Text(
+                              'Forgot Password',
+                              style: GoogleFonts.lexendDeca().copyWith(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(199, 113, 158, 95),
+                                decoration: TextDecoration.underline,
+                                decorationColor: Color.fromARGB(199, 113, 158, 95),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                       const SizedBox(height: 47.0),
