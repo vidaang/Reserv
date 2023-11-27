@@ -661,6 +661,7 @@ app.post("/api/createEvent", authenticateJWT, async (req, res) => {
     MediaEquip,
     RSOID,
     RoomID,
+    RoomName
   } = req.body;
 
   const db = client.db("Reserv");
@@ -731,6 +732,7 @@ app.post("/api/createEvent", authenticateJWT, async (req, res) => {
     MediaEquip,
     RSOID,
     RoomID,
+    RoomName
   };
 
   try {
