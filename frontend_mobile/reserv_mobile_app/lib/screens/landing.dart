@@ -9,10 +9,10 @@ class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF0E9D3),
+      backgroundColor: const Color.fromARGB(255, 233, 240, 211),
       appBar: AppBar(
         title: const Text('Reserv'),
-        backgroundColor: const Color(0xFF526760)
+        backgroundColor: Color.fromARGB(255, 255, 255, 255)
       ),
       body: Center(
         child: Column(
@@ -20,10 +20,9 @@ class LandingPage extends StatelessWidget {
           children: <Widget>[
             Text(
               'Book Your Path to Knowledge: University Room Reservations',
-              style: GoogleFonts.openSans(
+              style: GoogleFonts.lexendDeca().copyWith(
                 fontSize: 24,
-                color: Colors.black,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.center,
             ),
@@ -36,10 +35,17 @@ class LandingPage extends StatelessWidget {
                 );
               },
               style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF526760), // Button color
+                  backgroundColor: Color.fromARGB(200, 149, 208, 125), // Button color
                   minimumSize: const Size(200, 50), // Button size
               ),
-              child: const Text('Login'),
+              child: Text(
+                'Login',
+                style: GoogleFonts.lexendDeca().copyWith(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
             ),
             const SizedBox(height: 16.0),
             ElevatedButton(
@@ -50,10 +56,17 @@ class LandingPage extends StatelessWidget {
                 );
               },
               style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF526760), // Button color
+                  backgroundColor: const Color.fromARGB(200, 149, 208, 125), // Button color
                   minimumSize: const Size(200, 50), // Button size
               ),
-              child: const Text('Sign Up'),
+              child: Text(
+                'Sign Up',
+                style: GoogleFonts.lexendDeca().copyWith(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
             ),
           ],
         ),
