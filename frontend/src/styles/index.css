@@ -314,6 +314,16 @@ body {
   text-decoration: underline;
 }
 
+.dumb-font {
+  font-family: 'Gabarito', sans-serif;
+}
+
+.dumb-layout {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
 /* LANDING PAGE STYLING */
 
@@ -347,11 +357,11 @@ body {
 }
 
 #landing-reserve-button {
-  color: white;
+  color: black;
   font-family: 'Gabarito', sans-serif;
   font-size: 18px;
-  border: 2px solid var(--color-8);
-  background-color: var(--color-8);
+  border: 2px solid var(--color-5);
+  background-color: var(--color-5);
   transition: 0.3s;
 }
 
@@ -360,18 +370,18 @@ body {
 }
 
 #landing-university-button {
-  color: var(--color-8);
+  color: black;
   font-family: 'Gabarito', sans-serif;
   font-weight: bold;
   font-size: 18px;
-  border: 2px solid var(--color-8);
+  border: 2px solid var(--color-5);
   background-color: transparent;
   transition: 0.3s;
 }
 
 #landing-university-button:hover {
-  background-color: var(--color-8);
-  color: white;
+  background-color: var(--color-5);
+  color: black;
 }
 
 
@@ -482,6 +492,7 @@ body {
   width: 100%;
   justify-content: center;
   overflow: auto;
+  font-family: 'Gabarito', sans-serif;
 }
 
 .entry-form-container {
@@ -492,18 +503,20 @@ body {
   display: flex;
   align-items: center;
   margin: 10px;
-
+  font-family: 'Gabarito', sans-serif;
 }
 
-entry-form-row-label {
+.entry-form-row-label {
   padding-left: 10px;
   padding-right: 10px;
+  font-family: 'Gabarito', sans-serif;
 }
 
 .entry-form-input {
   width: 100%;
   display: flex;
   align-items:center;
+  font-family: 'Gabarito', sans-serif;
 }
 
 input {
@@ -678,6 +691,7 @@ output[for="timeRange"] {
   padding: 5px;
   border: 1px solid #ddd;
   border-radius: 5px;
+  font-family: 'Gabarito', sans-serif;
 }
 
 .room-item:hover {
@@ -699,6 +713,7 @@ output[for="timeRange"] {
   display: flex;
   min-width: max-content;
   flex-direction: row;
+  font-family: 'Gabarito', sans-serif;
 }
 
 .roomDescriptionLeft {
@@ -744,6 +759,7 @@ output[for="timeRange"] {
 }
 
 .search-page-modal-img {
+  font-family: 'Gabarito', sans-serif;
   border: 2px solid white;
   border-radius: 10px;
   height: 250px;
@@ -772,6 +788,7 @@ output[for="timeRange"] {
   color: #FFAF51;
 }
 .available-times {
+  font-family: 'Gabarito', sans-serif;
   color: #D96BFF;
   margin-bottom: 10px;
 }
@@ -788,11 +805,12 @@ output[for="timeRange"] {
   padding: 10px;
   min-width: min-content;
   overflow-x: wrap;
+  font-family: 'Gabarito', sans-serif;
 }
 
 .availableTimeDayButton{
-  background-color: #eaeaea !important; 
-  border: #eaeaea !important;
+  background-color: #e1e1e1 !important; 
+  border: none !important;
   color: black !important;
   padding: 10px 20px;
   text-align: center;
@@ -801,14 +819,15 @@ output[for="timeRange"] {
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 20px !important;
+  font-family: 'Gabarito', sans-serif;
 }
 
 .availableTimeDayButton:hover{
-  background-color: #e1e1e1 !important;
+  background-color: #d5d4d4 !important;
 }
 
 .availableTimeDayButton:focus{
-  background-color: #61ff7e !important;
+  background-color: var(--color-1) !important;
 }
 
 
@@ -817,27 +836,34 @@ output[for="timeRange"] {
 
 
 #OrgReservationsPageDiv {
-  background-color: white;
   padding-block-end: 100hv;
   padding-block-start: 2%;
   max-height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  justify-content: center;
 }
 
 #CalendarDiv {
-  height: 80vh;
+  margin: 30px;
+  height: 85vh;
   width: 95%;
-  padding-top: 2%;
-  margin: 0 auto;
+  font-family: 'Gabarito', sans-serif;
 }
-/* LARGE CALENDAR */
 
-.rbc-calendar {
-  min-height: 580px;
+.LargeCalendar {
+  background-color: #f8fff5;
 }
+
+.LargeCalendar .rbc-event {
+  background-color: var(--color-5);
+  color: #fff;
+  font-size: 14px;
+}
+
 
 /* DELETE RESERVATION */
 
@@ -924,6 +950,7 @@ output[for="timeRange"] {
   border: 2px solid var(--color-8);
   font-weight: bold;
   color: var(--color-8);
+  font-family: 'Gabarito', sans-serif;
 }
 
 #edit-reservation-confirm-button {
@@ -931,18 +958,28 @@ output[for="timeRange"] {
   border: 2px solid var(--color-8);
   color: white;
   font-weight: bold;
+  font-family: 'Gabarito', sans-serif;
+}
+
+.edit-reservation-text-modal {
+  font-family: 'Gabarito', sans-serif;
+}
+
+.edit-reservation-text-modal-input {
+  font-family: 'Gabarito', sans-serif;
+  border-radius: 15px;
 }
 
 #popup-edit-button {
-  border: 2px solid gold;
+  border: 2px solid var(--color-5);
   background-color: transparent;
   transition: 0.2s;
   margin-right: 3%;
 }
 
 #popup-edit-button:hover {
-  border: 2px solid gold;
-  background-color: gold;
+  border: 2px solid var(--color-5);
+  background-color: var(--color-5);
   color: white;
 }
 
@@ -1166,22 +1203,21 @@ output[for="timeRange"] {
 /* UNIVERSITY VERIFICATION PAGE */
 
 #UniVerificationsPageDiv {
-  max-height: 100vh;
-  overflow-y: hidden;
+  overflow-y: scroll;
+  color: white;
+  min-height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  justify-content: space-evenly;
+  background-image: linear-gradient(to right, var(--color-5), var(--color-8));
 }
 
 #verification-page-header {
-  font-family: 'Gabarito', sans-serif;
-  margin-top: 4%;
-  margin-bottom: 1%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  margin-top: 70px;
+  font-size: 45px;
 }
 
 #verification-list-container {
@@ -1194,11 +1230,12 @@ output[for="timeRange"] {
 /* UNIVERSITY VERIFICATION COMPONENT */
 
 #verification-container {
+  background-color: white;
+  color: black;
   font-family: 'Gabarito', sans-serif;
-  border: 1px solid gray;
   border-radius: 20px;
-  width: 33%;
-  margin-bottom: 1%;
+  width: 70%;
+  margin-bottom: 20px;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
 }
 
@@ -1231,13 +1268,13 @@ output[for="timeRange"] {
   border-radius: 20px;
   padding: 4px 20px;
   margin-right: 1%;
-  border: 2px solid green;
+  border: 2px solid var(--color-5);
   background-color: transparent;
   transition: 0.2s;
 }
 
 #verification-accept-button:hover {
-  background-color: green;
+  background-color: var(--color-5);
   color: white;
 }
 
@@ -1255,25 +1292,28 @@ output[for="timeRange"] {
   color: white;
 }
 
+#verification-modal-container{
+  font-family: 'Gabarito', sans-serif;
+}
+
 #verification-modal-container h1{
   font-size: 30px;
+  font-family: 'Gabarito', sans-serif;
 }
 
 #verification-modal-container h2{
-  font-size: 24px;
+  font-size: 18px;
+  font-family: 'Gabarito', sans-serif;
 }
 
 /* COMPLETE RESERVATION FORM */
 
-#CompleteReservationContainer {
-  border: 1px solid gray;
-  border-radius: 15px;
+.CompleteReservationContainer {
+  font-family: 'Gabarito', sans-serif;
   min-width: min-content;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: 1%;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
 }
 
 #CreateReservationButtonContainer {
@@ -1287,18 +1327,28 @@ output[for="timeRange"] {
   margin-left: 2%;
   margin-bottom: 1%;
   background-color: transparent;
-  color: #007bff;
+  color: var(--color-5);
   border: solid 2px;
   transition: 0.3s;
+  border-radius: 20px;
+}
+
+.dumb-formatting {
+  border-radius: 15px;
 }
 
 #CreateReservationBackButton:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: var(--color-5);
+  color: black;
 }
 
 #CreateReservationSubmitButton {
   margin-right: 2%;
   margin-bottom: 1%;
+  background-color: var(--color-5);
+  border: none;
+  color: black;
+  border-radius: 20px;
 }
 
 #OrgCompleteReservationsPageDiv {
@@ -1357,8 +1407,8 @@ output[for="timeRange"] {
 #complete-reservation-create-button {
   padding: 10px 20px;
   margin: 10px;
-  background-color: #007bff; /* Button background color */
-  color: #fff; /* Button text color */
+  background-color: var(--color-5); /* Button background color */
+  color: black; /* Button text color */
   border: none;
   border-radius: 3px;
   cursor: pointer;

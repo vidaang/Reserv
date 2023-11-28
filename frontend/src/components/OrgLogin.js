@@ -165,10 +165,10 @@ function OrgLogin() {
       <button className="user-authentication-redirect-links" onClick={open}>Forgot Password?</button>
       <Modal id="reset-password-modal" opened={opened} onClose={close}>
         <div id="reset-password-email-container">
-          <span>Please enter the email associated with your account</span>
-          <form id="password-email-form" onSubmit={sendResetEmail}>
-            <input type="text" placeholder="Email" ref={(c) => (resetEmail = c)} required></input>
-            <button type="submit">Confirm</button>
+          <span className="dumb-font">Please enter the email associated with your account</span>
+          <form className="dumb-layout" id="password-email-form" onSubmit={sendResetEmail}>
+            <input className="dumb-font" type="text" placeholder="Email" ref={(c) => (resetEmail = c)} required></input>
+            <button className="dumb-font" type="submit">Confirm</button>
           </form>
           <span id="reset-message">{emailMessage}</span>
         </div>

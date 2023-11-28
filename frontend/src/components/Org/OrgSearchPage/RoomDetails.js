@@ -125,7 +125,7 @@ function RoomDetails(props) {
     var details = {
       buildingName: room.BuildingID,
       roomNumber: room.RoomNumber,
-      capacity: 250,
+      capacity: room.Capacity,
     }
     return details;
   };
@@ -231,12 +231,11 @@ function RoomDetails(props) {
               <div className="roomDescriptionRight">
                 <div className="location-container">
                   <h5 className="location">LOCATION</h5>
-                  <h1 className="building-name">{roomDetails.buildingName}</h1>
+                  <h1 className="building-name">{room.BuildingID} {room.RoomNumber}</h1>
                   <div className="row-space">
-                    <h3>{roomDetails.roomNumber}</h3>
                     <div className="capacity-space">
                       <IconUsers size={30} color="blue" />
-                      <h5>{roomDetails.capacity}</h5>
+                      <h5>{room.Capacity}</h5>
                     </div>
                   </div>
                 </div>
@@ -255,7 +254,7 @@ function RoomDetails(props) {
             <form id="DateAndTimeForm" onSubmit={handleSubmit}>
               <div className="entry-form-container">
                   <div className="entry-form-row">
-                      <label htmlFor="dateRangeStart">Date:</label>
+                      <label className = "dumb-text" htmlFor="dateRangeStart">Date:</label>
                       <div className="entry-form-input">
                           <input
                               type="date"
@@ -315,10 +314,10 @@ function RoomDetails(props) {
           </>
         ) : ( 
           <form onSubmit={handleCreateReservation}>
-            <div id="CompleteReservationContainer">
+            <div className="CompleteReservationContainer">
               <div className="complete-reservation-input-label">
                   <label htmlFor="eventName">Event Name:</label>
-                  <input type="text" id="eventName" placeholder="Enter Event Name" ref={(c) => (eventName = c)} required/>
+                  <input className="dumb-formatting" type="text" id="eventName" placeholder="Enter Event Name" ref={(c) => (eventName = c)} required/>
               </div>
               <div className="complete-reservation-input-label">
                   <label htmlFor="eventType">Event Type:</label>
@@ -368,8 +367,9 @@ function RoomDetails(props) {
       <Modal.Footer>
         {!showEventForm ? (
           <Button
-            id="CreateReservationButton"
+            id="CreateReservationSubmitButton"
             variant="primary"
+            type="submit"
             onClick={() => setShowEventForm(true)}
           >
             Create Reservation

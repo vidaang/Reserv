@@ -71,7 +71,7 @@ function UniVerificationPage()
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
             <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700&display=swap" rel="stylesheet"></link>
             <NavBar />
-            <h1 id="verification-page-header">Organizations Page</h1>          
+            <h1 id="verification-page-header">Verify Organizations</h1>          
             <VerificationList orgs={ orgArray } />          
         </div>
     );

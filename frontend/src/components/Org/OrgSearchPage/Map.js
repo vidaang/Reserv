@@ -43,7 +43,8 @@ function Map( { toggleList, isListOpen} )
                 Date: room.Date,
                 ResrveTimes: room.ResrveTimes,
                 UniID: room.UniID,
-                BuildingID: room.BuildingID
+                BuildingID: room.BuildingID,
+                Capacity: room.Capacity
             })
         });
 
