@@ -160,7 +160,7 @@ function RoomDetails(props) {
   var roomID = room.RoomID;
 
   const createEvent = async (time) => {
-    console.log("Creating event...")
+    console.log("Creating event...");
 
     startEnd = [time.start, time.end];
 
@@ -177,6 +177,7 @@ function RoomDetails(props) {
       MediaEquip: mediaEquip.checked,
       RSOID: RSOID,
       RoomID: roomID,
+      RoomName: roomDetails.buildingName + " " + roomDetails.roomNumber
     };
 
     var js = JSON.stringify(obj);
@@ -184,7 +185,7 @@ function RoomDetails(props) {
     try
     {  
        var response = await fetch(`https://knightsreserv-00cde8777914.herokuapp.com/api/createEvent`, {
-       // var response = await fetch(`http://localhost:5000/api/createEvent`, {
+       //var response = await fetch(`http://localhost:5000/api/createEvent`, {
         method: 'POST',
         body: js,
         headers: {
@@ -332,22 +333,16 @@ function RoomDetails(props) {
                   <input type="text" id="eventAttendees" placeholder="Enter Number of Attendees" ref={(c) => (numAttendees = c)} required/>
               </div>
               <div className="complete-reservation-checkbox">
-                  <span htmlFor="eventAtriumLobby">
-                    Atrium or Lobby Needed:
-                    <input type="checkbox" id="eventAtriumLobby" ref={(c) => (atriumOccupy = c)}/>
-                  </span>
+                  <label htmlFor="eventAtriumLobby">Atrium or Lobby Needed:</label>
+                  <input type="checkbox" id="eventAtriumLobby" ref={(c) => (atriumOccupy = c)}/>
               </div>
               <div className="complete-reservation-checkbox">
-                  <span htmlFor="eventMediaEquip">
-                    Need use of Media Equipment:
-                    <input type="checkbox" id="eventMediaEquip" ref={(c) => (mediaEquip = c)}/>
-                  </span>
+                  <span htmlFor="eventMediaEquip">Need use of Media Equipment:</span>
+                  <input type="checkbox" id="eventMediaEquip" ref={(c) => (mediaEquip = c)}/>
               </div>
               <div className="complete-reservation-checkbox">
-                  <span htmlFor="eventAgreement">
-                    Agree to Event Terms:
-                    <input type="checkbox" id="eventAgreement" ref={(c) => (eventAgreement = c)} required/>
-                  </span>
+                  <span htmlFor="eventAgreement">Agree to Event Terms:</span>
+                  <input type="checkbox" id="eventAgreement" ref={(c) => (eventAgreement = c)} required/>
               </div>
               <div id="CreateReservationButtonContainer">
               <Button
