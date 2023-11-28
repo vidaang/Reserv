@@ -70,12 +70,14 @@ async function run() {
 // Running connection function.
 run().catch(console.dir);
 
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { env } = require("process");
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 app.put("/api/createRSO", async (req, res) => {
-  const { Email, Password } = req.body;
+  const { Email, Password, UniID } = req.body;
 
   try {
     const db = client.db("Reserv");
@@ -98,15 +100,141 @@ app.put("/api/createRSO", async (req, res) => {
       SecondaryContactPhone: "",
       EmailVerification: false,
       Verification: false,
-      UniID: new ObjectId(req.body.UniID),
+      UniID: new ObjectId(UniID),
     };
 
     await db.collection("RSO").insertOne(newRSO);
 
-    return res.status(201).json({ success: true, message: "RSO created successfully" });
+    const user = await db.collection("RSO").findOne({ Email: Email });
+
+    // Generate a verification token
+    const token = jwt.sign(
+      { userId: user.RSOID },
+      process.env.SECRET_KEY, // Ensure you have a secret key in your environment variables
+      { expiresIn: "24h" } // Token expires in 24 hours
+    );
+
+    // Email message setup
+    const msg = {
+      to: user.Email,
+      from: "poosdreserv@gmail.com",
+      subject: "Email Verification",
+      html: `Please click on this link to verify your email: <a href="https://knightsreserv-00cde8777914.herokuapp.com/EmailVerification?token=${token}">Verify Email</a>`,
+    };
+
+    // Send the email
+    sgMail
+      .send(msg)
+      .then(() => {
+        console.log("Email sent");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+    return res
+      .status(201)
+      .json({ success: true, message: "RSO created successfully" });
   } catch (e) {
     console.error("Error during createRSO:", e);
-    return res.status(500).json({ success: false, error: "Failed to create account" });
+    return res
+      .status(500)
+      .json({ success: false, error: "Failed to create account" });
+  }
+});
+
+app.post("/api/verify-email", async (req, res) => {
+  try {
+    const db = client.db("Reserv");
+    const { token } = req.body;
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    const userId = decoded.userId;
+
+    const userIdObject = new ObjectId(userId);
+    console.log(userIdObject);
+
+    // Update user status in the database
+    var user = await db.collection("RSO").findOne({ RSOID: userIdObject });
+    
+    
+    if (user) {
+      await db
+        .collection("RSO")
+        .updateOne({ RSOID: userIdObject }, { $set: { EmailVerification: true } });
+      res.status(200).send("Email successfully verified.");
+    } else {
+      res.status(404).send("User not found.");
+    }
+  } catch (error) {
+    res.status(405).send("Invalid or expired token.");
+  }
+});
+
+app.post("/api/request-password-reset", async (req, res) => {
+  const { Email } = req.body;
+  const db = client.db("Reserv");
+  const user = await db.collection("RSO").findOne({ Email: Email });
+
+  if (!user) {
+    console.log("No user found");
+    return res.status(404).send("User not found.");
+  }
+
+  const token = jwt.sign(
+    { userId: user.RSOID },
+    process.env.SECRET_KEY, // Your secret key
+    { expiresIn: "1h" } // Token expires in 1 hour
+  );
+
+  const resetPasswordUrl = `https://knightsreserv-00cde8777914.herokuapp.com/ResetPassword?token=${token}`;
+  //const resetPasswordUrl = `http://localhost:3000/ResetPassword?token=${token}`;
+
+  const msg = {
+    to: user.Email,
+    from: "poosdreserv@gmail.com",
+    subject: "Password Reset",
+    html: `Please click on this link to reset your password: <a href="${resetPasswordUrl}">Reset Password</a>`,
+  };
+
+  sgMail
+    .send(msg)
+    .then(() => {
+      console.log("Password reset email sent");
+      res.status(200).send("Password reset email sent.");
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send("Error sending password reset email.");
+    });
+});
+
+app.post("/api/reset-password", async (req, res) => {
+  const { token, newPassword } = req.body;
+  const db = client.db("Reserv");
+
+  try {
+    const db = client.db("Reserv");
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    const userId = decoded.userId;
+    const userIdObject = new ObjectId(userId);
+    
+    const user = await db.collection("RSO").findOne({ RSOID: userIdObject });
+    console.log(user);
+    if (!user) {
+      return res.status(404).send("User not found.");
+    }
+
+    // Hash the new password before storing it
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await db
+      .collection("RSO")
+      .updateOne({ RSOID: userIdObject }, { $set: { Password: hashedPassword } });
+
+    res.status(200).send("Password has been reset successfully.");
+  } catch (error) {
+    console.error(error);
+    res.status(400).send("Invalid or expired token.");
   }
 });
 
@@ -118,12 +246,16 @@ app.post("/api/login", async (req, res) => {
     const rso = await db.collection("RSO").findOne({ Email: Email });
 
     if (!rso) {
-      return res.status(400).json({ error: "RSO does not exist! Please make an account." });
+      return res
+        .status(400)
+        .json({ error: "RSO does not exist! Please make an account." });
     }
 
     // Check if the email is verified
     if (!rso.EmailVerification) {
-      return res.status(400).json({ error: "Email is not verified. Please verify your email." });
+      return res
+        .status(400)
+        .json({ error: "Email is not verified. Please verify your email." });
     }
 
     const passwordMatch = await bcrypt.compare(Password, rso.Password);
@@ -140,12 +272,12 @@ app.post("/api/login", async (req, res) => {
 
     const token = jwt.sign(jwtPayload, secretKey, { expiresIn: "1h" }); // Token expires in 1 hour
 
-  // Construct response JSON object
-  const responseObject = {
-    token: token,
-    RSOID: rso.RSOID,
-    UniID: rso.UniID,
-  };
+    // Construct response JSON object
+    const responseObject = {
+      token: token,
+      RSOID: rso.RSOID,
+      UniID: rso.UniID,
+    };
 
     res.status(200).json(responseObject);
   } catch (e) {
@@ -156,7 +288,8 @@ app.post("/api/login", async (req, res) => {
 
 app.post("/api/checkRSOFields", async (req, res) => {
   // Get the token from the request headers
-  const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
+  const token =
+    req.headers.authorization && req.headers.authorization.split(" ")[1];
 
   if (!token) {
     return res.status(401).json({ error: "Unauthorized: Token not provided" });
@@ -169,23 +302,45 @@ app.post("/api/checkRSOFields", async (req, res) => {
 
     // Fetch the rso from the database based on RSOID
     const db = client.db("Reserv");
-    const rso = await db.collection("RSO").findOne({ RSOID: new ObjectId(RSOID) });
+    const rso = await db
+      .collection("RSO")
+      .findOne({ RSOID: new ObjectId(RSOID) });
 
     if (!rso) {
       return res.status(400).json({ error: "RSO not found" });
     }
 
     // Check if all fields are not empty
-    const fieldsNotEmpty = Object.values(rso).every(field => field !== "");
+    const fieldsNotEmpty = Object.values(rso).every((field) => field !== "");
 
     res.status(200).json({ fieldsNotEmpty });
   } catch (error) {
     console.error("Error during checkFieldsNotEmpty:", error);
-    if (error.name === 'TokenExpiredError') {
+    if (error.name === "TokenExpiredError") {
       return res.status(401).json({ error: "Unauthorized: Token expired" });
     }
     return res.status(500).json({ error: "Internal server error" });
   }
+});
+
+app.post("/api/GetUniInfo", async(req, res) => {
+  const { UniversityID } = req.body;
+  console.log("entered");
+  const db = client.db("Reserv");
+  const uniObjectID = new ObjectId(UniversityID)
+  const university = await db.collection("University").findOne({ _id : uniObjectID });
+  console.log(university);
+
+  const responseObject = {
+    // token: token, // remeber to add JWT
+    UniName: university.UniName,
+    Address: university.Address,
+    EmailDomain: university.EmailDomain,
+    Website: university.Website,
+    Phone: university.Phone
+  };
+
+  res.status(200).json(responseObject);
 });
 
 app.post("/api/updateRSOInfo", async (req, res) => {
@@ -205,7 +360,8 @@ app.post("/api/updateRSOInfo", async (req, res) => {
   const db = client.db("Reserv");
 
   // Get the token from the request headers
-  const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
+  const token =
+    req.headers.authorization && req.headers.authorization.split(" ")[1];
 
   if (!token) {
     return res.status(401).json({ error: "Unauthorized: Token not provided" });
@@ -217,20 +373,21 @@ app.post("/api/updateRSOInfo", async (req, res) => {
     const RSOID = decodedToken.RSOID;
     console.log(RSOID);
 
-    let result = await db.collection("RSO").updateOne(
-      { RSOID: new ObjectId(RSOID) },
-      { $set: update }
-    );
+    let result = await db
+      .collection("RSO")
+      .updateOne({ RSOID: new ObjectId(RSOID) }, { $set: update });
 
     if (result.modifiedCount === 1) {
       return res.status(200).json({ success: true });
     } else {
       console.log("No log");
-      return res.status(400).json({ error: "No document updated. RSOID may not exist." });
+      return res
+        .status(400)
+        .json({ error: "No document updated. RSOID may not exist." });
     }
   } catch (error) {
     console.error("Error during updateRSOInfo:", error);
-    if (error.name === 'TokenExpiredError') {
+    if (error.name === "TokenExpiredError") {
       return res.status(401).json({ error: "Unauthorized: Token expired" });
     }
     return res.status(500).json({ error: "Internal server error" });
@@ -238,7 +395,6 @@ app.post("/api/updateRSOInfo", async (req, res) => {
 });
 
 app.post("/api/RetrieveEvents", async (req, res) => {
-
   const { RSOID } = req.body;
   var eventListReturn = {};
 
@@ -246,19 +402,11 @@ app.post("/api/RetrieveEvents", async (req, res) => {
   const returnArray = [];
   var eventList;
 
-  if (RSOID == undefined)
-  {
-    eventList = await db
-    .collection("Events")
-    .find({})
-    .toArray();
-  }
-  else
-  {
-    eventList = await db
-    .collection("Events")
-    .find({ RSOID: RSOID })
-    .toArray();
+  if (RSOID == undefined) {
+    eventList = await db.collection("Events").find({}).toArray();
+  } else {
+    const rsoObjectID = new ObjectId(RSOID);
+    eventList = await db.collection("Events").find({ RSOID: rsoObjectID }).toArray();
   }
 
   eventList.forEach((event) => {
@@ -273,7 +421,8 @@ app.post("/api/RetrieveEvents", async (req, res) => {
       AtriumBuilding: event.AtriumBuilding,
       StartEnd: event.StartEnd,
       RSOID: event.RSOID,
-      RoomID: event.RoomID
+      RoomID: event.RoomID,
+      RoomName: event.RoomName
     });
 
     eventListReturn = { eventList: returnArray };
@@ -282,39 +431,122 @@ app.post("/api/RetrieveEvents", async (req, res) => {
   res.status(200).json(eventListReturn);
 });
 
+app.post("/api/RetrieveEventsMobile", async (req, res) => {
+  var eventListReturn = {};
+
+  const db = client.db("Reserv");
+
+  // Get the token from the request headers
+  const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ error: "Unauthorized: Token not provided" });
+  }
+
+  try {
+    // Decode the token to get the RSOID
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
+    const RSOID = decodedToken.RSOID;
+    console.log(RSOID);
+
+    const returnArray = [];
+    var eventList;
+
+    if (RSOID) {
+      eventList = await db
+        .collection("Events")
+        .find({ RSOID: new ObjectId(RSOID) })
+        .toArray();
+    } else {
+      eventList = [];  // Set eventList to an empty array when RSOID is not present
+    }
+
+    eventList.forEach((event) => {
+      returnArray.push({
+        EventID: event._id,
+        EventName: event.EventName,
+        Date: event.Date,
+        EventType: event.EventType,
+        NumAttendees: event.NumAttendees,
+        Description: event.Description,
+        AtriumOccupy: event.AtriumOccupy,
+        AtriumBuilding: event.AtriumBuilding,
+        StartEnd: event.StartEnd,
+        RSOID: event.RSOID,
+        RoomID: event.RoomID,
+      });
+
+      eventListReturn = { eventList: returnArray };
+    });
+
+    res.status(200).json(eventListReturn);
+  } catch (error) {
+    console.error("Error during RetrieveEvents:", error);
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({ error: "Unauthorized: Token expired" });
+    }
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 app.post("/api/RetrieveRSO", async (req, res) => {
-  const { UniID, VerificationFlag } = req.body;
+  const { UniID, VerificationFlag, RSOID } = req.body;
   var RSOListReturn = {};
   var uniObjectID = new ObjectId(UniID);
 
-
   const db = client.db("Reserv");
-  const returnArray = [];
-  const RSOList = await db
-    .collection("RSO")
-    .find({ UniID: uniObjectID, Verification: VerificationFlag })
-    .toArray();
-  console.log(RSOList);
+  
+  if (!RSOID)
+  {
+    console.log(VerificationFlag);
+    const returnArray = [];
+    const RSOList = await db
+      .collection("RSO")
+      .find({ UniID: uniObjectID, Verification: VerificationFlag })
+      .toArray();
+    console.log(RSOList);
 
-  RSOList.forEach((rso) => {
-    returnArray.push({
-      AdminID: rso.AdminID,
-      AdvisorEmail: rso.advisorEmail,
-      AdvisorName: rso.AdvisorName,
-      Email: rso.Email,
-      Phone: rso.Phone,
-      OfficerFirstName: rso.OfficerFirstName,
-      OfficerLastName: rso.OfficerLastName,
-      RSOID: rso._id,
-      RSOName: rso.RSOName,
-      UniID: rso.UniID,
-      Verification: rso.Verification,
+    RSOList.forEach((rso) => {
+      returnArray.push({
+        AdminID: rso.AdminID,
+        AdvisorEmail: rso.advisorEmail,
+        AdvisorName: rso.AdvisorName,
+        Email: rso.Email,
+        Phone: rso.Phone,
+        OfficerFirstName: rso.OfficerFirstName,
+        OfficerLastName: rso.OfficerLastName,
+        RSOID: rso._id,
+        RSOName: rso.RSOName,
+        UniID: rso.UniID,
+        Verification: rso.Verification,
+      });
+      
+      RSOListReturn = { RSOList: returnArray };
     });
 
-    RSOListReturn = { RSOList: returnArray };
-  });
-
-  res.status(200).json(RSOListReturn);
+    res.status(200).json(RSOListReturn);
+  }
+  else if (RSOID)
+  {
+    const RSOobj = new ObjectId(RSOID);
+    const RSOInfo = await db.collection("RSO").findOne({ RSOID:RSOobj });
+    const returnRSO = {
+      RSOName: RSOInfo.RSOName,
+      OfficerFirstName: RSOInfo.OfficerFirstName,
+      OfficerLastName: RSOInfo.OfficerLastName,
+      OfficerEmail: RSOInfo.Email,
+      Phone: RSOInfo.Phone,
+      AdvisorName: RSOInfo.AdvisorName,
+      AdvisorEmail: RSOInfo.AdvisorEmail,
+      SecondaryContactName: RSOInfo.SecondaryContactName,
+      SecondaryContactEmail: RSOInfo.SecondaryContactEmail,
+      SecondaryContactPhone: RSOInfo.SecondaryContactPhone,
+    }
+    res.status(200).json(returnRSO);
+  }
+  else
+    res.status(404).json({ error: "No RSO found."});
+  
 });
 
 app.put("/api/UpdateEvent", async (req, res) => {
@@ -384,6 +616,7 @@ app.post("/api/RetrieveRooms", async (req, res) => {
       ResrveTimes: room.ResrveTimes,
       UniID: room.UniID,
       BuildingID: room.BuildingID,
+      Capacity: room.Capacity,
     });
 
     roomListReturn = { roomList: returnArray };
@@ -402,6 +635,7 @@ function authenticateJWT(req, res, next) {
 
     jwt.verify(token, secretKey, (err, user) => {
       if (err) {
+        console.error("JWT Verification Error:", err);
         return res.sendStatus(403); // Forbidden
       }
 
@@ -429,8 +663,10 @@ app.post("/api/createEvent", authenticateJWT, async (req, res) => {
     MediaEquip,
     RSOID,
     RoomID,
+    RoomName
   } = req.body;
 
+  console.log(req.body);
 
   const db = client.db("Reserv");
 
@@ -450,7 +686,7 @@ app.post("/api/createEvent", authenticateJWT, async (req, res) => {
   const id = new ObjectId(idString);
 
   // Fetch the document with the specified _id
-  const document = await db.collection("RSO").findOne({ _id: id });
+  const document = await db.collection("RSO").findOne({ RSOID: id });
 
   if (document == false) {
     return res.status(400).json({ error: "RSO does not exist!" });
@@ -500,6 +736,7 @@ app.post("/api/createEvent", authenticateJWT, async (req, res) => {
     MediaEquip,
     idString,
     RoomID,
+    RoomName
   };
 
   try {
@@ -513,6 +750,62 @@ app.post("/api/createEvent", authenticateJWT, async (req, res) => {
 function isValidId(id) {
   return id && id.length === 24 && /^[0-9a-fA-F]{24}$/.test(id);
 }
+
+app.put("/api/createEventMobile", authenticateJWT, async (req, res) => {
+  const newEvent = {
+    Date: req.body.Date,
+    EventName: req.body.EventName,
+    EventType: req.body.EventType,
+    NumAttendees: req.body.NumAttendees,
+    Description: req.body.Description,
+    AtriumOccupy: req.body.AtriumOccupy,
+    AtriumBuilding: req.body.AtriumBuilding,
+    StartEnd: req.body.StartEnd,
+    EventAgreement: req.body.EventAgreement,
+    MediaEquip: req.body.MediaEquip,
+    RoomID: req.body.RoomID,
+    BuildingID: req.body.BuildingID,
+    RoomNumber: req.body.RoomNumber,
+  };
+
+  const db = client.db("Reserv");
+
+  // Get the token from the request headers
+  const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ error: "Unauthorized: Token not provided" });
+  }
+
+  try {
+    // Decode the token to get the RSOID
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
+    const RSOID = decodedToken.RSOID;
+    console.log(RSOID);
+
+    let rso = await db.collection("RSO").findOne({ RSOID: new ObjectId(RSOID) });
+
+    if (rso == null) {
+      return res.status(400).json({ error: "RSO does not exist!" });
+    }
+
+    try {
+      const result = await db.collection("Events").insertOne({
+        ...newEvent,
+        RSOID: new ObjectId(RSOID),
+      });
+      return res.status(200).json({ success: true, eventId: result.insertedId });
+    } catch (e) {
+      return res.status(500).json({ error: e.toString() });
+    }
+  } catch (error) {
+    console.error("Error during createEventMobile", error);
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({ error: "Unauthorized: Token expired" });
+    }
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 // Other APIs still need JWT.
 app.get(
@@ -674,10 +967,15 @@ app.put("/api/createAdmin", async (req, res) => {
     };
     await db.collection("University").insertOne(universityData);
 
-    return res.status(201).json({ success: true, message: "Admin and University created successfully" });
+    return res.status(201).json({
+      success: true,
+      message: "Admin and University created successfully",
+    });
   } catch (e) {
     console.error("Error during createAdmin:", e);
-    return res.status(500).json({ success: false, error: "Failed to create account" });
+    return res
+      .status(500)
+      .json({ success: false, error: "Failed to create account" });
   }
 });
 
@@ -689,14 +987,18 @@ app.post("/api/adminLogin", async (req, res) => {
     const uni = await db.collection("Admin").findOne({ Email: Email });
 
     if (!uni) {
-      return res.status(400).json({ error: "University does not exist! Please make an account." });
+      return res
+        .status(400)
+        .json({ error: "University does not exist! Please make an account." });
     }
 
     // Check if the email is verified
     if (!uni.EmailVerification) {
-      return res.status(400).json({ error: "Email is not verified. Please verify your email." });
+      return res
+        .status(400)
+        .json({ error: "Email is not verified. Please verify your email." });
     }
-
+ 
     const passwordMatch = await bcrypt.compare(Password, uni.Password);
 
     if (!passwordMatch) {
@@ -724,9 +1026,43 @@ app.post("/api/adminLogin", async (req, res) => {
   }
 });
 
+app.put("/api/adminChangePassword", async (req, res) => {
+  const { UniID, Password, NewPassword } = req.body;
+  const uniObjectID = new ObjectId(UniID)
+  let result
+
+  try {
+    const db = client.db("Reserv");
+    const uni = await db.collection("Admin").findOne({ _id: uniObjectID});
+
+    if (!uni) {
+      return res.status(400).json({ error: "University does not exist! Please make an account." });
+    }
+
+    const passwordMatch = await bcrypt.compare(Password, uni.Password);
+
+    if (!passwordMatch) {
+      return res.status(400).json({ error: "Incorrect password" });
+    }
+
+    const hashedPassword = await bcrypt.hash(NewPassword, 10); // 10 is the salt rounds
+    
+    result = await db.collection("Admin").updateOne(
+      { _id: uniObjectID },
+      { $set: {Password: hashedPassword} }
+    );
+
+  } catch (e) {
+    console.error("Error during password Reset:", e);
+    res.status(500).json({ error: "Internal server error" });
+  }
+  res.status(200).json(result);
+});
+
 app.post("/api/checkUniFields", async (req, res) => {
   // Get the token from the request headers
-  const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
+  const token =
+    req.headers.authorization && req.headers.authorization.split(" ")[1];
 
   if (!token) {
     return res.status(401).json({ error: "Unauthorized: Token not provided" });
@@ -739,19 +1075,21 @@ app.post("/api/checkUniFields", async (req, res) => {
 
     // Fetch the university from the database based on UniID
     const db = client.db("Reserv");
-    const uni = await db.collection("University").findOne({ UniID: new ObjectId(UniID) });
+    const uni = await db
+      .collection("University")
+      .findOne({ UniID: new ObjectId(UniID) });
 
     if (!uni) {
       return res.status(400).json({ error: "University not found" });
     }
 
     // Check if all fields are not empty
-    const fieldsNotEmpty = Object.values(uni).every(field => field !== "");
+    const fieldsNotEmpty = Object.values(uni).every((field) => field !== "");
 
     res.status(200).json({ fieldsNotEmpty });
   } catch (error) {
     console.error("Error during checkFieldsNotEmpty:", error);
-    if (error.name === 'TokenExpiredError') {
+    if (error.name === "TokenExpiredError") {
       return res.status(401).json({ error: "Unauthorized: Token expired" });
     }
     return res.status(500).json({ error: "Internal server error" });
@@ -770,7 +1108,8 @@ app.post("/api/updateUniversityInfo", async (req, res) => {
   const db = client.db("Reserv");
 
   // Get the token from the request headers
-  const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
+  const token =
+    req.headers.authorization && req.headers.authorization.split(" ")[1];
 
   if (!token) {
     return res.status(401).json({ error: "Unauthorized: Token not provided" });
@@ -781,19 +1120,20 @@ app.post("/api/updateUniversityInfo", async (req, res) => {
     const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const UniID = decodedToken.UniID;
 
-    let result = await db.collection("University").updateOne(
-      { UniID: new ObjectId(UniID) },
-      { $set: update }
-    );
+    let result = await db
+      .collection("University")
+      .updateOne({ UniID: new ObjectId(UniID) }, { $set: update });
 
     if (result.modifiedCount === 1) {
       return res.status(200).json({ success: true });
     } else {
-      return res.status(400).json({ error: "No document updated. UniID may not exist." });
+      return res
+        .status(400)
+        .json({ error: "No document updated. UniID may not exist." });
     }
   } catch (error) {
     console.error("Error during updateUniversityInfo:", error);
-    if (error.name === 'TokenExpiredError') {
+    if (error.name === "TokenExpiredError") {
       return res.status(401).json({ error: "Unauthorized: Token expired" });
     }
     return res.status(500).json({ error: "Internal server error" });
@@ -807,7 +1147,7 @@ app.put("/api/VerifyRSO", async (req, res) => {
 
   const update = await db
     .collection("RSO")
-    .updateOne({ RSOID: rsoObjectID }, { $set: { Verification: true } });
+    .updateOne({ _id: rsoObjectID }, { $set: { Verification: true } });
   res.status(200).json(update);
 });
 
@@ -826,15 +1166,16 @@ app.post("/api/updateUniversityLogin", async (req, res) => {
   const db = client.db("Reserv");
 
   try {
-    let result = await db.collection("Admin").updateOne(
-      { UniID: new ObjectId(req.body.UniID) },
-      { $set: update }
-    );
+    let result = await db
+      .collection("Admin")
+      .updateOne({ UniID: new ObjectId(req.body.UniID) }, { $set: update });
 
     if (result.modifiedCount === 1) {
       return res.status(200).json({ success: true });
     } else {
-      return res.status(400).json({ error: "No document updated. UniID may not exist." });
+      return res
+        .status(400)
+        .json({ error: "No document updated. UniID may not exist." });
     }
   } catch (e) {
     return res.status(500).json({ error: e.toString() });

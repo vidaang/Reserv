@@ -63,8 +63,9 @@ function LargeCalendar()
                     description: event.Description,
                     atriumOccupy: event.AtriumOccupy,
                     atriumBuilding: event.AtriumBuilding,
-                    room: event.RoomID, 
-                    eventID: event.EventID
+                    room: event.RoomName, 
+                    eventID: event.EventID,
+                    roomID: event.RoomID
                 }
             );
         });
@@ -88,7 +89,8 @@ function LargeCalendar()
             console.log(js);
             try
             {
-                const response = await fetch('http://localhost:5000/api/RetrieveEvents',
+                const response = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/RetrieveEvents',
+                //const response = await fetch('http://localhost:5000/api/RetrieveEvents',
                 {method:'POST',
                 body:js,
                 headers:{'Content-Type':'application/json'}});

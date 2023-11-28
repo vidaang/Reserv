@@ -353,4 +353,28 @@ class ApiService {
       throw Exception('Failed to create event. Error: $e');
     }
   }
+
+  static Future<void> ForgotPassword(String Email) async {
+    try {
+      Map<String, dynamic> requestBody = {
+        'Email': Email,
+      };
+
+      final response = await http.post(
+        Uri.parse('$baseUrl/api/request-password-reset'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(requestBody),
+      );
+
+      if (response.statusCode == 200) {
+        print('Password reset email sent successfully!');
+      } else {
+        throw Exception('Failed to send password reset email. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Failed to send password reset email. Error: $e');
+    }
+  }
 }
