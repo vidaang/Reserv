@@ -5,11 +5,6 @@ import '../../services/jwt_token.dart';
 final ApiService apiService = ApiService();
 Map<String, dynamic> rsoInfo = new Map<String, dynamic>();
 
-void initializeRSOFields()
-{
-   rsoInfo['RSOName'] = ''; 
-}
-
 Future<void> fetchData() async {
     try {
       Map<String, dynamic> result = await ApiService.retrieveRSO(

@@ -20,7 +20,6 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     super.initState();
-    //initializeRSOFields();
     getRSOFields(); // Call the API when the page is opened
   }
 
