@@ -15,11 +15,12 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   final ApiService apiService = ApiService();
+  Map<String, dynamic> rsoInfo = {"": ""};
 
   @override
   void initState() {
     super.initState();
-    fetchData(); // Call the API when the page is opened
+    getRSOFields(); // Call the API when the page is opened
   }
 
   Future<void> fetchData() async {
@@ -38,8 +39,59 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
+  Future<Map<String, dynamic>> storeData() async {
+    try {
+      return await ApiService.retrieveRSO(
+        uniID: '655673b363bf110ce2b499ee',
+        verificationFlag: true,
+        rsoID: '655804c90b1c5c3f460dd45e',
+      );
+    } catch (e) {
+      // Handle exceptions
+      print('Error retrieving RSO: $e');
+      return {};
+    }
+  }
+
+  Future<void> getRSOFields() async {
+    await fetchData();
+    rsoInfo = await storeData();
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Map<String, dynamic>? rsoInfo;
+
+    // String rsoName = "";
+    // String officerFirstName = "";
+    // String officerLastName = "";
+    // String officerEmail = "";
+    // String phone = "";
+    // String advisorName = "";
+    // String advisorEmail = "";
+    // String secondaryContactName = "";
+    // String secondaryContactEmail = "";
+    // String secondaryContactPhone = "";
+
+    // storeData().then((result) {
+    //   rsoInfo = result;
+    //   // rsoName = rsoInfo['RSOName'];
+    //   // officerFirstName = rsoInfo['OfficerFirstName'];
+    //   // officerLastName = rsoInfo['OfficerLastName'];
+    //   // officerEmail = rsoInfo['OfficerEmail'];
+    //   // phone = rsoInfo['Phone'];
+    //   // advisorName = rsoInfo['AdvisorName'];
+    //   // advisorEmail = rsoInfo['AdvisorEmail'];
+    //   // secondaryContactName = rsoInfo['SecondaryContactName'];
+    //   // secondaryContactEmail = rsoInfo['SecondaryContactEmail'];
+    //   // secondaryContactPhone = rsoInfo['SecondaryContactPhone'];
+    // }).catchError((error) {
+    //   // Handle errors
+    //   print('Error calling storeData: $error');
+    // });
+
+    // print(rsoInfo['RSOName']);
+
     return Container(
         color: Colors.white,
         child: SingleChildScrollView(
@@ -111,6 +163,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     width: 262,
                     height: 28,
                     child: TextFormField(
+                      // should be filled here
+                      initialValue: rsoInfo['RSOName'],
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(53.0),
