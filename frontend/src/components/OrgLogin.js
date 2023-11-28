@@ -156,12 +156,13 @@ function OrgLogin() {
           value="Login"
           onClick={doLogin}
         />
-        <Link to="/OrgCreateAccount">
-          <button className="navbar-menu-text">Don't Have an Account? Sign Up Here!</button>
-        </Link>
+
       </form>
-      <button className="navbar-menu-text" onClick={open}>Forgot Password?</button>
       <span id="loginResult">{message}</span>
+      <Link to="/OrgCreateAccount">
+          <button className="user-authentication-redirect-links">Don't Have an Account? Sign Up Here!</button>
+      </Link>
+      <button className="user-authentication-redirect-links" onClick={open}>Forgot Password?</button>
       <Modal id="reset-password-modal" opened={opened} onClose={close}>
         <div id="reset-password-email-container">
           <span>Please enter the email associated with your account</span>

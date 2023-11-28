@@ -111,7 +111,7 @@ function OrgCreateAccount() {
         />
       </form>
       <Link to="/OrgLogin">
-        <button className="navbar-menu-text">
+        <button className="user-authentication-redirect-links">
           Have an Account? Sign In Here!
         </button>
       </Link>

@@ -103,7 +103,7 @@ function UniCreateAccount() {
         />
       </form>
       <Link to="/UniLogin">
-        <button className="navbar-menu-text">
+        <button className="user-authentication-redirect-links">
           Have an Account? Sign In Here!
         </button>
       </Link>
