@@ -273,7 +273,7 @@ app.post("/api/RetrieveEvents", async (req, res) => {
       AtriumBuilding: event.AtriumBuilding,
       StartEnd: event.StartEnd,
       RSOID: event.RSOID,
-      RoomID: event.RoomID,
+      RoomID: event.RoomID
     });
 
     eventListReturn = { eventList: returnArray };

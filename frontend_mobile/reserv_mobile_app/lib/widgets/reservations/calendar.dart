@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../services/api_service.dart';
+import '../../services/jwt_token.dart';
 
 import 'utils.dart';
 
@@ -85,8 +86,18 @@ class _ReservationsCalendarState extends State<ReservationsCalendar> {
 
   Future<void>  deleteEvent(Event event) async{
     final eventIDToDelete =  event.eventID.toString();
-    kEvents.removeWhere((key, value) => "EventID" == event.eventID);
+    kEvents.remove(event.calendarDate);
     await ApiService.deleteEvent(eventIDToDelete);
+    await fetchEvents();
+    setState(() {});
+    setState(() {
+        _selectedDay = DateTime.now();
+        _focusedDay = DateTime.now();
+        _rangeStart = null; // Important to clean those
+        _rangeEnd = null;
+        _rangeSelectionMode = RangeSelectionMode.toggledOff;
+      });
+    _selectedEvents.value = _getEventsForDay(DateTime.now());
   }
 
   void _showEventDetailsDialog(Event event) {

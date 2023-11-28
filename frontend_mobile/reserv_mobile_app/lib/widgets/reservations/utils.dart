@@ -8,10 +8,11 @@ import '../../services/jwt_token.dart';
 class Event {
   final String title;
   final String time;
+  final DateTime calendarDate;
   final String place;
   final String eventID;
 
-  const Event(this.title, {required this.time, required this.place, required this.eventID});
+  const Event(this.title, {required this.time, required this.calendarDate, required this.place, required this.eventID});
 
   @override
   String toString() => '$title\nLocation: $place\nTime: $time';
@@ -36,6 +37,7 @@ Future<void> fetchEvents() async {
 
     if (token != null) {
       final response = await ApiService.retrieveEvents(token);
+      if(response['eventList'] == null) return;
       final eventList = response['eventList'];
       var count = 0;
       for (var eventMap in eventList) {
@@ -49,8 +51,9 @@ Future<void> fetchEvents() async {
         final Event event = Event(
           eventMap['EventName'],
           time: formattedDate,
-          place: eventMap['BuildingID'],
-          eventID: eventMap['EventID']
+          place: eventMap['AtriumBuilding'],
+          eventID: eventMap['EventID'],
+          calendarDate: calendarDate
         );
         _kEventSource[calendarDate] = _kEventSource[calendarDate] ?? [];
         _kEventSource[calendarDate]?.add(event);
