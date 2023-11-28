@@ -6,10 +6,12 @@ import 'package:intl/intl.dart';
 import 'jwt_token.dart';
 
 class ApiService {
-  static const String baseUrl = "https://knightsreserv-00cde8777914.herokuapp.com";
+  static const String baseUrl =
+      "https://knightsreserv-00cde8777914.herokuapp.com";
   // Handling for Login API
-  
-  static Future<Map<String, dynamic>> login(String Email, String Password) async {
+
+  static Future<Map<String, dynamic>> login(
+      String Email, String Password) async {
     final Uri uri = Uri.parse('$baseUrl/api/login');
     final Map<String, String> requestBody = {
       'Email': Email,
@@ -33,7 +35,7 @@ class ApiService {
       await JWTToken.setToken('Token', token);
       await JWTToken.setToken('RSOID', rsoID);
       await JWTToken.setToken('UniID', uniID);
-  
+
       return responseData;
     } else {
       throw Exception('Login failed with status code: ${response.statusCode}');
@@ -63,10 +65,10 @@ class ApiService {
       if (response.statusCode == 201) {
         return jsonDecode(response.body);
       } else {
-        throw Exception('Sign-up failed with status code: ${response.statusCode}');
+        throw Exception(
+            'Sign-up failed with status code: ${response.statusCode}');
       }
-    }
-    catch (e) {
+    } catch (e) {
       print('Error during sign-up: $e');
       return {'success': false, 'error': 'Failed to sign up'};
     }
@@ -74,7 +76,7 @@ class ApiService {
 
   static Future<bool> checkRSOFields(String token) async {
     final Uri uri = Uri.parse('$baseUrl/api/checkRSOFields');
-    
+
     final response = await http.post(
       uri,
       headers: {
@@ -85,13 +87,16 @@ class ApiService {
 
     if (response.statusCode == 200) {
       final dynamic jsonResponse = jsonDecode(response.body);
-      if (jsonResponse is Map<String, dynamic> && jsonResponse.containsKey('fieldsNotEmpty')) {
+      if (jsonResponse is Map<String, dynamic> &&
+          jsonResponse.containsKey('fieldsNotEmpty')) {
         return jsonResponse['fieldsNotEmpty'] as bool;
       } else {
-        throw Exception('Invalid response format. Expected "fieldsNotEmpty" boolean value.');
+        throw Exception(
+            'Invalid response format. Expected "fieldsNotEmpty" boolean value.');
       }
     } else {
-      throw Exception('Check RSO Fields failed with status code: ${response.statusCode}');
+      throw Exception(
+          'Check RSO Fields failed with status code: ${response.statusCode}');
     }
   }
 
@@ -109,7 +114,7 @@ class ApiService {
     required String SecondaryContactPhone,
   }) async {
     final Uri uri = Uri.parse('$baseUrl/api/updateRSOInfo');
-    
+
     final Map<String, String> requestBody = {
       'RSOName': RSOName,
       'OfficerFirstName': OfficerFirstName,
@@ -134,18 +139,21 @@ class ApiService {
     if (response.statusCode == 200) {
       // Assuming the response contains a boolean value indicating success
       final Map<String, dynamic> responseBody = jsonDecode(response.body);
-      if (responseBody.containsKey('success') && responseBody['success'] == true) {
+      if (responseBody.containsKey('success') &&
+          responseBody['success'] == true) {
         return responseBody;
       } else {
         throw Exception('Update RSO Info failed. Unexpected response format.');
       }
     } else {
-      throw Exception('Update RSO Info failed with status code: ${response.statusCode}');
+      throw Exception(
+          'Update RSO Info failed with status code: ${response.statusCode}');
     }
   }
 
   // Handling for Search Rooms API
-  static Future<Map<String, dynamic>> retrieveRooms(double latitude, double longitude) async {
+  static Future<Map<String, dynamic>> retrieveRooms(
+      double latitude, double longitude) async {
     const String uri = "$baseUrl/api/RetrieveRooms";
 
     final Map<String, dynamic> requestBody = {
@@ -156,9 +164,7 @@ class ApiService {
     final response = await http.post(
       Uri.parse(uri),
       body: json.encode(requestBody),
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: {'Content-Type': 'application/json'},
     );
 
     if (response.statusCode == 200) {
@@ -193,12 +199,14 @@ class ApiService {
 
       if (response.statusCode == 200) {
         // Parse the response JSON
-        List<Map<String, num>> availabilityList = (json.decode(response.body)['continuousAvailability'] as List<dynamic>)
-            .map((dynamic item) => {
-                  'start': item['start'] as num,
-                  'end': item['end'] as num,
-                })
-            .toList();
+        List<Map<String, num>> availabilityList =
+            (json.decode(response.body)['continuousAvailability']
+                    as List<dynamic>)
+                .map((dynamic item) => {
+                      'start': item['start'] as num,
+                      'end': item['end'] as num,
+                    })
+                .toList();
 
         // Process the parsed data as needed
         List<List<num>> unformatted = [];
@@ -208,10 +216,13 @@ class ApiService {
           num start = availability['start']!;
           num end = availability['end']!;
 
-          DateTime startTime = DateTime(2023, 1, 1, start.floor(), (start % 1 * 60).round());
-          DateTime endTime = DateTime(2023, 1, 1, end.floor(), (end % 1 * 60).round());
+          DateTime startTime =
+              DateTime(2023, 1, 1, start.floor(), (start % 1 * 60).round());
+          DateTime endTime =
+              DateTime(2023, 1, 1, end.floor(), (end % 1 * 60).round());
 
-          String formattedSlot = '${DateFormat.jm().format(startTime)} - ${DateFormat.jm().format(endTime)}';
+          String formattedSlot =
+              '${DateFormat.jm().format(startTime)} - ${DateFormat.jm().format(endTime)}';
 
           unformatted.add([start, end]);
           timesFormatted.add(formattedSlot);
@@ -225,7 +236,8 @@ class ApiService {
       } else {
         // If the server did not return a 200 OK response,
         // throw an exception with the error message.
-        throw Exception('Failed to load availability. Status code: ${response.statusCode}');
+        throw Exception(
+            'Failed to load availability. Status code: ${response.statusCode}');
       }
     } catch (error) {
       // Handle network errors or other exceptions
@@ -260,9 +272,20 @@ class ApiService {
     }
   }
 
-  static Future<void> createEvent(String? token,String RoomID, String Date, String EventName, 
-    String EventType, String Description, int? Attendees, bool AtriumOccupy, bool MediaEquip, bool EventAgreement, 
-    List<num> StartEnd, String BuildingID, int? RoomNumber) async {
+  static Future<void> createEvent(
+      String? token,
+      String RoomID,
+      String Date,
+      String EventName,
+      String EventType,
+      String Description,
+      int? Attendees,
+      bool AtriumOccupy,
+      bool MediaEquip,
+      bool EventAgreement,
+      List<num> StartEnd,
+      String BuildingID,
+      int? RoomNumber) async {
     try {
       if (token == null) {
         // Handle the case where the token is not available
@@ -301,12 +324,38 @@ class ApiService {
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
-        print('Event created successfully! Event ID: ${responseData['eventId']}');
+        print(
+            'Event created successfully! Event ID: ${responseData['eventId']}');
       } else {
-        throw Exception('Failed to create event. Status code: ${response.statusCode}, Body: ${response.body}');
+        throw Exception(
+            'Failed to create event. Status code: ${response.statusCode}, Body: ${response.body}');
       }
     } catch (e) {
       throw Exception('Failed to create event. Error: $e');
+    }
+  }
+
+  static Future<Map<String, dynamic>> retrieveRSO({
+    required String uniID,
+    required bool verificationFlag,
+    String? rsoID,
+  }) async {
+    final Map<String, dynamic> requestBody = {
+      'UniID': uniID,
+      'VerificationFlag': verificationFlag,
+      'RSOID': rsoID,
+    };
+
+    final response = await http.post(
+      Uri.parse('$baseUrl/api/RetrieveRSO'),
+      body: jsonEncode(requestBody),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to retrieve RSO: ${response.statusCode}');
     }
   }
 }

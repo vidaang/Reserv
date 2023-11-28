@@ -6,15 +6,37 @@ import '../widgets/navbar.dart';
 import '../services/jwt_token.dart';
 import '../screens/complete_profile.dart';
 
-class SettingsPage extends StatelessWidget {
-  SettingsPage({Key? key}) : super(key: key);
+class SettingsPage extends StatefulWidget {
+  const SettingsPage({Key? key}) : super(key: key);
 
-  String _message = '';
+  @override
+  _SettingsPageState createState() => _SettingsPageState();
+}
 
-  // final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _EmailController = TextEditingController();
-  final TextEditingController _passController = TextEditingController();
-  final TextEditingController _retypePassController = TextEditingController();
+class _SettingsPageState extends State<SettingsPage> {
+  final ApiService apiService = ApiService();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData(); // Call the API when the page is opened
+  }
+
+  Future<void> fetchData() async {
+    try {
+      Map<String, dynamic> result = await ApiService.retrieveRSO(
+        uniID: '655673b363bf110ce2b499ee',
+        verificationFlag: true,
+        rsoID: '655804c90b1c5c3f460dd45e',
+      );
+
+      // Handle the result as needed
+      print('RSO retrieved successfully: $result');
+    } catch (e) {
+      // Handle exceptions
+      print('Error retrieving RSO: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
