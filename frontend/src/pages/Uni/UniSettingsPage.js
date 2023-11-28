@@ -1,6 +1,6 @@
 import React from 'react';
 import NavBar from '../../components/NavBar';
-import { SettingsNavigation } from '../../components/Uni/UniSettingsPage/SettingsNavigation.tsx';
+import { SettingsNavigation } from '../../components/Uni/UniSettingsPage/SettingsNavigation.js';
 import { Text, Container } from '@mantine/core';
 
 import '../../styles/SettingsNavigation.module.css';

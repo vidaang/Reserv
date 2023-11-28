@@ -249,6 +249,54 @@ body {
   background-image: url(../images/university-login.jpg);
 }
 
+#email-verification-modal-message {
+  font-size: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#password-email-form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#password-email-form input {
+  margin-left: 2%;
+  padding: 6px 18px;
+}
+
+#password-email-form button {
+  margin-right: 2%;
+  padding: 6px 18px;
+  border-radius: 20px;
+  border: 2px solid var(--color-5);
+  background-color: var(--color-5);
+  transition: 0.2s;
+}
+
+#password-email-form button:hover {
+  background-color: #95d07d80;
+  border: 2px solid #95d07d80;
+}
+
+#reset-password-email-container span {
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 4%;
+  font-weight: bold;
+}
+
+#reset-message {
+  margin-top: 4%;
+}
 
 /* LANDING PAGE STYLING */
 
@@ -640,13 +688,18 @@ output[for="timeRange"] {
   margin-right: 30px;
 }
 
+#DateAndTimeForm {
+  min-width: max-content;
+  max-width: min-content;
+}
+
 .location-container {
   border: 1px solid #e1e1e1;
   border-radius: 10px;
   background-color: white;
   margin-bottom: 10px;
   width: 100%;
-  padding: 10px;
+  padding: 10px 80px;
 }
 
 .ammenities-container {
@@ -669,6 +722,10 @@ output[for="timeRange"] {
   justify-content: space-evenly;
 }
 
+.row-space h3 {
+  margin-right: 20%;
+}
+
 .search-page-modal-img {
   border: 2px solid white;
   border-radius: 10px;
@@ -683,6 +740,10 @@ output[for="timeRange"] {
 
 .building-name {
   font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 .location {
   color: #69B7FF;
@@ -881,14 +942,103 @@ output[for="timeRange"] {
 
 /* ORG SETTINGS PAGE */
 #OrgSettingsPageDiv {
-  max-height: 100vh;
-  overflow-y: visible;
   display: flex;
   flex-direction: column;
   text-align: left;
   width: 100%;
 }
 
+.settings-menu-organization {
+  /* Add general styles for the entire organization section */
+  font-family: 'Gabarito', sans-serif;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  background-color: #f8fff5;
+  border-radius: 10px;
+}
+
+.settings-menu-divider {
+  /* Add styles for the horizontal divider */
+  margin: 15px 0;
+  border: 1px solid #ddd;
+}
+
+.settings-menu h5 {
+  /* Add styles for the subheadings */
+  font-family: 'Gabarito', sans-serif;
+  color: #333;
+  font-size: 18px;
+}
+
+.settings-menu label {
+  /* Add styles for labels */
+  font-family: 'Gabarito', sans-serif;
+  display: block;
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-menu-label {
+  /* Add styles for labels */
+  font-family: 'Gabarito', sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: 50px;
+}
+
+.settings-menu input {
+  /* Add styles for input fields */
+  font-family: 'Gabarito', sans-serif;
+  width: 80%;
+  padding: 8px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  border: 1px solid #000000; 
+}
+
+.settings-menu-input {
+  /* Add styles for input fields */
+  font-family: 'Gabarito', sans-serif;
+  width: 350px;
+  padding: 8px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  border: 1px solid #000000; 
+}
+
+.settings-menu button {
+  /* Add styles for the confirm changes button */
+  font-family: 'Gabarito', sans-serif;
+  background-color: var(--color-5);
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.settings-menu button:hover {
+  background-color: var(--color-8);
+}
+
+.settings-menu-confirmChanges {
+  margin-top: 20px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+  border: none;
+  border-radius: 20px;
+  height: 40px;
+  width: 250px;
+  background-color: var(--color-5);
+}
+
+.settings-menu-confirmChanges:hover {
+  transition: 0.35s;
+  background-color: var(--color-8);
+  color: white;
+  font-size: 18px;
+}
 /* ORG COMPLETE PROFILE PAGE */
 
 #OrgProfilePageDiv {
@@ -1233,4 +1383,81 @@ output[for="timeRange"] {
   flex-direction: column !important;
   align-items: center !important;
   justify-content: center !important;
+}
+
+/* EMAIL VERIFICATION */
+
+#email-verification-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5%;
+}
+
+#email-verification-container {
+  border: solid rgba(0, 0, 0, 0.4) 1px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 36%;
+  min-height: 20vh;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+  margin: 10px 10px;
+}
+
+#email-verification-art {
+  max-width: 10%;
+  margin-bottom: 2%;
+}
+
+/* RESET PASSWORD */
+
+#ResetPasswordPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-2);
+  height: 100vh;
+}
+
+#ResetPasswordContainer {
+  margin-top: -20%;
+  min-width: min-content;
+  max-width: max-content;
+  border: 1px solid black;
+  border-radius: 10px;
+  background-color: white;
+  padding: 12px 20px;
+}
+
+#ResetPasswordContainer h1 {
+  font-size: 32px;
+}
+
+#ResetPasswordForm {
+  display: flex;
+  flex-direction: column;
+}
+
+#ResetPasswordForm input {
+  margin: 1% 2%;
+}
+
+#ResetPasswordForm button {
+  margin: 1% auto;
+  border-radius: 20px;
+  padding: 6px 18px;
+  align-content: space-between;
+}
+
+#ResetPasswordContainer span {
+  margin-top: 1%;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
