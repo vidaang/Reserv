@@ -281,6 +281,27 @@ class ApiService {
     }
   }
 
+  Future<void> updateEvent(String eventID, String name, String desc) async {
+  final url = Uri.parse('http://localhost:5000/api/UpdateEvent');
+    
+  try {
+    final response = await http.put(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({'EventID': eventID, 'EventName': name, 'Description' : desc}),
+    );
+
+    if (response.statusCode == 200) {
+      print('Event updated successfully');
+    } else {
+      print('Failed to update event. Status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
+    }
+  } catch (e) {
+    print('Error deleting event: $e');
+  }
+}
+
   static Future<void> createEvent(String? token,String RoomID, String Date, String EventName, 
     String EventType, String Description, int? Attendees, bool AtriumOccupy, bool MediaEquip, bool EventAgreement, 
     List<num> StartEnd, String BuildingID, int? RoomNumber) async {
