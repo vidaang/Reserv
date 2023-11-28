@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import '../../services/api_service.dart';
+import '../../services/jwt_token.dart';
 
 import 'utils.dart';
 
@@ -23,10 +25,15 @@ class _ReservationsCalendarState extends State<ReservationsCalendar> {
   @override
   void initState() {
     super.initState();
-    clearEventSource();
-    fetchEvents();
+    grabList();
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
+  }
+
+  Future<void> grabList() async {
+    clearEventSource();
+    await fetchEvents();
+    setState(() {});
   }
 
   @override
@@ -82,6 +89,43 @@ class _ReservationsCalendarState extends State<ReservationsCalendar> {
     }
   }
 
+  Future<void>  deleteEvent(Event event) async{
+    print(event);
+    final eventIDToDelete =  event.eventID.toString();
+    kEvents.remove(event.calendarDate);
+    await ApiService.deleteEvent(eventIDToDelete);
+    clearEventSource();
+    await fetchEvents();
+    setState(() {});
+    setState(() {
+        _selectedDay = DateTime.now();
+        _focusedDay = DateTime.now();
+        _rangeStart = null; // Important to clean those
+        _rangeEnd = null;
+        _rangeSelectionMode = RangeSelectionMode.toggledOff;
+      });
+    _selectedEvents.value = _getEventsForDay(DateTime.now());
+  }
+
+  Future<void> editEvent(Event event, String newName, String newDescription) async{
+    print(event);
+    print(newName);
+    print(newDescription);
+    final String eventID = event.eventID.toString();
+    await ApiService.updateEvent(eventID, newName, newDescription);
+    clearEventSource();
+    await fetchEvents();
+    setState(() {});
+    setState(() {
+        _selectedDay = DateTime.now();
+        _focusedDay = DateTime.now();
+        _rangeStart = null; // Important to clean those
+        _rangeEnd = null;
+        _rangeSelectionMode = RangeSelectionMode.toggledOff;
+      });
+    _selectedEvents.value = _getEventsForDay(DateTime.now());
+  }
+
   void _showEventDetailsDialog(Event event) {
     showDialog(
       context: context,
@@ -93,13 +137,13 @@ class _ReservationsCalendarState extends State<ReservationsCalendar> {
             TextButton(
               child: const Text('Edit'),
               onPressed: () {
-                Navigator.of(context).pop();
+                _showEditDialog(event);
               },
             ),
             TextButton(
               child: const Text('Delete'),
               onPressed: () {
-                Navigator.of(context).pop();
+                _showDeleteDialog(event);
               },
             ),
             TextButton(
@@ -113,6 +157,86 @@ class _ReservationsCalendarState extends State<ReservationsCalendar> {
       },
     );
   }
+
+  void _showEditDialog(Event event) {
+  TextEditingController eventNameController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+
+  showDialog(
+    context: context,
+    builder: (context) {
+      // Your edit dialog widget goes here
+      return AlertDialog(
+        title: const Text('Edit Event'),
+        content: Container(
+          height: 150,
+          child: Column(
+            children: [
+              TextField(
+                controller: eventNameController,
+                decoration: InputDecoration(labelText: 'Event Name'),
+              ),
+              TextField(
+                controller: descriptionController,
+                decoration: InputDecoration(labelText: 'Description'),
+              ),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+              child: const Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+          ),
+          TextButton(
+              child: const Text('Confirm'),
+              onPressed: () {
+                String updatedEventName = eventNameController.text;
+                String updatedDescription = descriptionController.text;
+
+                editEvent(event, updatedEventName, updatedDescription);
+
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+              },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void _showDeleteDialog(Event event) {
+  // Implement the delete dialog here
+  showDialog(
+    context: context,
+    builder: (context) {
+      // Your delete dialog widget goes here
+      return AlertDialog(
+        title: const Text('Delete Event'),
+        content: const Text('Are you sure you want to cancel this reservation?'),
+        actions: <Widget>[
+          TextButton(
+              child: const Text('Back'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+          ),
+          TextButton(
+              child: const Text('Confirm'),
+              onPressed: () {
+                deleteEvent(event);
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+              },
+            ),
+        ],
+      );
+    },
+  );
+}
 
   @override
   Widget build(BuildContext context) {

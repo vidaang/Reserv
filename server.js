@@ -734,7 +734,7 @@ app.post("/api/createEvent", authenticateJWT, async (req, res) => {
     StartEnd,
     EventAgreement,
     MediaEquip,
-    RSOID,
+    idString,
     RoomID,
     RoomName
   };
@@ -1207,7 +1207,7 @@ app.put("/api/createEventMobile", authenticateJWT, async (req, res) => {
     NumAttendees: req.body.NumAttendees,
     Description: req.body.Description,
     AtriumOccupy: req.body.AtriumOccupy,
-    AtriumBuilding: req.body.AtriumBuilding,
+    AtriumBuilding: req.body.BuildingID,
     StartEnd: req.body.StartEnd,
     EventAgreement: req.body.EventAgreement,
     MediaEquip: req.body.MediaEquip,
