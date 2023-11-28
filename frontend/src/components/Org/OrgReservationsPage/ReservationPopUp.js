@@ -99,12 +99,12 @@ function ReservationPopUp({ event }) {
                     <div id="edit-modal-container">
                         <div id="EditReservationContainer">
                             <div className="complete-reservation-input-label">
-                                <label htmlFor="eventName">Event Name:</label>
-                                <input type="text" id="eventName" placeholder="Enter Event Name" ref={(c) => eventName = c} required/><br />
+                                <label className="edit-reservation-text-modal" htmlFor="eventName">Event Name:</label>
+                                <input className="edit-reservation-text-modal-input" type="text" id="eventName" placeholder="Enter Event Name" ref={(c) => eventName = c} required/><br />
                             </div>
                             <div className="complete-reservation-input-label">
-                                <label htmlFor="eventDescription">Description:</label>
-                                <input type="text" id="eventDescription" placeholder="Enter Event Description" ref={(c) => eventDescription = c} required/><br />
+                                <label className="edit-reservation-text-modal" htmlFor="eventDescription">Description:</label>
+                                <input className="edit-reservation-text-modal-input" type="text" id="eventDescription" placeholder="Enter Event Description" ref={(c) => eventDescription = c} required/><br />
                             </div>
                             <div id="EditReservationButtonDiv">
                                 <button id="edit-reservation-cancel-button" onClick={close}>Cancel</button>

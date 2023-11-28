@@ -314,6 +314,16 @@ body {
   text-decoration: underline;
 }
 
+.dumb-font {
+  font-family: 'Gabarito', sans-serif;
+}
+
+.dumb-layout {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
 /* LANDING PAGE STYLING */
 
@@ -347,11 +357,11 @@ body {
 }
 
 #landing-reserve-button {
-  color: white;
+  color: black;
   font-family: 'Gabarito', sans-serif;
   font-size: 18px;
-  border: 2px solid var(--color-8);
-  background-color: var(--color-8);
+  border: 2px solid var(--color-5);
+  background-color: var(--color-5);
   transition: 0.3s;
 }
 
@@ -360,18 +370,18 @@ body {
 }
 
 #landing-university-button {
-  color: var(--color-8);
+  color: black;
   font-family: 'Gabarito', sans-serif;
   font-weight: bold;
   font-size: 18px;
-  border: 2px solid var(--color-8);
+  border: 2px solid var(--color-5);
   background-color: transparent;
   transition: 0.3s;
 }
 
 #landing-university-button:hover {
-  background-color: var(--color-8);
-  color: white;
+  background-color: var(--color-5);
+  color: black;
 }
 
 
@@ -804,27 +814,34 @@ output[for="timeRange"] {
 
 
 #OrgReservationsPageDiv {
-  background-color: white;
   padding-block-end: 100hv;
   padding-block-start: 2%;
   max-height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  justify-content: center;
 }
 
 #CalendarDiv {
-  height: 80vh;
+  margin: 30px;
+  height: 85vh;
   width: 95%;
-  padding-top: 2%;
-  margin: 0 auto;
+  font-family: 'Gabarito', sans-serif;
 }
-/* LARGE CALENDAR */
 
-.rbc-calendar {
-  min-height: 580px;
+.LargeCalendar {
+  background-color: #f8fff5;
 }
+
+.LargeCalendar .rbc-event {
+  background-color: var(--color-5);
+  color: #fff;
+  font-size: 14px;
+}
+
 
 /* DELETE RESERVATION */
 
@@ -911,6 +928,7 @@ output[for="timeRange"] {
   border: 2px solid var(--color-8);
   font-weight: bold;
   color: var(--color-8);
+  font-family: 'Gabarito', sans-serif;
 }
 
 #edit-reservation-confirm-button {
@@ -918,18 +936,28 @@ output[for="timeRange"] {
   border: 2px solid var(--color-8);
   color: white;
   font-weight: bold;
+  font-family: 'Gabarito', sans-serif;
+}
+
+.edit-reservation-text-modal {
+  font-family: 'Gabarito', sans-serif;
+}
+
+.edit-reservation-text-modal-input {
+  font-family: 'Gabarito', sans-serif;
+  border-radius: 15px;
 }
 
 #popup-edit-button {
-  border: 2px solid gold;
+  border: 2px solid var(--color-5);
   background-color: transparent;
   transition: 0.2s;
   margin-right: 3%;
 }
 
 #popup-edit-button:hover {
-  border: 2px solid gold;
-  background-color: gold;
+  border: 2px solid var(--color-5);
+  background-color: var(--color-5);
   color: white;
 }
 
@@ -1153,22 +1181,21 @@ output[for="timeRange"] {
 /* UNIVERSITY VERIFICATION PAGE */
 
 #UniVerificationsPageDiv {
-  max-height: 100vh;
-  overflow-y: hidden;
+  overflow-y: scroll;
+  color: white;
+  min-height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  justify-content: space-evenly;
+  background-image: linear-gradient(to right, var(--color-5), var(--color-8));
 }
 
 #verification-page-header {
-  font-family: 'Gabarito', sans-serif;
-  margin-top: 4%;
-  margin-bottom: 1%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  margin-top: 70px;
+  font-size: 45px;
 }
 
 #verification-list-container {
@@ -1181,11 +1208,12 @@ output[for="timeRange"] {
 /* UNIVERSITY VERIFICATION COMPONENT */
 
 #verification-container {
+  background-color: white;
+  color: black;
   font-family: 'Gabarito', sans-serif;
-  border: 1px solid gray;
   border-radius: 20px;
-  width: 33%;
-  margin-bottom: 1%;
+  width: 70%;
+  margin-bottom: 20px;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
 }
 
@@ -1218,13 +1246,13 @@ output[for="timeRange"] {
   border-radius: 20px;
   padding: 4px 20px;
   margin-right: 1%;
-  border: 2px solid green;
+  border: 2px solid var(--color-5);
   background-color: transparent;
   transition: 0.2s;
 }
 
 #verification-accept-button:hover {
-  background-color: green;
+  background-color: var(--color-5);
   color: white;
 }
 
@@ -1242,12 +1270,18 @@ output[for="timeRange"] {
   color: white;
 }
 
+#verification-modal-container{
+  font-family: 'Gabarito', sans-serif;
+}
+
 #verification-modal-container h1{
   font-size: 30px;
+  font-family: 'Gabarito', sans-serif;
 }
 
 #verification-modal-container h2{
-  font-size: 24px;
+  font-size: 18px;
+  font-family: 'Gabarito', sans-serif;
 }
 
 /* COMPLETE RESERVATION FORM */

@@ -117,7 +117,7 @@ function LargeCalendar()
 
     return (
         <div id="CalendarDiv">
-            <Calendar id="LargeCalendar" localizer={localizer} events={events} startAccessor="start" endAccessor="end" views={['month', 'week', 'day']} onSelectEvent={handleEventClick}/>
+            <Calendar className="LargeCalendar" id="LargeCalendar" localizer={localizer} events={events} startAccessor="start" endAccessor="end" views={['month', 'week', 'day']} onSelectEvent={handleEventClick}/>
             <Drawer opened={opened} onClose={close} position="right" overlayProps={{ backgroundOpacity: 0.1, blur: 4 }}>
                 {selectedEvent && (
                     <ReservationPopUp event={selectedEvent} />
