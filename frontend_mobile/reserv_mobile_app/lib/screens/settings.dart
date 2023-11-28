@@ -5,6 +5,7 @@ import '../services/api_service.dart';
 import '../widgets/navbar.dart';
 import '../services/jwt_token.dart';
 import '../screens/complete_profile.dart';
+import '../widgets/settings/settings-util.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -15,47 +16,16 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   final ApiService apiService = ApiService();
-  Map<String, dynamic> rsoInfo = {"": ""};
 
   @override
   void initState() {
     super.initState();
+    //initializeRSOFields();
     getRSOFields(); // Call the API when the page is opened
-  }
-
-  Future<void> fetchData() async {
-    try {
-      Map<String, dynamic> result = await ApiService.retrieveRSO(
-        uniID: '655673b363bf110ce2b499ee',
-        verificationFlag: true,
-        rsoID: '655804c90b1c5c3f460dd45e',
-      );
-
-      // Handle the result as needed
-      print('RSO retrieved successfully: $result');
-    } catch (e) {
-      // Handle exceptions
-      print('Error retrieving RSO: $e');
-    }
-  }
-
-  Future<Map<String, dynamic>> storeData() async {
-    try {
-      return await ApiService.retrieveRSO(
-        uniID: '655673b363bf110ce2b499ee',
-        verificationFlag: true,
-        rsoID: '655804c90b1c5c3f460dd45e',
-      );
-    } catch (e) {
-      // Handle exceptions
-      print('Error retrieving RSO: $e');
-      return {};
-    }
   }
 
   Future<void> getRSOFields() async {
     await fetchData();
-    rsoInfo = await storeData();
   }
 
   @override
@@ -91,7 +61,7 @@ class _SettingsPageState extends State<SettingsPage> {
     // });
 
     // print(rsoInfo['RSOName']);
-
+    print(rsoInfo);
     return Container(
         color: Colors.white,
         child: SingleChildScrollView(
