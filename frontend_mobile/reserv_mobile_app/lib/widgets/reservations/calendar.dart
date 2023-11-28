@@ -90,6 +90,7 @@ class _ReservationsCalendarState extends State<ReservationsCalendar> {
   }
 
   Future<void>  deleteEvent(Event event) async{
+    print(event);
     final eventIDToDelete =  event.eventID.toString();
     kEvents.remove(event.calendarDate);
     await ApiService.deleteEvent(eventIDToDelete);
@@ -124,7 +125,6 @@ class _ReservationsCalendarState extends State<ReservationsCalendar> {
               child: const Text('Delete'),
               onPressed: () {
                 _showDeleteDialog(event);
-                Navigator.of(context).pop();
               },
             ),
             TextButton(
@@ -181,6 +181,7 @@ void _showDeleteDialog(Event event) {
               child: const Text('Confirm'),
               onPressed: () {
                 deleteEvent(event);
+                Navigator.of(context).pop();
                 Navigator.of(context).pop();
               },
             ),
