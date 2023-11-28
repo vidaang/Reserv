@@ -21,7 +21,7 @@ function RoomList({rooms}) {
     <div className="room-list">
       {rooms.map(room => (
         <Row key={room.RoomID} className="room-item">
-          <Room name={room.RoomNumber} description={room.RoomInfo} onClick={() => openRoomDetails(room)} />
+          <Room className="dumb-text" building={room.BuildingID} name={room.RoomNumber} description={room.RoomInfo} onClick={() => openRoomDetails(room)} />
         </Row>
       ))}
       {selectedRoom && (
