@@ -88,6 +88,7 @@ class _ReservationsCalendarState extends State<ReservationsCalendar> {
     final eventIDToDelete =  event.eventID.toString();
     kEvents.remove(event.calendarDate);
     await ApiService.deleteEvent(eventIDToDelete);
+    clearEventSource();
     await fetchEvents();
     setState(() {});
     setState(() {
@@ -111,14 +112,13 @@ class _ReservationsCalendarState extends State<ReservationsCalendar> {
             TextButton(
               child: const Text('Edit'),
               onPressed: () {
-                
-                Navigator.of(context).pop();
+                _showEditDialog(event);
               },
             ),
             TextButton(
               child: const Text('Delete'),
               onPressed: () {
-                deleteEvent(event);
+                _showDeleteDialog(event);
                 Navigator.of(context).pop();
               },
             ),
@@ -133,6 +133,57 @@ class _ReservationsCalendarState extends State<ReservationsCalendar> {
       },
     );
   }
+
+  void _showEditDialog(Event event) {
+  // Implement the edit dialog here
+  showDialog(
+    context: context,
+    builder: (context) {
+      // Your edit dialog widget goes here
+      return AlertDialog(
+        title: const Text('Edit Event'),
+        content: const Text('Edit'),
+        actions: <Widget>[
+          TextButton(
+              child: const Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void _showDeleteDialog(Event event) {
+  // Implement the delete dialog here
+  showDialog(
+    context: context,
+    builder: (context) {
+      // Your delete dialog widget goes here
+      return AlertDialog(
+        title: const Text('Delete Event'),
+        content: const Text('Are you sure you want to cancel this reservation?'),
+        actions: <Widget>[
+          TextButton(
+              child: const Text('Back'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+          ),
+          TextButton(
+              child: const Text('Confirm'),
+              onPressed: () {
+                deleteEvent(event);
+                Navigator.of(context).pop();
+              },
+            ),
+        ],
+      );
+    },
+  );
+}
 
   @override
   Widget build(BuildContext context) {
