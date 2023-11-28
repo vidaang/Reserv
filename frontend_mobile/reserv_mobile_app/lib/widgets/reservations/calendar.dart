@@ -25,10 +25,15 @@ class _ReservationsCalendarState extends State<ReservationsCalendar> {
   @override
   void initState() {
     super.initState();
-    clearEventSource();
-    fetchEvents();
+    grabList();
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
+  }
+
+  Future<void> grabList() async {
+    clearEventSource();
+    await fetchEvents();
+    setState(() {});
   }
 
   @override
