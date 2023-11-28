@@ -298,6 +298,23 @@ body {
   margin-top: 4%;
 }
 
+.user-authentication-redirect-links {
+  font-family: 'Gabarito', sans-serif;
+  font-weight: bold;
+  font-size: large;
+  width: 100%;
+  padding-left: 10px;
+  margin-bottom: 5px;
+  border: none;
+  margin: 7px;
+  background-color: transparent;
+}
+
+.user-authentication-redirect-links:hover {
+  text-decoration: underline;
+}
+
+
 /* LANDING PAGE STYLING */
 
 
