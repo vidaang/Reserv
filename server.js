@@ -405,7 +405,8 @@ app.post("/api/RetrieveEvents", async (req, res) => {
   if (RSOID == undefined) {
     eventList = await db.collection("Events").find({}).toArray();
   } else {
-    eventList = await db.collection("Events").find({ RSOID: RSOID }).toArray();
+    const rsoObjectID = new ObjectId(RSOID);
+    eventList = await db.collection("Events").find({ RSOID: rsoObjectID }).toArray();
   }
 
   eventList.forEach((event) => {
