@@ -160,7 +160,7 @@ function RoomDetails(props) {
   var roomID = room.RoomID;
 
   const createEvent = async (time) => {
-    console.log("Creating event...")
+    console.log("Creating event...");
 
     startEnd = [time.start, time.end];
 
@@ -177,6 +177,7 @@ function RoomDetails(props) {
       MediaEquip: mediaEquip.checked,
       RSOID: RSOID,
       RoomID: roomID,
+      RoomName: roomDetails.buildingName + " " + roomDetails.roomNumber
     };
 
     var js = JSON.stringify(obj);
@@ -184,7 +185,7 @@ function RoomDetails(props) {
     try
     {  
        var response = await fetch(`https://knightsreserv-00cde8777914.herokuapp.com/api/createEvent`, {
-       // var response = await fetch(`http://localhost:5000/api/createEvent`, {
+       //var response = await fetch(`http://localhost:5000/api/createEvent`, {
         method: 'POST',
         body: js,
         headers: {
@@ -230,7 +231,7 @@ function RoomDetails(props) {
               <div className="roomDescriptionRight">
                 <div className="location-container">
                   <h5 className="location">LOCATION</h5>
-                  <h1 className="building-name">Classroom II</h1>
+                  <h1 className="building-name">{roomDetails.buildingName}</h1>
                   <div className="row-space">
                     <h3>{roomDetails.roomNumber}</h3>
                     <div className="capacity-space">
@@ -251,7 +252,7 @@ function RoomDetails(props) {
             </div>
 
             {/*Date and Time Search Form*/}
-            <form onSubmit={handleSubmit}>
+            <form id="DateAndTimeForm" onSubmit={handleSubmit}>
               <div className="entry-form-container">
                   <div className="entry-form-row">
                       <label htmlFor="dateRangeStart">Date:</label>
@@ -332,7 +333,7 @@ function RoomDetails(props) {
                   <input type="text" id="eventAttendees" placeholder="Enter Number of Attendees" ref={(c) => (numAttendees = c)} required/>
               </div>
               <div className="complete-reservation-checkbox">
-                  <span htmlFor="eventAtriumLobby">Atrium or Lobby Needed:</span>
+                  <label htmlFor="eventAtriumLobby">Atrium or Lobby Needed:</label>
                   <input type="checkbox" id="eventAtriumLobby" ref={(c) => (atriumOccupy = c)}/>
               </div>
               <div className="complete-reservation-checkbox">

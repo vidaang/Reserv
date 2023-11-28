@@ -422,6 +422,7 @@ app.post("/api/RetrieveEvents", async (req, res) => {
       StartEnd: event.StartEnd,
       RSOID: event.RSOID,
       RoomID: event.RoomID,
+      RoomName: event.RoomName
     });
 
     eventListReturn = { eventList: returnArray };
@@ -662,7 +663,10 @@ app.post("/api/createEvent", authenticateJWT, async (req, res) => {
     MediaEquip,
     RSOID,
     RoomID,
+    RoomName
   } = req.body;
+
+  console.log(req.body);
 
   const db = client.db("Reserv");
 
@@ -732,6 +736,7 @@ app.post("/api/createEvent", authenticateJWT, async (req, res) => {
     MediaEquip,
     RSOID,
     RoomID,
+    RoomName
   };
 
   try {

@@ -63,8 +63,9 @@ function LargeCalendar()
                     description: event.Description,
                     atriumOccupy: event.AtriumOccupy,
                     atriumBuilding: event.AtriumBuilding,
-                    room: event.RoomID, 
-                    eventID: event.EventID
+                    room: event.RoomName, 
+                    eventID: event.EventID,
+                    roomID: event.RoomID
                 }
             );
         });
