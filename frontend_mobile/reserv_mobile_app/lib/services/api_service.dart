@@ -261,7 +261,8 @@ class ApiService {
   }
 
   static Future<void> deleteEvent(String eventID) async {
-    final url = Uri.parse('http://localhost:5000/api/DeleteEvent');
+    //final url = Uri.parse('http://localhost:5000/api/DeleteEvent');
+    final url = Uri.parse(baseUrl + '/api/DeleteEvent');
     
     try {
       final response = await http.delete(
@@ -282,7 +283,8 @@ class ApiService {
   }
 
   static Future<void> updateEvent(String eventID, String name, String desc) async {
-    final url = Uri.parse('http://localhost:5000/api/UpdateEvent');
+    //final url = Uri.parse('http://localhost:5000/api/UpdateEvent');
+    final url = Uri.parse(baseUrl + '/api/UpdateEvent');
       
     try {
       final response = await http.put(

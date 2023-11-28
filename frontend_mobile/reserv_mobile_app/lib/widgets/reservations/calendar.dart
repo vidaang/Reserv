@@ -107,6 +107,25 @@ class _ReservationsCalendarState extends State<ReservationsCalendar> {
     _selectedEvents.value = _getEventsForDay(DateTime.now());
   }
 
+  Future<void> editEvent(Event event, String newName, String newDescription) async{
+    print(event);
+    print(newName);
+    print(newDescription);
+    final String eventID = event.eventID.toString();
+    await ApiService.updateEvent(eventID, newName, newDescription);
+    clearEventSource();
+    await fetchEvents();
+    setState(() {});
+    setState(() {
+        _selectedDay = DateTime.now();
+        _focusedDay = DateTime.now();
+        _rangeStart = null; // Important to clean those
+        _rangeEnd = null;
+        _rangeSelectionMode = RangeSelectionMode.toggledOff;
+      });
+    _selectedEvents.value = _getEventsForDay(DateTime.now());
+  }
+
   void _showEventDetailsDialog(Event event) {
     showDialog(
       context: context,
@@ -140,18 +159,46 @@ class _ReservationsCalendarState extends State<ReservationsCalendar> {
   }
 
   void _showEditDialog(Event event) {
-  // Implement the edit dialog here
+  TextEditingController eventNameController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+
   showDialog(
     context: context,
     builder: (context) {
       // Your edit dialog widget goes here
       return AlertDialog(
         title: const Text('Edit Event'),
-        content: const Text('Edit'),
+        content: Container(
+          height: 150,
+          child: Column(
+            children: [
+              TextField(
+                controller: eventNameController,
+                decoration: InputDecoration(labelText: 'Event Name'),
+              ),
+              TextField(
+                controller: descriptionController,
+                decoration: InputDecoration(labelText: 'Description'),
+              ),
+            ],
+          ),
+        ),
         actions: <Widget>[
           TextButton(
               child: const Text('Close'),
               onPressed: () {
+                Navigator.of(context).pop();
+              },
+          ),
+          TextButton(
+              child: const Text('Confirm'),
+              onPressed: () {
+                String updatedEventName = eventNameController.text;
+                String updatedDescription = descriptionController.text;
+
+                editEvent(event, updatedEventName, updatedDescription);
+
+                Navigator.of(context).pop();
                 Navigator.of(context).pop();
               },
           ),
