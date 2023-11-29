@@ -358,4 +358,27 @@ class ApiService {
       throw Exception('Failed to retrieve RSO: ${response.statusCode}');
     }
   }
+
+  static Future<void> deleteRSO(String? rsoName) async {
+    final Uri url = Uri.parse('$baseUrl/api/deleteRSO');
+
+    final Map<String, dynamic> requestBody = {'RSOName': 'please'};
+
+    try {
+      final http.Response response = await http.delete(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(requestBody),
+      );
+
+      if (response.statusCode == 200) {
+        print('RSO deletion successful');
+      } else {
+        print('Error deleting RSO: ${response.statusCode}');
+        print('Error details: ${response.body}');
+      }
+    } catch (e) {
+      print('Exception during RSO deletion: $e');
+    }
+  }
 }

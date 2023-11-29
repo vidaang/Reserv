@@ -265,7 +265,7 @@ class _SettingsPageState<T> extends State<SettingsPage> {
                             borderSide:
                                 const BorderSide(color: Color(0xFFDFDFDF))),
                       ),
-                       controller: officerEmailController,
+                      controller: officerEmailController,
                     ),
                   ),
                   const SizedBox(height: 16.0),
@@ -576,7 +576,6 @@ class _SettingsPageState<T> extends State<SettingsPage> {
                       ),
                     ),
                   )),
-
                   const Divider(
                     color: Colors.black,
                   ),
@@ -654,68 +653,68 @@ class _SettingsPageState<T> extends State<SettingsPage> {
                     ),
                   ),
                   SizedBox(
-                        width: 186,
-                        height: 40,
-                        child: TextButton(
-                          style: ButtonStyle(
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
+                    width: 186,
+                    height: 40,
+                    child: TextButton(
+                      style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(36.0),
                                       side: const BorderSide(
                                           color: Color(0xFFDFDFDF))))),
-                          onPressed: () async {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) => const LandingPage()),
-                            );
-                          },
-                          child: Text(
-                            'Log Out',
-                            style: GoogleFonts.rubik(
-                              textStyle: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
-                            ),
-                          ),
-                        ),),
-                         SizedBox(
-                        width: 186,
-                        height: 40,
-                        child: TextButton(
-                          style: ButtonStyle(
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
+                      onPressed: () async {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) => const LandingPage()),
+                        );
+                      },
+                      child: Text(
+                        'Log Out',
+                        style: GoogleFonts.rubik(
+                          textStyle: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 186,
+                    height: 40,
+                    child: TextButton(
+                      style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(36.0),
                                       side: const BorderSide(
                                           color: Color(0xFFDFDFDF))))),
-                          onPressed: () async {
-                            try{
-                              
-                                Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) => const LandingPage()),
-                            );
-                            
-                            } catch (e) {
-                              // Handle network or other errors
-                              print('Delete RSO failed: $e');
-                            }
-
-                            
-                          },
-                          child: Text(
-                            'Delete Account',
-                            style: GoogleFonts.rubik(
-                              textStyle: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
-                            ),
-                          ),
-                        ),),
+                      onPressed: () async {
+                        try {
+                          rsoName = rsoNameController.text;
+                          await ApiService.deleteRSO(rsoName);
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => const LandingPage()),
+                          );
+                        } catch (e) {
+                          // Handle network or other errors
+                          print('Delete RSO failed: $e');
+                        }
+                      },
+                      child: Text(
+                        'Delete Account',
+                        style: GoogleFonts.rubik(
+                          textStyle: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             )),
