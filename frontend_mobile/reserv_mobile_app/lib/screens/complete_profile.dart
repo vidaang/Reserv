@@ -30,6 +30,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -124,7 +125,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
             ),
           ],
         ),
-      ),
+      )),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           // Call JWTToken to retrieve the token

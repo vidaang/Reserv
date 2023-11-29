@@ -325,11 +325,9 @@ app.post("/api/checkRSOFields", async (req, res) => {
 
 app.post("/api/GetUniInfo", async (req, res) => {
   const { UniversityID } = req.body;
-  console.log("entered");
   const db = client.db("Reserv");
   const uniObjectID = new ObjectId(UniversityID)
-  const university = await db.collection("University").findOne({ _id: uniObjectID });
-  console.log(university);
+  const university = await db.collection("University").findOne({ _id : uniObjectID });
 
   const responseObject = {
     // token: token, // remeber to add JWT
@@ -732,7 +730,7 @@ app.post("/api/createEvent", authenticateJWT, async (req, res) => {
     StartEnd,
     EventAgreement,
     MediaEquip,
-    idString,
+    RSOID: id,
     RoomID,
     RoomName
   };
@@ -938,6 +936,35 @@ app.delete("/api/deleteRSO", async (req, res) => {
   // other wise log an error
 });
 
+app.post("/api/updateRSOLoginInfo", async (req, res) => {
+  const { Password } = req.body;
+
+  const update = {};
+
+  if (Password) {
+    const hashedPassword = await bcrypt.hash(Password, 10); // 10 is the salt rounds
+    update.Password = hashedPassword;
+  }
+
+  const db = client.db("Reserv");
+
+  try {
+    let result = await db
+      .collection("RSO")
+      .updateOne({ RSOID: new ObjectId(req.body.RSOID) }, { $set: update });
+
+    if (result.modifiedCount === 1) {
+      return res.status(200).json({ success: true });
+    } else {
+      return res
+        .status(400)
+        .json({ error: "No document updated. RSOID may not exist." });
+    }
+  } catch (e) {
+    return res.status(500).json({ error: e.toString() });
+  }
+});
+
 //----------------------------UNIVERSITY ENDPOINTS----------------------------//
 app.put("/api/createAdmin", async (req, res) => {
   const { Email, Password } = req.body;
@@ -1026,13 +1053,14 @@ app.post("/api/adminLogin", async (req, res) => {
 
 app.put("/api/adminChangePassword", async (req, res) => {
   const { UniID, Password, NewPassword } = req.body;
+  console.log(req.body)
   const uniObjectID = new ObjectId(UniID)
   let result
 
   try {
     const db = client.db("Reserv");
-    const uni = await db.collection("Admin").findOne({ _id: uniObjectID });
-
+    const uni = await db.collection("Admin").findOne({ UniID: uniObjectID});
+    console.log(uni);
     if (!uni) {
       return res.status(400).json({ error: "University does not exist! Please make an account." });
     }
@@ -1040,20 +1068,22 @@ app.put("/api/adminChangePassword", async (req, res) => {
     const passwordMatch = await bcrypt.compare(Password, uni.Password);
 
     if (!passwordMatch) {
+      console.log("not matched");
       return res.status(400).json({ error: "Incorrect password" });
     }
-
+    console.log("matched");
     const hashedPassword = await bcrypt.hash(NewPassword, 10); // 10 is the salt rounds
 
     result = await db.collection("Admin").updateOne(
-      { _id: uniObjectID },
-      { $set: { Password: hashedPassword } }
+      { UniID : uniObjectID },
+      { $set: {Password: hashedPassword} }
     );
 
   } catch (e) {
     console.error("Error during password Reset:", e);
     res.status(500).json({ error: "Internal server error" });
   }
+
   res.status(200).json(result);
 });
 
