@@ -155,8 +155,8 @@ app.post("/api/verify-email", async (req, res) => {
 
     // Update user status in the database
     var user = await db.collection("RSO").findOne({ RSOID: userIdObject });
-    
-    
+
+
     if (user) {
       await db
         .collection("RSO")
@@ -217,7 +217,7 @@ app.post("/api/reset-password", async (req, res) => {
     const decoded = jwt.verify(token, process.env.SECRET_KEY);
     const userId = decoded.userId;
     const userIdObject = new ObjectId(userId);
-    
+
     const user = await db.collection("RSO").findOne({ RSOID: userIdObject });
     console.log(user);
     if (!user) {
@@ -323,12 +323,12 @@ app.post("/api/checkRSOFields", async (req, res) => {
   }
 });
 
-app.post("/api/GetUniInfo", async(req, res) => {
+app.post("/api/GetUniInfo", async (req, res) => {
   const { UniversityID } = req.body;
   console.log("entered");
   const db = client.db("Reserv");
   const uniObjectID = new ObjectId(UniversityID)
-  const university = await db.collection("University").findOne({ _id : uniObjectID });
+  const university = await db.collection("University").findOne({ _id: uniObjectID });
   console.log(university);
 
   const responseObject = {
@@ -495,9 +495,8 @@ app.post("/api/RetrieveRSO", async (req, res) => {
   var uniObjectID = new ObjectId(UniID);
 
   const db = client.db("Reserv");
-  
-  if (!RSOID)
-  {
+
+  if (!RSOID) {
     console.log(VerificationFlag);
     const returnArray = [];
     const RSOList = await db
@@ -520,16 +519,15 @@ app.post("/api/RetrieveRSO", async (req, res) => {
         UniID: rso.UniID,
         Verification: rso.Verification,
       });
-      
+
       RSOListReturn = { RSOList: returnArray };
     });
 
     res.status(200).json(RSOListReturn);
   }
-  else if (RSOID)
-  {
+  else if (RSOID) {
     const RSOobj = new ObjectId(RSOID);
-    const RSOInfo = await db.collection("RSO").findOne({ RSOID:RSOobj });
+    const RSOInfo = await db.collection("RSO").findOne({ RSOID: RSOobj });
     const returnRSO = {
       RSOName: RSOInfo.RSOName,
       OfficerFirstName: RSOInfo.OfficerFirstName,
@@ -545,8 +543,8 @@ app.post("/api/RetrieveRSO", async (req, res) => {
     res.status(200).json(returnRSO);
   }
   else
-    res.status(404).json({ error: "No RSO found."});
-  
+    res.status(404).json({ error: "No RSO found." });
+
 });
 
 app.put("/api/UpdateEvent", async (req, res) => {
@@ -998,7 +996,7 @@ app.post("/api/adminLogin", async (req, res) => {
         .status(400)
         .json({ error: "Email is not verified. Please verify your email." });
     }
- 
+
     const passwordMatch = await bcrypt.compare(Password, uni.Password);
 
     if (!passwordMatch) {
@@ -1033,7 +1031,7 @@ app.put("/api/adminChangePassword", async (req, res) => {
 
   try {
     const db = client.db("Reserv");
-    const uni = await db.collection("Admin").findOne({ _id: uniObjectID});
+    const uni = await db.collection("Admin").findOne({ _id: uniObjectID });
 
     if (!uni) {
       return res.status(400).json({ error: "University does not exist! Please make an account." });
@@ -1046,10 +1044,10 @@ app.put("/api/adminChangePassword", async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(NewPassword, 10); // 10 is the salt rounds
-    
+
     result = await db.collection("Admin").updateOne(
       { _id: uniObjectID },
-      { $set: {Password: hashedPassword} }
+      { $set: { Password: hashedPassword } }
     );
 
   } catch (e) {
@@ -1301,3 +1299,6 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
   });
 }
+
+// Exporting the app for testing purposes
+module.exports = app;
