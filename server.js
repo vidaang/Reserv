@@ -941,11 +941,9 @@ app.delete("/api/deleteRSO", async (req, res) => {
 });
 
 app.post("/api/updateRSOLoginInfo", async (req, res) => {
-  const { Email, Password } = req.body;
+  const { Password } = req.body;
 
-  const update = {
-    Email: Email,
-  };
+  const update = {};
 
   if (Password) {
     const hashedPassword = await bcrypt.hash(Password, 10); // 10 is the salt rounds
