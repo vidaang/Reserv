@@ -41,7 +41,7 @@ class RoomList extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [                 
                   Text('Room Type: ${room['RoomType']}'),
-                  const Text('Capacity: '),
+                  Text('Capacity: ${room['Capacity']}'),
                 ],
               ),
               onTap: () async {
