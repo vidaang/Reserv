@@ -12,42 +12,38 @@ import 'landing.dart';
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
-  
-
-
-   @override
-   _SettingsPageState createState() => _SettingsPageState();
- }
-
-
+  @override
+  _SettingsPageState createState() => _SettingsPageState();
+}
 
 class _SettingsPageState<T> extends State<SettingsPage> {
   final ApiService apiService = ApiService();
 
   String rsoName = "";
-    String officerFirstName =  "";
-    String officerLastName = "";
-    String officerEmail = "";
-    String phone =  "";
-    String advisorName =  "";
-    String advisorEmail =  "";
-    String secondaryContactName =  "";
-    String secondaryContactEmail =  "";
-    String secondaryContactPhone =  "";
+  String officerFirstName = "";
+  String officerLastName = "";
+  String officerEmail = "";
+  String phone = "";
+  String advisorName = "";
+  String advisorEmail = "";
+  String secondaryContactName = "";
+  String secondaryContactEmail = "";
+  String secondaryContactPhone = "";
 
-    TextEditingController rsoNameController = TextEditingController();
-    TextEditingController officerFirstNameController =  TextEditingController();
-    TextEditingController officerLastNameController = TextEditingController();
-    TextEditingController officerEmailController = TextEditingController();
-    TextEditingController phoneController =  TextEditingController();
-    TextEditingController advisorNameController =  TextEditingController();
-    TextEditingController advisorEmailController =  TextEditingController();
-    TextEditingController secondaryContactNameController =  TextEditingController();
-    TextEditingController secondaryContactEmailController =  TextEditingController();
-    TextEditingController secondaryContactPhoneController =  TextEditingController();
-  
-     
-  
+  TextEditingController rsoNameController = TextEditingController();
+  TextEditingController officerFirstNameController = TextEditingController();
+  TextEditingController officerLastNameController = TextEditingController();
+  TextEditingController officerEmailController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController advisorNameController = TextEditingController();
+  TextEditingController advisorEmailController = TextEditingController();
+  TextEditingController secondaryContactNameController =
+      TextEditingController();
+  TextEditingController secondaryContactEmailController =
+      TextEditingController();
+  TextEditingController secondaryContactPhoneController =
+      TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -64,27 +60,28 @@ class _SettingsPageState<T> extends State<SettingsPage> {
   Future<void> getRSOFields() async {
     await fetchData();
     setState(() {
-         print(rsoInfo);
-        rsoInfo = rsoInfo;
-       rsoNameController.text = rsoInfo['RSOName'].toString();
-       officerFirstNameController.text = rsoInfo['OfficerFirstName'].toString();
+      print(rsoInfo);
+      rsoInfo = rsoInfo;
+      rsoNameController.text = rsoInfo['RSOName'].toString();
+      officerFirstNameController.text = rsoInfo['OfficerFirstName'].toString();
       officerLastNameController.text = rsoInfo['OfficerLastName'].toString();
-     officerEmailController.text = rsoInfo['OfficerEmail'].toString();
-     phoneController.text = rsoInfo['Phone'].toString();
-     advisorNameController.text =  rsoInfo['AdvisorName'].toString();
-     advisorEmailController.text =  rsoInfo['AdvisorEmail'].toString();
-     secondaryContactNameController.text = rsoInfo['SecondaryContactName'].toString();
-     secondaryContactEmailController.text =  rsoInfo['SecondaryContactEmail'].toString();
-     secondaryContactPhoneController.text =  rsoInfo['SecondaryContactPhone'].toString();
-       });
-      }
+      officerEmailController.text = rsoInfo['OfficerEmail'].toString();
+      phoneController.text = rsoInfo['Phone'].toString();
+      advisorNameController.text = rsoInfo['AdvisorName'].toString();
+      advisorEmailController.text = rsoInfo['AdvisorEmail'].toString();
+      secondaryContactNameController.text =
+          rsoInfo['SecondaryContactName'].toString();
+      secondaryContactEmailController.text =
+          rsoInfo['SecondaryContactEmail'].toString();
+      secondaryContactPhoneController.text =
+          rsoInfo['SecondaryContactPhone'].toString();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    
-print("RSO Info on widget built: $rsoInfo");
-    return 
-    Container(
+    print("RSO Info on widget built: $rsoInfo");
+    return Container(
         color: Colors.white,
         child: SingleChildScrollView(
             child: Center(
@@ -121,7 +118,7 @@ print("RSO Info on widget built: $rsoInfo");
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black),
                           ))),
-                      Align(
+                  Align(
                     alignment: const Alignment(-.7, 0),
                     child: SizedBox(
                       width: 103,
@@ -143,7 +140,7 @@ print("RSO Info on widget built: $rsoInfo");
                     height: 28,
                     child: TextFormField(
                       // should be filled here
-                       key: Key(rsoInfo['RSOName'].toString()),
+                      key: Key(rsoInfo['RSOName'].toString()),
                       //initialValue: rsoInfo['RSOName'],
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
@@ -153,10 +150,10 @@ print("RSO Info on widget built: $rsoInfo");
                       ),
                       onChanged: (value) {
                         setState(() {
-                        rsoName = value;
-                      });
-                    },
-                       controller: rsoNameController,
+                          rsoName = value;
+                        });
+                      },
+                      controller: rsoNameController,
                     ),
                   ),
                   const SizedBox(height: 16.0),
@@ -192,10 +189,10 @@ print("RSO Info on widget built: $rsoInfo");
                       ),
                       onChanged: (value) {
                         setState(() {
-                        officerFirstName = value;
-                      });
-                    },
-                       controller: officerFirstNameController,
+                          officerFirstName = value;
+                        });
+                      },
+                      controller: officerFirstNameController,
                     ),
                   ),
                   const SizedBox(height: 16.0),
@@ -231,10 +228,10 @@ print("RSO Info on widget built: $rsoInfo");
                       ),
                       onChanged: (value) {
                         setState(() {
-                        officerLastName = value;
-                      });
-                    },
-                       controller: officerLastNameController,
+                          officerLastName = value;
+                        });
+                      },
+                      controller: officerLastNameController,
                     ),
                   ),
                   const SizedBox(height: 16.0),
@@ -304,9 +301,9 @@ print("RSO Info on widget built: $rsoInfo");
                       ),
                       onChanged: (value) {
                         setState(() {
-                        phone = value;
-                      });
-                    },
+                          phone = value;
+                        });
+                      },
                       controller: phoneController,
                     ),
                   ),
@@ -343,9 +340,9 @@ print("RSO Info on widget built: $rsoInfo");
                       ),
                       onChanged: (value) {
                         setState(() {
-                        advisorName = value;
-                      });
-                    },
+                          advisorName = value;
+                        });
+                      },
                       controller: advisorNameController,
                     ),
                   ),
@@ -382,9 +379,9 @@ print("RSO Info on widget built: $rsoInfo");
                       ),
                       onChanged: (value) {
                         setState(() {
-                        advisorEmail = value;
-                      });
-                    },
+                          advisorEmail = value;
+                        });
+                      },
                       controller: advisorEmailController,
                     ),
                   ),
@@ -412,7 +409,7 @@ print("RSO Info on widget built: $rsoInfo");
                     child: TextFormField(
                       // should be filled here
                       key: Key(rsoInfo['SecondaryContactName'].toString()),
-                     // initialValue: rsoInfo['SecondaryContactName'],
+                      // initialValue: rsoInfo['SecondaryContactName'],
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(53.0),
@@ -421,12 +418,11 @@ print("RSO Info on widget built: $rsoInfo");
                       ),
                       onChanged: (value) {
                         setState(() {
-                        secondaryContactName = value;
-                      });
-                    },
+                          secondaryContactName = value;
+                        });
+                      },
                       controller: secondaryContactNameController,
                     ),
-
                   ),
                   const SizedBox(height: 16.0),
                   Align(
@@ -461,9 +457,9 @@ print("RSO Info on widget built: $rsoInfo");
                       ),
                       onChanged: (value) {
                         setState(() {
-                        secondaryContactEmail = value;
-                      });
-                    },
+                          secondaryContactEmail = value;
+                        });
+                      },
                       controller: secondaryContactEmailController,
                     ),
                   ),
@@ -500,82 +496,87 @@ print("RSO Info on widget built: $rsoInfo");
                       ),
                       onChanged: (value) {
                         setState(() {
-                        secondaryContactPhone = value;
-                      });
-                    },
+                          secondaryContactPhone = value;
+                        });
+                      },
                       controller: secondaryContactPhoneController,
                     ),
                   ),
                   const SizedBox(height: 16.0),
                   SizedBox(
-                  child: TextButton(
-                          style: ButtonStyle(
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(36.0),
-                                      side: const BorderSide(
-                                          color: Color(0xFFDFDFDF))))),
-                      onPressed: () async {
+                      child: TextButton(
+                    style: ButtonStyle(
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(36.0),
+                                    side: const BorderSide(
+                                        color: Color(0xFFDFDFDF))))),
+                    onPressed: () async {
                       // Call JWTToken to retrieve the token
-                    final String? token = await JWTToken.getToken('Token');     
-                    rsoName = rsoNameController.text;
-                    officerFirstName =  officerFirstNameController.text;
-                    officerLastName = officerLastNameController.text;
-                    officerEmail = officerEmailController.text;
-                    phone =  phoneController.text;
-                    advisorName =  advisorNameController.text;
-                    advisorEmail = advisorEmailController.text;
-                    secondaryContactName =  secondaryContactNameController.text;
-                    secondaryContactEmail =  secondaryContactEmailController.text;
-                    secondaryContactPhone =  secondaryContactPhoneController.text  ;  
+                      final String? token = await JWTToken.getToken('Token');
+                      rsoName = rsoNameController.text;
+                      officerFirstName = officerFirstNameController.text;
+                      officerLastName = officerLastNameController.text;
+                      officerEmail = officerEmailController.text;
+                      phone = phoneController.text;
+                      advisorName = advisorNameController.text;
+                      advisorEmail = advisorEmailController.text;
+                      secondaryContactName =
+                          secondaryContactNameController.text;
+                      secondaryContactEmail =
+                          secondaryContactEmailController.text;
+                      secondaryContactPhone =
+                          secondaryContactPhoneController.text;
 
-                    if (token != null) {
-                      try {
-                        // Call the updateRSOInfo function
-                        final Map<String, dynamic> response = await ApiService.updateRSOInfo(
-                          token: token,
-                          RSOName: rsoName,
-                          OfficerFirstName: officerFirstName,
-                          OfficerLastName: officerLastName,
-                          OfficerEmail: officerEmail,
-                          Phone: phone,
-                          AdvisorName: advisorName,
-                          AdvisorEmail: advisorEmail,
-                          SecondaryContactName: secondaryContactName,
-                          SecondaryContactEmail: secondaryContactEmail,
-                          SecondaryContactPhone: secondaryContactPhone,
-                        );          
+                      if (token != null) {
+                        try {
+                          // Call the updateRSOInfo function
+                          final Map<String, dynamic> response =
+                              await ApiService.updateRSOInfo(
+                            token: token,
+                            RSOName: rsoName,
+                            OfficerFirstName: officerFirstName,
+                            OfficerLastName: officerLastName,
+                            OfficerEmail: officerEmail,
+                            Phone: phone,
+                            AdvisorName: advisorName,
+                            AdvisorEmail: advisorEmail,
+                            SecondaryContactName: secondaryContactName,
+                            SecondaryContactEmail: secondaryContactEmail,
+                            SecondaryContactPhone: secondaryContactPhone,
+                          );
 
-                        // Check the response
-                        if (response.containsKey('success') && response['success'] == true) {
-                          getRSOFields();
-                          
-                        } else {
-                          // Handle other response statuses or errors
-                          // You might want to display an error message or take appropriate action
-                          print('Update RSO Info failed. Unexpected response format.');
+                          // Check the response
+                          if (response.containsKey('success') &&
+                              response['success'] == true) {
+                            getRSOFields();
+                          } else {
+                            // Handle other response statuses or errors
+                            // You might want to display an error message or take appropriate action
+                            print(
+                                'Update RSO Info failed. Unexpected response format.');
+                          }
+                        } catch (e) {
+                          // Handle network or other errors
+                          print('Update RSO Info failed: $e');
                         }
-                      } catch (e) {
-                        // Handle network or other errors
-                        print('Update RSO Info failed: $e');
+                      } else {
+                        // Handle the case where the token is null
+                        print('JWTToken failed: Token is null');
                       }
-                    } else {
-                      // Handle the case where the token is null
-                      print('JWTToken failed: Token is null');
-                    }
-                  },
-                   child: Text(
-                            'Update',
-                            style: GoogleFonts.rubik(
-                              textStyle: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
-                            ),
-                          ),
+                    },
+                    child: Text(
+                      'Update',
+                      style: GoogleFonts.rubik(
+                        textStyle: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      ),
+                    ),
                   )),
-                  
+
                   const Divider(
                     color: Colors.black,
                   ),
@@ -595,7 +596,7 @@ print("RSO Info on widget built: $rsoInfo");
                       width: 103,
                       height: 15,
                       child: Text(
-                        'Username',
+                        'Password',
                         style: GoogleFonts.rubik(
                           textStyle: const TextStyle(
                             fontSize: 14,
@@ -611,7 +612,6 @@ print("RSO Info on widget built: $rsoInfo");
                     height: 28,
                     child: TextFormField(
                       // should be filled here
-                      initialValue: rsoInfo['RSOName'],
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(53.0),
@@ -625,10 +625,10 @@ print("RSO Info on widget built: $rsoInfo");
                   Align(
                     alignment: const Alignment(-.7, 0),
                     child: SizedBox(
-                      width: 103,
+                      width: 150,
                       height: 15,
                       child: Text(
-                        'Password',
+                        'Retype Password',
                         style: GoogleFonts.rubik(
                           textStyle: const TextStyle(
                             fontSize: 14,
