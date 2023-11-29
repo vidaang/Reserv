@@ -86,6 +86,49 @@ describe('API Tests', () => {
 
     })
 
+    test('GET /api/RetrieveRSO', async () => {
+        const requestBody = {
+            "UniID": new ObjectId("6566be76dd46c9561a7f8419"),
+            "VerificationFlag": true,
+            "RSOID": new ObjectId("6566c87593b9080ff570c2e1")
+        }
+
+        const response = await request(app).post('/api/RetrieveRSO').send(requestBody)
+        console.log(response.body)
+        expect(response.statusCode).toBe(200);
+        expect(response.body.Phone).toBe("UnitTest")
+        expect(response.body.RSOName).toBe("UnitTest")
+
+    })
+
+    test('GET /api/RetrieveEvents', async () => {
+        const requestBody = {
+            "RSOID": new ObjectId("6566c87593b9080ff570c2e1")
+        }
+
+        const response = await request(app).post('/api/RetrieveEvents').send(requestBody)
+        console.log(response.body)
+        expect(response.statusCode).toBe(200);
+        expect(response.body.eventList[0].EventName).toBe("UnitTest")
+        expect(response.body.eventList[0].EventType).toBe("UnitTest")
+
+    })
+
+    test('GET /api/MultipleRetrieveEvents', async () => {
+        const requestBody = {
+            "RSOID": new ObjectId("6566c87593b9080ff570c2e1")
+        }
+
+        const response = await request(app).post('/api/RetrieveEvents').send(requestBody)
+        console.log(response.body)
+        expect(response.statusCode).toBe(200);
+        expect(response.body.eventList[0].EventName).toBe("UnitTest")
+        expect(response.body.eventList[0].EventType).toBe("UnitTest")
+        expect(response.body.eventList[1].EventName).toBe("Unit Test")
+        expect(response.body.eventList[1].EventType).toBe("Unit Test")
+
+    })
+
 
     // Other CRUD operations tests
 });
