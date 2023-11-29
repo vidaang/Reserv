@@ -2,29 +2,28 @@
 
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
-import './login.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class SignUpPage extends StatelessWidget {
-  const SignUpPage({super.key});
+class ForgotPasswordPage extends StatelessWidget {
+  const ForgotPasswordPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
       backgroundColor: Color.fromARGB(255, 233, 240, 211),
-      body: SignUpForm(),
+      body: ForgotPasswordForm(),
     );
   }
 }
 
-class SignUpForm extends StatefulWidget {
-  const SignUpForm({super.key});
+class ForgotPasswordForm extends StatefulWidget {
+  const ForgotPasswordForm({super.key});
 
   @override
-  _SignUpFormState createState() => _SignUpFormState();
+  _ForgotPasswordFormState createState() => _ForgotPasswordFormState();
 }
 
-class _SignUpFormState extends State<SignUpForm> {
+class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
   String _message = '';
   final TextEditingController _EmailController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
@@ -69,9 +68,9 @@ class _SignUpFormState extends State<SignUpForm> {
                     children: <Widget>[
                       const SizedBox(height: 17.0),
                       Text(
-                        'Sign Up',
+                        'Forgot Password',
                         style: GoogleFonts.lexendDeca().copyWith(
-                          fontSize: 32,
+                          fontSize: 26,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -116,84 +115,84 @@ class _SignUpFormState extends State<SignUpForm> {
                           },
                         ),
                       ),
-                      const SizedBox(height: 16.0),
-                      Align(
-                        alignment: const Alignment(-.6, 0),
-                        child: SizedBox(
-                          width: 200,
-                          height: 25,
-                          child: Text(
-                            'Password',
-                            style: GoogleFonts.lexendDeca().copyWith(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Center (
-                        child: SizedBox(
-                          width: 262,
-                          height: 35,
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(53.0),
-                                borderSide: const BorderSide(
-                                  color: Color(0xFFDFDFDF),
-                                ),
-                              ),
-                            ),
-                            controller: _passController,
-                            obscureText: true,
-                            validator: (value) {
-                              if (value?.isEmpty ?? true) {
-                                return 'Please enter a Password';
-                              } else if (!_isPasswordComplex(value!)) {
-                                return 'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one digit.';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 16.0),
-                      Align(
-                        alignment: const Alignment(-.6, 0),
-                        child: SizedBox(
-                          width: 200,
-                          height: 25,
-                          child: Text(
-                            'Retype Password',
-                            style: GoogleFonts.lexendDeca().copyWith(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 262,
-                        height: 35,
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(53.0),
-                              borderSide: const BorderSide(
-                                color: Color(0xFFDFDFDF),
-                              ),
-                            ),
-                          ),
-                          controller: _retypePassController,
-                          obscureText: true,
-                          validator: (value) {
-                            if (value?.isEmpty ?? value != _passController.text) {
-                              return 'Passwords do not match';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
+                      // const SizedBox(height: 16.0),
+                      // Align(
+                      //   alignment: const Alignment(-.6, 0),
+                      //   child: SizedBox(
+                      //     width: 200,
+                      //     height: 25,
+                      //     child: Text(
+                      //       'Enter New Password',
+                      //       style: GoogleFonts.lexendDeca().copyWith(
+                      //         fontSize: 16,
+                      //         fontWeight: FontWeight.bold,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                      // Center (
+                      //   child: SizedBox(
+                      //     width: 262,
+                      //     height: 35,
+                      //     child: TextFormField(
+                      //       decoration: InputDecoration(
+                      //         enabledBorder: OutlineInputBorder(
+                      //           borderRadius: BorderRadius.circular(53.0),
+                      //           borderSide: const BorderSide(
+                      //             color: Color(0xFFDFDFDF),
+                      //           ),
+                      //         ),
+                      //       ),
+                      //       controller: _passController,
+                      //       obscureText: true,
+                      //       validator: (value) {
+                      //         if (value?.isEmpty ?? true) {
+                      //           return 'Please enter a Password';
+                      //         } else if (!_isPasswordComplex(value!)) {
+                      //           return 'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one digit.';
+                      //         }
+                      //         return null;
+                      //       },
+                      //     ),
+                      //   ),
+                      // ),
+                      // const SizedBox(height: 16.0),
+                      // Align(
+                      //   alignment: const Alignment(-.6, 0),
+                      //   child: SizedBox(
+                      //     width: 200,
+                      //     height: 25,
+                      //     child: Text(
+                      //       'Retype Password',
+                      //       style: GoogleFonts.lexendDeca().copyWith(
+                      //         fontSize: 16,
+                      //         fontWeight: FontWeight.bold,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                      // SizedBox(
+                      //   width: 262,
+                      //   height: 35,
+                      //   child: TextFormField(
+                      //     decoration: InputDecoration(
+                      //       enabledBorder: OutlineInputBorder(
+                      //         borderRadius: BorderRadius.circular(53.0),
+                      //         borderSide: const BorderSide(
+                      //           color: Color(0xFFDFDFDF),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     controller: _retypePassController,
+                      //     obscureText: true,
+                      //     validator: (value) {
+                      //       if (value?.isEmpty ?? value != _passController.text) {
+                      //         return 'Passwords do not match';
+                      //       }
+                      //       return null;
+                      //     },
+                      //   ),
+                      // ),
                       const SizedBox(height: 16.0),
                       SizedBox(
                         width: 186,
@@ -223,62 +222,24 @@ class _SignUpFormState extends State<SignUpForm> {
                                 });
                                 return;
                               } 
-                              else if (_passController.text.isEmpty) {
-                                setState(() {
-                                  _message = 'Please enter a password.';
-                                });
-                                return;
-                              } 
-                              else if (!_isPasswordComplex(_passController.text)) {
-                                setState(() {
-                                  _message = 'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one digit.';
-                                });
-                                return;
-                              } 
-                              else if (_retypePassController.text.isEmpty) {
-                                setState(() {
-                                  _message = 'Please re-enter the password.';
-                                });
-                                return;
-                              } 
-                              else if (_retypePassController.text != _passController.text) {
-                                setState(() {
-                                  _message = 'Passwords do not match.';
-                                });
-                                return;
-                              } 
                               else {
                                 String Email = _EmailController.text;
-                                String Password = _passController.text;
-
                                 try {
-                                  final response = await ApiService.signUp(
-                                    Email: Email,
-                                    Password: Password,
-                                  );
+                                  await ApiService.ForgotPassword(Email);
 
-                                  if (response.containsKey('success') && response['success']) {
-                                    setState(() {
-                                      _message =
-                                          'Account created! Please check your email to verify your account.';
-                                    });
-                                    _EmailController.clear();
-                                    _passController.clear();
-                                    _retypePassController.clear();
-                                  } else {
-                                    setState(() {
-                                      _message = 'Sign-up failed: ${response['error']}';
-                                    });
-                                  }
+                                  setState(() {
+                                    _message = 'Email sent! Please check your email to recover your new password.';
+                                  });
+                                  _EmailController.clear();
                                 } catch (e) {
                                   setState(() {
-                                    _message = 'An error occurred: $e';
+                                    _message = 'Failed to send email! Please ensure you have entered the correct email.';
                                   });
                                 }
                               }
                           },
                           child: Text(
-                            'Sign Up',
+                            'Recover Password',
                             style: GoogleFonts.lexendDeca().copyWith(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,

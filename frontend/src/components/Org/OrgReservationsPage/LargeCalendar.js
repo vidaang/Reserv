@@ -63,8 +63,9 @@ function LargeCalendar()
                     description: event.Description,
                     atriumOccupy: event.AtriumOccupy,
                     atriumBuilding: event.AtriumBuilding,
-                    room: event.RoomID, 
-                    eventID: event.EventID
+                    room: event.RoomName, 
+                    eventID: event.EventID,
+                    roomID: event.RoomID
                 }
             );
         });
@@ -88,7 +89,8 @@ function LargeCalendar()
             console.log(js);
             try
             {
-                const response = await fetch('http://localhost:5000/api/RetrieveEvents',
+                const response = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/RetrieveEvents',
+                //const response = await fetch('http://localhost:5000/api/RetrieveEvents',
                 {method:'POST',
                 body:js,
                 headers:{'Content-Type':'application/json'}});
@@ -116,7 +118,7 @@ function LargeCalendar()
 
     return (
         <div id="CalendarDiv">
-            <Calendar id="LargeCalendar" localizer={localizer} events={events} startAccessor="start" endAccessor="end" views={['month', 'week', 'day']} onSelectEvent={handleEventClick}/>
+            <Calendar className="LargeCalendar" localizer={localizer} events={events} startAccessor="start" endAccessor="end" views={['month', 'week', 'day']} onSelectEvent={handleEventClick}/>
             <Drawer opened={opened} onClose={close} position="right" overlayProps={{ backgroundOpacity: 0.1, blur: 4 }}>
                 {selectedEvent && (
                     <ReservationPopUp event={selectedEvent} />

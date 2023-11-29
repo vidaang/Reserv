@@ -9,6 +9,7 @@ import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import UniLoginPage from './pages/UniLoginPage';
 import UniSignUpPage from './pages/UniSignUpPage';
+import ResetPassword from './pages/ResetPassword';
 import OrgProfilePage from './pages/Org/OrgProfilePage';
 import OrgHomePage from './pages/Org/OrgHomePage';
 import OrgSearchPage from './pages/Org/OrgSearchPage';
@@ -16,6 +17,7 @@ import OrgCompleteReservationPage from './pages/Org/OrgCompleteReservationPage';
 import OrgReservationsPage from './pages/Org/OrgReservationsPage';
 import OrgEditReservationsPage from './pages/Org/OrgEditReservationsPage';
 import OrgSettingsPage from './pages/Org/OrgSettingsPage';
+import OrgEmailVerification from './pages/Org/OrgEmailVerification';
 import UniProfilePage from './pages/Uni/UniProfilePage';
 import UniHomePage from './pages/Uni/UniHomePage';
 import UniReservationsPage from './pages/Uni/UniReservationsPage';
@@ -44,6 +46,8 @@ function App() {
           <Route path="/OrgReservationsPage" element={<OrgReservationsPage/>}/>
           <Route path="/OrgEditReservationsPage" element={<OrgEditReservationsPage/>}/>
           <Route path="/OrgSettingsPage" element={<OrgSettingsPage/>}/>
+          <Route path="/EmailVerification" element={<OrgEmailVerification/>}/>
+          <Route path="/ResetPassword" element={<ResetPassword/>}/>
 
           <Route path="/UniProfilePage" element={<UniProfilePage/>}/>
           <Route path="/UniHomePage" element={<UniHomePage/>}/>       

@@ -272,20 +272,53 @@ class ApiService {
     }
   }
 
-  static Future<void> createEvent(
-      String? token,
-      String RoomID,
-      String Date,
-      String EventName,
-      String EventType,
-      String Description,
-      int? Attendees,
-      bool AtriumOccupy,
-      bool MediaEquip,
-      bool EventAgreement,
-      List<num> StartEnd,
-      String BuildingID,
-      int? RoomNumber) async {
+  static Future<void> deleteEvent(String eventID) async {
+    //final url = Uri.parse('http://localhost:5000/api/DeleteEvent');
+    final url = Uri.parse(baseUrl + '/api/DeleteEvent');
+    
+    try {
+      final response = await http.delete(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'EventID': eventID}),
+      );
+
+      if (response.statusCode == 200) {
+        print('Event deleted successfully');
+      } else {
+        print('Failed to delete event. Status code: ${response.statusCode}');
+        print('Response body: ${response.body}');
+      }
+    } catch (e) {
+      print('Error deleting event: $e');
+    }
+  }
+
+  static Future<void> updateEvent(String eventID, String name, String desc) async {
+    //final url = Uri.parse('http://localhost:5000/api/UpdateEvent');
+    final url = Uri.parse(baseUrl + '/api/UpdateEvent');
+      
+    try {
+      final response = await http.put(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'EventID': eventID, 'EventName': name, 'Description' : desc}),
+      );
+
+      if (response.statusCode == 200) {
+        print('Event updated successfully');
+      } else {
+        print('Failed to update event. Status code: ${response.statusCode}');
+        print('Response body: ${response.body}');
+      }
+    } catch (e) {
+      print('Error deleting event: $e');
+    }
+  }
+
+  static Future<void> createEvent(String? token,String RoomID, String Date, String EventName, 
+    String EventType, String Description, int? Attendees, bool AtriumOccupy, bool MediaEquip, bool EventAgreement, 
+    List<num> StartEnd, String BuildingID, int? RoomNumber) async {
     try {
       if (token == null) {
         // Handle the case where the token is not available
@@ -414,4 +447,27 @@ class ApiService {
     }
   }
   
+  static Future<void> ForgotPassword(String Email) async {
+    try {
+      Map<String, dynamic> requestBody = {
+        'Email': Email,
+      };
+
+      final response = await http.post(
+        Uri.parse('$baseUrl/api/request-password-reset'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(requestBody),
+      );
+
+      if (response.statusCode == 200) {
+        print('Password reset email sent successfully!');
+      } else {
+        throw Exception('Failed to send password reset email. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Failed to send password reset email. Error: $e');
+    }
+  }
 }
