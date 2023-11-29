@@ -734,7 +734,7 @@ app.post("/api/createEvent", authenticateJWT, async (req, res) => {
     StartEnd,
     EventAgreement,
     MediaEquip,
-    idString,
+    RSOID: id,
     RoomID,
     RoomName
   };
