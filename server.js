@@ -940,6 +940,37 @@ app.delete("/api/deleteRSO", async (req, res) => {
   // other wise log an error
 });
 
+app.post("/api/updateRSOLoginInfo", async (req, res) => {
+  const { Email, Password } = req.body;
+
+  const update = {
+    Email: Email,
+  };
+
+  if (Password) {
+    const hashedPassword = await bcrypt.hash(Password, 10); // 10 is the salt rounds
+    update.Password = hashedPassword;
+  }
+
+  const db = client.db("Reserv");
+
+  try {
+    let result = await db
+      .collection("RSO")
+      .updateOne({ RSOID: new ObjectId(req.body.RSOID) }, { $set: update });
+
+    if (result.modifiedCount === 1) {
+      return res.status(200).json({ success: true });
+    } else {
+      return res
+        .status(400)
+        .json({ error: "No document updated. RSOID may not exist." });
+    }
+  } catch (e) {
+    return res.status(500).json({ error: e.toString() });
+  }
+});
+
 //----------------------------UNIVERSITY ENDPOINTS----------------------------//
 app.put("/api/createAdmin", async (req, res) => {
   const { Email, Password } = req.body;
