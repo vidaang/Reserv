@@ -233,40 +233,40 @@ class _SettingsPageState<T> extends State<SettingsPage> {
                       controller: officerLastNameController,
                     ),
                   ),
-                  // const SizedBox(height: 16.0),
-                  // Align(
-                  //   alignment: const Alignment(-.7, 0),
-                  //   child: SizedBox(
-                  //     width: 103,
-                  //     height: 15,
-                  //     child: Text(
-                  //       'Officer Email',
-                  //       style: GoogleFonts.rubik(
-                  //         textStyle: const TextStyle(
-                  //           fontSize: 14,
-                  //           fontWeight: FontWeight.bold,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  // const SizedBox(height: 4.0),
-                  // SizedBox(
-                  //   width: 262,
-                  //   height: 28,
-                  //   child: TextFormField(
-                  //     // should be filled here
-                  //     key: Key(rsoInfo['OfficerEmail'].toString()),
-                  //     initialValue: rsoInfo['OfficerEmail'],
-                  //     decoration: InputDecoration(
-                  //       enabledBorder: OutlineInputBorder(
-                  //           borderRadius: BorderRadius.circular(53.0),
-                  //           borderSide:
-                  //               const BorderSide(color: Color(0xFFDFDFDF))),
-                  //     ),
-                  //     // controller: _emailController,
-                  //   ),
-                  // ),
+                  const SizedBox(height: 16.0),
+                  Align(
+                    alignment: const Alignment(-.7, 0),
+                    child: SizedBox(
+                      width: 103,
+                      height: 15,
+                      child: Text(
+                        'Officer Email',
+                        style: GoogleFonts.rubik(
+                          textStyle: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 4.0),
+                  SizedBox(
+                    width: 262,
+                    height: 28,
+                    child: TextFormField(
+                      // should be filled here
+                      key: Key(rsoInfo['OfficerEmail'].toString()),
+                      //initialValue: rsoInfo['OfficerEmail'],
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(53.0),
+                            borderSide:
+                                const BorderSide(color: Color(0xFFDFDFDF))),
+                      ),
+                       controller: officerEmailController,
+                    ),
+                  ),
                   const SizedBox(height: 16.0),
                   Align(
                     alignment: const Alignment(-.7, 0),
