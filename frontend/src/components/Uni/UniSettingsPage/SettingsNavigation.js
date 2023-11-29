@@ -33,15 +33,16 @@ function UniversityInfo() {
   }
 
   const [uniData, SetUniData] = useState(initialUni);
+
   useEffect(() => {
-    console.log("Here");
       const GetUniInfo = async () =>
       {
         var obj = { UniversityID: "655673b363bf110ce2b499ee" };
         var js = JSON.stringify(obj);
         try
         {
-            const response = await fetch('http://localhost:5000/api/GetUniInfo',
+            const response = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/GetUniInfo',
+            //const response = await fetch('http://localhost:5000/api/GetUniInfo',
             {method:'POST',
             body:js,
             headers:{'Content-Type':'application/json'}});
@@ -63,15 +64,88 @@ function UniversityInfo() {
     fetchUniInfo();
   }, []);
 
+  const handleConfirmChanges = async () => {
+    
+    var userToken = localStorage.getItem('userToken');
+
+    var obj = {
+      UniName: initialUni.UniName,
+      Address: initialUni.Address,
+      Phone: initialUni.Phone,
+      EmailDomain: initialUni.EmailDomain,
+      Website: initialUni.Website,
+    };
+    var js = JSON.stringify(obj);
+    console.log(js);
+
+    try {
+      const response = await fetch("https://knightsreserv-00cde8777914.herokuapp.com/api/updateUniversityInfo", {
+      //const response = await fetch('http://localhost:5000/api/updateUniInfo', {
+        method: "POST",
+        body: js,
+        headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${userToken}`, },
+      });
+    }
+    catch (e) {
+      alert(e.toString());
+      return;
+    }
+  };
+
   return (
-    <div>
+    <div class="settings-menu-organization">
       <h2>University</h2>
-      <p>University Name: {uniData.UniName}</p>
-      <p>Address: {uniData.Address}</p>
-      <p>Phone Number: {uniData.Phone}</p>
-      <p>Email: {uniData.EmailDomain}</p>
-      <p>Hours: M-F 8AM-7PM</p>
-      <p>Website: {uniData.Website}</p>
+      <hr class="settings-menu-divider" />
+
+      <label class="settings-menu-label">
+        University Name:
+        <input
+          type="text"
+          class="settings-menu-input"
+          value={uniData.UniName}
+          onChange={(e) => SetUniData({ ...uniData, UniName: e.target.value })}        />
+      </label><br />
+      
+      <label class="settings-menu-label">
+        Address:
+        <input
+          type="text"
+          class="settings-menu-input"
+          value={uniData.Address}
+          onChange={(e) => SetUniData({ ...uniData, Address: e.target.value })}        />
+      </label><br />
+
+      <label class="settings-menu-label">
+        Phone Number:
+        <input
+          type="text"
+          class="settings-menu-input"
+          value={uniData.Phone}
+          onChange={(e) => SetUniData({ ...uniData, Phone: e.target.value })}
+        />
+      </label><br />
+
+      <label class="settings-menu-label">
+        Email Domain:
+        <input
+          type="text"
+          class="settings-menu-input"
+          value={uniData.EmailDomain}
+          onChange={(e) => SetUniData({ ...uniData, EmailDomain: e.target.value })}
+        />
+      </label><br />
+
+      <label class="settings-menu-label">
+        Website:
+        <input
+          type="text"
+          class="settings-menu-input"
+          value={uniData.Website}
+          onChange={(e) => SetUniData({ ...uniData, Website: e.target.value })}
+        />
+      </label><br />
+
+      {/* <button class="settings-menu-confirmChanges" onClick={handleConfirmChanges}> Confirm Changes</button> */}
     </div>
   );
 }
@@ -105,7 +179,7 @@ function LoginInfo() {
     alert(js);
     try
     {
-        const response = await fetch('http://localhost:5000/api/adminChangePassword',
+        const response = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/adminChangePassword',
         {method:'PUT',
         body:js,
         headers:{'Content-Type':'application/json'}});
@@ -119,13 +193,24 @@ function LoginInfo() {
         return;
     }
   }
+  
   return (
-    <div>
+    <div class="settings-menu-organization">
       <h2>User Settings</h2>
       <form id="ChangePasswordForm">
-        <label>Previous Password: <input type="password" value={oldPassword} onChange={(e) => setOldPassword(e.target.value)} required/></label><br/>
-        <label>New Password: <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required/></label>
-        <button type='submit' id="password-change-button" onClick={ChangePassword}>Change</button><br/>
+        <label class="settings-menu-label">
+          Previous Password: 
+          <input class="settings-menu-input" type="password" value={oldPassword} onChange={(e) => setOldPassword(e.target.value)} required/>
+        </label>
+
+        <br/>
+    
+        <label class="settings-menu-label">
+          New Password: 
+          <input class="settings-menu-input" type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required/>
+         </label>
+
+        <button class="settings-menu-confirmChanges" type='submit' id="password-change-button" onClick={ChangePassword}>Change</button><br/>
       </form>
     </div>
   );

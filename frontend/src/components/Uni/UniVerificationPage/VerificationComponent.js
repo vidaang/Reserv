@@ -17,7 +17,8 @@ function VerificationComponent({ org })
         console.log(js);
         try
         {
-            await fetch('http://localhost:5000/api/VerifyRSO',
+            await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/VerifyRSO',
+            // await fetch('http://localhost:5000/api/VerifyRSO',
             {
                 method:'PUT',
                 body:js,
@@ -54,7 +55,7 @@ function VerificationComponent({ org })
             </Modal>
             <div id="verification-button-div">
                 <button id="verification-accept-button" onClick={handleAcceptClick}>Accept</button>
-                <button id="verification-deny-button" onClick={handleClick}>Deny</button>
+                {/* <button id="verification-deny-button" onClick={handleClick}>Deny</button> */}
             </div>
         </div>
     );

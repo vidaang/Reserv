@@ -43,19 +43,13 @@ function Map( { toggleList, isListOpen} )
                 Date: room.Date,
                 ResrveTimes: room.ResrveTimes,
                 UniID: room.UniID,
-                BuildingID: room.BuildingID
+                BuildingID: room.BuildingID,
+                Capacity: room.Capacity
             })
         });
 
         setRoomList(roomListReturn);
     }
-
-    const ToggleListInternal = async () => {
-        if (roomList.size !== 0)
-        {
-            toggleList();
-        }
-    };
     
     const clearRooms = () => {
         setRoomList(new Set());
@@ -70,7 +64,8 @@ function Map( { toggleList, isListOpen} )
             var js = JSON.stringify(obj);
             console.log(js);
 
-            const response = await fetch('http://localhost:5000/api/RetrieveRooms',
+            const response = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/RetrieveRooms',
+            // const response = await fetch('http://localhost:5000/api/RetrieveRooms',
             {method:'POST',
             body:js,
             headers:{'Content-Type':'application/json'}});

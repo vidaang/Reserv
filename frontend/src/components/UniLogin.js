@@ -122,7 +122,7 @@ function UniLogin() {
           onClick={doLogin}
         />
         <Link to="/UniCreateAccount">
-          <button className="navbar-menu-text">Don't Have an Account? Sign Up Here!</button>
+          <button className="user-authentication-redirect-links">Don't Have an Account? Sign Up Here!</button>
         </Link>
       </form>
       <span id="loginResult">{message}</span>

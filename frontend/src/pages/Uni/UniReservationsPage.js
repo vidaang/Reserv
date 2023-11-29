@@ -7,7 +7,7 @@ import LargeCalendar from '../../components/Uni/UniReservationsPage/LargeCalenda
 function UniReservationsPage()
 {
     return (
-        <div id="OrgHomePageDiv">
+        <div id="OrgReservationsPageDiv">
             <link rel="preconnect" href="https://fonts.googleapis.com"/>
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
             <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700&display=swap" rel="stylesheet"></link>

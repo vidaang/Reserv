@@ -37,8 +37,9 @@ function UniVerificationPage()
             var js = JSON.stringify(obj);
             console.log(js);
             try
-            {
-                const response = await fetch('http://localhost:5000/api/RetrieveRSO',
+            {   
+                const response = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/RetrieveRSO',
+                //const response = await fetch('http://localhost:5000/api/RetrieveRSO',
                 {
                     method:'POST',
                     body:js,
@@ -70,7 +71,7 @@ function UniVerificationPage()
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
             <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700&display=swap" rel="stylesheet"></link>
             <NavBar />
-            <h1 id="verification-page-header">Organizations Page</h1>          
+            <h1 id="verification-page-header">Verify Organizations</h1>          
             <VerificationList orgs={ orgArray } />          
         </div>
     );
