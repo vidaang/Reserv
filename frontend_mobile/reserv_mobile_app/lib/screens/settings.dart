@@ -7,6 +7,7 @@ import '../widgets/navbar.dart';
 import '../services/jwt_token.dart';
 import '../screens/complete_profile.dart';
 import '../widgets/settings/settings-util.dart';
+import 'landing.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -652,6 +653,69 @@ print("RSO Info on widget built: $rsoInfo");
                       obscureText: true,
                     ),
                   ),
+                  SizedBox(
+                        width: 186,
+                        height: 40,
+                        child: TextButton(
+                          style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(36.0),
+                                      side: const BorderSide(
+                                          color: Color(0xFFDFDFDF))))),
+                          onPressed: () async {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => const LandingPage()),
+                            );
+                          },
+                          child: Text(
+                            'Log Out',
+                            style: GoogleFonts.rubik(
+                              textStyle: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                            ),
+                          ),
+                        ),),
+                         SizedBox(
+                        width: 186,
+                        height: 40,
+                        child: TextButton(
+                          style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(36.0),
+                                      side: const BorderSide(
+                                          color: Color(0xFFDFDFDF))))),
+                          onPressed: () async {
+                            try{
+                              
+                                Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => const LandingPage()),
+                            );
+                            
+                            } catch (e) {
+                              // Handle network or other errors
+                              print('Delete RSO failed: $e');
+                            }
+
+                            
+                          },
+                          child: Text(
+                            'Delete Account',
+                            style: GoogleFonts.rubik(
+                              textStyle: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                            ),
+                          ),
+                        ),),
                 ],
               ),
             )),
