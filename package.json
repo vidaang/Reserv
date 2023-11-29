@@ -4,7 +4,7 @@
     "description": "",
     "main": "server.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "jest",
         "nodemon": "nodemon",
         "postinstall": "npm install -g nodemon",
         "start": "nodemon server.js"
@@ -25,6 +25,13 @@
         "patch-package": "^8.0.0"
     },
     "devDependencies": {
-        "nodemon": "^3.0.1"
+        "@babel/core": "^7.23.3",
+        "@babel/preset-env": "^7.23.3",
+        "@babel/preset-react": "^7.23.3",
+        "babel-jest": "^29.7.0",
+        "jest": "^29.7.0",
+        "mongodb-memory-server": "^9.1.1",
+        "nodemon": "^3.0.1",
+        "supertest": "^6.3.3"
     }
 }
