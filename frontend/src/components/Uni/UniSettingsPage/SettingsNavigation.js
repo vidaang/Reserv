@@ -59,7 +59,6 @@ function UniversityInfo() {
     };
     const fetchUniInfo = async () => {
       var data = await GetUniInfo();
-      //console.log(data);
       SetUniData(data);
     }
     fetchUniInfo();
@@ -168,46 +167,51 @@ function UniversityInfo() {
 // }
 
 function LoginInfo() {
-  var oldPassword;
-  var newPassword;
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
 
-  const ChangePassword = async() =>
+  const ChangePassword = async (event) =>
   {
-    var obj = { UniversityID: "655673b363bf110ce2b499ee", Password: oldPassword, NewPassword: oldPassword};
+    event.preventDefault();
+    alert("here");
+    var obj = { UniID: "655673b363bf110ce2b499ee", Password: oldPassword, NewPassword: newPassword};
     var js = JSON.stringify(obj);
+    alert(js);
     try
-        {
-            const response = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/adminChangePassword',
-            /*const response = await fetch('http://localhost:5000/api/adminChangePassword',*/
-            {method:'POST',
-            body:js,
-            headers:{'Content-Type':'application/json'}});
-            var res = await response.json();
-            console.log(res.responseObject);
-            return res;
-
-        }
-        catch(e)
-        {
-            alert(e.toString());
-            return;
-        }
+    {
+        const response = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/adminChangePassword',
+        {method:'PUT',
+        body:js,
+        headers:{'Content-Type':'application/json'}});
+        var res = await response.json();
+        console.log(res.responseObject);
+        return res;
+    }
+    catch(e)
+    {
+        alert(e.toString());
+        return;
+    }
   }
-
+  
   return (
     <div class="settings-menu-organization">
       <h2>User Settings</h2>
-      <label class="settings-menu-label">
-        Previous Password: 
-        <input class="settings-menu-input" type="password" ref={(c) => (oldPassword = c)} required/>
-      </label>
-        
-      <br/>
-      <label class="settings-menu-label">
-        New Password: 
-        <input class="settings-menu-input" type="password" ref={(c) => (newPassword = c)} required/>
-      </label>
-      <button class="settings-menu-confirmChanges" type='submit' onClick={ChangePassword}>Change</button><br/>
+      <form id="ChangePasswordForm">
+        <label class="settings-menu-label">
+          Previous Password: 
+          <input class="settings-menu-input" type="password" value={oldPassword} onChange={(e) => setOldPassword(e.target.value)} required/>
+        </label>
+
+        <br/>
+    
+        <label class="settings-menu-label">
+          New Password: 
+          <input class="settings-menu-input" type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required/>
+         </label>
+
+        <button class="settings-menu-confirmChanges" type='submit' id="password-change-button" onClick={ChangePassword}>Change</button><br/>
+      </form>
     </div>
   );
 }

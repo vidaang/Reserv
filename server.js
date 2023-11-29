@@ -325,11 +325,9 @@ app.post("/api/checkRSOFields", async (req, res) => {
 
 app.post("/api/GetUniInfo", async(req, res) => {
   const { UniversityID } = req.body;
-  console.log("entered");
   const db = client.db("Reserv");
   const uniObjectID = new ObjectId(UniversityID)
   const university = await db.collection("University").findOne({ _id : uniObjectID });
-  console.log(university);
 
   const responseObject = {
     // token: token, // remeber to add JWT
@@ -1057,13 +1055,14 @@ app.post("/api/adminLogin", async (req, res) => {
 
 app.put("/api/adminChangePassword", async (req, res) => {
   const { UniID, Password, NewPassword } = req.body;
+  console.log(req.body)
   const uniObjectID = new ObjectId(UniID)
   let result
 
   try {
     const db = client.db("Reserv");
-    const uni = await db.collection("Admin").findOne({ _id: uniObjectID});
-
+    const uni = await db.collection("Admin").findOne({ UniID: uniObjectID});
+    console.log(uni);
     if (!uni) {
       return res.status(400).json({ error: "University does not exist! Please make an account." });
     }
@@ -1071,13 +1070,14 @@ app.put("/api/adminChangePassword", async (req, res) => {
     const passwordMatch = await bcrypt.compare(Password, uni.Password);
 
     if (!passwordMatch) {
+      console.log("not matched");
       return res.status(400).json({ error: "Incorrect password" });
     }
-
+    console.log("matched");
     const hashedPassword = await bcrypt.hash(NewPassword, 10); // 10 is the salt rounds
     
     result = await db.collection("Admin").updateOne(
-      { _id: uniObjectID },
+      { UniID : uniObjectID },
       { $set: {Password: hashedPassword} }
     );
 
@@ -1085,6 +1085,7 @@ app.put("/api/adminChangePassword", async (req, res) => {
     console.error("Error during password Reset:", e);
     res.status(500).json({ error: "Internal server error" });
   }
+
   res.status(200).json(result);
 });
 
