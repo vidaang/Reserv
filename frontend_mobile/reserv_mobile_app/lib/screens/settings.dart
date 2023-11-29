@@ -96,17 +96,16 @@ TextEditingController passwordController =
           child: Column(children: <Widget>[
             const SizedBox(height: 31.0),
             Text('Settings',
-                style: GoogleFonts.rubik(
-                  textStyle: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                )),
+              style: GoogleFonts.lexendDeca().copyWith(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+                ),
             const SizedBox(height: 15.0),
             FittedBox(
                 child: Container(
               decoration: BoxDecoration(
-                  color: const Color(0xFFF2F2F2),
+                  color: Color.fromARGB(200, 245, 253, 242),
                   border: Border.all(
                     color: const Color(0xFFF2F2F2),
                   ),
@@ -120,12 +119,11 @@ TextEditingController passwordController =
                       width: 272,
                       height: 40,
                       child: Text('Organization Information',
-                          style: GoogleFonts.rubik(
-                            textStyle: const TextStyle(
-                                fontSize: 19,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
-                          ))),
+                      style: GoogleFonts.lexendDeca().copyWith(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      )),
                   Align(
                     alignment: const Alignment(-.7, 0),
                     child: SizedBox(
@@ -133,12 +131,10 @@ TextEditingController passwordController =
                       height: 15,
                       child: Text(
                         'RSO Name',
-                        style: GoogleFonts.rubik(
-                          textStyle: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+              style: GoogleFonts.lexendDeca().copyWith(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
                       ),
                     ),
                   ),
@@ -172,12 +168,10 @@ TextEditingController passwordController =
                       height: 15,
                       child: Text(
                         'Officer First Name',
-                        style: GoogleFonts.rubik(
-                          textStyle: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+              style: GoogleFonts.lexendDeca().copyWith(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
                       ),
                     ),
                   ),
@@ -211,12 +205,10 @@ TextEditingController passwordController =
                       height: 15,
                       child: Text(
                         'Officer Last Name',
-                        style: GoogleFonts.rubik(
-                          textStyle: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+              style: GoogleFonts.lexendDeca().copyWith(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
                       ),
                     ),
                   ),
@@ -250,12 +242,10 @@ TextEditingController passwordController =
                       height: 15,
                       child: Text(
                         'Officer Email',
-                        style: GoogleFonts.rubik(
-                          textStyle: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+              style: GoogleFonts.lexendDeca().copyWith(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
                       ),
                     ),
                   ),
@@ -284,12 +274,10 @@ TextEditingController passwordController =
                       height: 15,
                       child: Text(
                         'Phone',
-                        style: GoogleFonts.rubik(
-                          textStyle: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+              style: GoogleFonts.lexendDeca().copyWith(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
                       ),
                     ),
                   ),
@@ -323,12 +311,10 @@ TextEditingController passwordController =
                       height: 15,
                       child: Text(
                         'Advisor Name',
-                        style: GoogleFonts.rubik(
-                          textStyle: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+              style: GoogleFonts.lexendDeca().copyWith(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
                       ),
                     ),
                   ),
@@ -362,12 +348,10 @@ TextEditingController passwordController =
                       height: 15,
                       child: Text(
                         'Advisor Email',
-                        style: GoogleFonts.rubik(
-                          textStyle: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+              style: GoogleFonts.lexendDeca().copyWith(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
                       ),
                     ),
                   ),
@@ -401,12 +385,10 @@ TextEditingController passwordController =
                       height: 15,
                       child: Text(
                         'Secondary Contact Name',
-                        style: GoogleFonts.rubik(
-                          textStyle: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+              style: GoogleFonts.lexendDeca().copyWith(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
                       ),
                     ),
                   ),
@@ -440,12 +422,10 @@ TextEditingController passwordController =
                       height: 15,
                       child: Text(
                         'Secondary Contact Email',
-                        style: GoogleFonts.rubik(
-                          textStyle: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+              style: GoogleFonts.lexendDeca().copyWith(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
                       ),
                     ),
                   ),
@@ -479,11 +459,9 @@ TextEditingController passwordController =
                       height: 15,
                       child: Text(
                         'Secondary Contact Phone',
-                        style: GoogleFonts.rubik(
-                          textStyle: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        style: GoogleFonts.lexendDeca().copyWith(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
@@ -514,6 +492,9 @@ TextEditingController passwordController =
                   SizedBox(
                       child: TextButton(
                     style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                            Color.fromARGB(200, 149, 208, 125),
+                          ),
                         shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
@@ -587,12 +568,11 @@ TextEditingController passwordController =
                     },
                     child: Text(
                       'Update Information',
-                      style: GoogleFonts.rubik(
-                        textStyle: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
-                      ),
+              style: GoogleFonts.lexendDeca().copyWith(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
                     ),
                   )),
                   Text(
@@ -600,19 +580,19 @@ TextEditingController passwordController =
                         style: const TextStyle(color: Colors.red),
                       ),
                   const Divider(
-                    color: Colors.black,
+
+                    color: Color(0xFFF2F2F2),
                   ),
                   const SizedBox(height: 10.0),
                   SizedBox(
-                      width: 272,
+                      width: 260,
                       height: 40,
                       child: Text('Login Information',
-                          style: GoogleFonts.rubik(
-                            textStyle: const TextStyle(
-                                fontSize: 19,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
-                          ))),
+              style: GoogleFonts.lexendDeca().copyWith(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+                          )),
                   Align(
                     alignment: const Alignment(-.7, 0),
                     child: SizedBox(
@@ -620,12 +600,10 @@ TextEditingController passwordController =
                       height: 15,
                       child: Text(
                         'Password',
-                        style: GoogleFonts.rubik(
-                          textStyle: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+              style: GoogleFonts.lexendDeca().copyWith(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
                       ),
                     ),
                   ),
@@ -653,12 +631,10 @@ TextEditingController passwordController =
                       height: 20,
                       child: Text(
                         'Retype Password',
-                        style: GoogleFonts.rubik(
-                          textStyle: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+              style: GoogleFonts.lexendDeca().copyWith(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
                       ),
                     ),
                   ),
@@ -682,6 +658,9 @@ TextEditingController passwordController =
                   SizedBox(
                       child: TextButton(
                     style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+      Color.fromARGB(200, 149, 208, 125),
+    ),
                         shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
@@ -723,12 +702,11 @@ TextEditingController passwordController =
                     
                    child: Text(
                       'Update Password',
-                      style: GoogleFonts.rubik(
-                        textStyle: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
-                      ),
+              style: GoogleFonts.lexendDeca().copyWith(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
                     ),
                       )),
                       Text(
@@ -736,7 +714,7 @@ TextEditingController passwordController =
                         style: const TextStyle(color: Colors.red),
                       ),
                   const Divider(
-                    color: Colors.black,
+                    color: Color(0xFFF2F2F2),
                   ),
                   const SizedBox(height: 10.0),
                   SizedBox(
@@ -744,6 +722,9 @@ TextEditingController passwordController =
                     height: 40,
                     child: TextButton(
                       style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+      Color.fromARGB(200, 149, 208, 125),
+    ),
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
@@ -758,12 +739,11 @@ TextEditingController passwordController =
                       },
                       child: Text(
                         'Log Out',
-                        style: GoogleFonts.rubik(
-                          textStyle: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                        ),
+              style: GoogleFonts.lexendDeca().copyWith(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
                       ),
                     ),
                   ),
@@ -773,6 +753,9 @@ TextEditingController passwordController =
                     height: 40,
                     child: TextButton(
                       style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+      Color.fromARGB(255, 255, 125, 103),
+    ),
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
@@ -800,12 +783,11 @@ TextEditingController passwordController =
                       },
                       child: Text(
                         'Delete Account',
-                        style: GoogleFonts.rubik(
-                          textStyle: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                        ),
+              style: GoogleFonts.lexendDeca().copyWith(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
                       ),
                     ),
                   ),
@@ -826,12 +808,11 @@ TextEditingController passwordController =
       children: <Widget>[
         Text(
                         'Are you sure you want to delete account?',
-                        style: GoogleFonts.rubik(
-                          textStyle: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                        )),
+              style: GoogleFonts.lexendDeca().copyWith(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+                        ),
         //Text("Are you sure you want to delete account?"),
         
          const SizedBox(height: 16.0),
@@ -842,6 +823,9 @@ TextEditingController passwordController =
                     height: 40,
                     child: TextButton(
                       style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+      Color.fromARGB(255, 255, 125, 103),
+    ),
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
@@ -866,12 +850,11 @@ TextEditingController passwordController =
                       },
                       child: Text(
                         'Delete Account',
-                        style: GoogleFonts.rubik(
-                          textStyle: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                        ),
+              style: GoogleFonts.lexendDeca().copyWith(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
                       ),
                     ),
          )),
@@ -879,10 +862,21 @@ TextEditingController passwordController =
   ),
     actions: <Widget>[
        TextButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Color.fromARGB(200, 149, 208, 125),
+        ),
+                      
         onPressed: () async {
           Navigator.of(context).pop();
         },
-        child: const Text('Close'),
+        child: Text(
+          'Close',
+            style: GoogleFonts.lexendDeca().copyWith(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.black
+              ),
+        ),
       ),
     ],
   );

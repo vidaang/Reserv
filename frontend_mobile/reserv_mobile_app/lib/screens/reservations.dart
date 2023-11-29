@@ -9,7 +9,7 @@ class ReservationsPage extends StatelessWidget {
         return Scaffold(
             backgroundColor: const Color(0xFFF0E9D3),
             appBar: AppBar(
-                backgroundColor: const Color(0xFF526760),
+                backgroundColor: Color.fromARGB(255, 92, 138, 153),
                 title: const Text('Reservations'),
             ),
             body: const ReservationsCalendar(),
