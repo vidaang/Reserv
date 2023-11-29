@@ -19,6 +19,9 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState<T> extends State<SettingsPage> {
   final ApiService apiService = ApiService();
 
+  String updateInfoMessage = "";  
+  String passwordMessage = "";
+
   String rsoName = "";
   String officerFirstName = "";
   String officerLastName = "";
@@ -43,6 +46,11 @@ class _SettingsPageState<T> extends State<SettingsPage> {
       TextEditingController();
   TextEditingController secondaryContactPhoneController =
       TextEditingController();
+TextEditingController passwordController =
+      TextEditingController();
+      TextEditingController retypepasswordController =
+      TextEditingController();
+  
 
   @override
   void initState() {
@@ -104,7 +112,7 @@ class _SettingsPageState<T> extends State<SettingsPage> {
                   ),
                   borderRadius: const BorderRadius.all(Radius.circular(11))),
               width: 310.0,
-              height: 1010.0,
+              height: 1150.0,
               child: Column(
                 children: <Widget>[
                   const SizedBox(height: 16.0),
@@ -551,6 +559,17 @@ class _SettingsPageState<T> extends State<SettingsPage> {
                           if (response.containsKey('success') &&
                               response['success'] == true) {
                             getRSOFields();
+                            setState(() {
+                                        updateInfoMessage =
+                                            "Information Updated";
+                                      });
+
+                          Future.delayed(Duration(seconds: 3), () {
+                              setState(() {
+                                updateInfoMessage =
+                                            "";
+                              });
+                            });
                           } else {
                             // Handle other response statuses or errors
                             // You might want to display an error message or take appropriate action
@@ -567,7 +586,7 @@ class _SettingsPageState<T> extends State<SettingsPage> {
                       }
                     },
                     child: Text(
-                      'Update',
+                      'Update Information',
                       style: GoogleFonts.rubik(
                         textStyle: const TextStyle(
                             fontSize: 16,
@@ -576,9 +595,14 @@ class _SettingsPageState<T> extends State<SettingsPage> {
                       ),
                     ),
                   )),
+                  Text(
+                        updateInfoMessage,
+                        style: const TextStyle(color: Colors.red),
+                      ),
                   const Divider(
                     color: Colors.black,
                   ),
+                  const SizedBox(height: 10.0),
                   SizedBox(
                       width: 272,
                       height: 40,
@@ -617,7 +641,8 @@ class _SettingsPageState<T> extends State<SettingsPage> {
                             borderSide:
                                 const BorderSide(color: Color(0xFFDFDFDF))),
                       ),
-                      // controller: _emailController,
+                       controller: passwordController,
+                       obscureText: true,
                     ),
                   ),
                   const SizedBox(height: 16.0),
@@ -625,7 +650,7 @@ class _SettingsPageState<T> extends State<SettingsPage> {
                     alignment: const Alignment(-.7, 0),
                     child: SizedBox(
                       width: 150,
-                      height: 15,
+                      height: 20,
                       child: Text(
                         'Retype Password',
                         style: GoogleFonts.rubik(
@@ -637,22 +662,83 @@ class _SettingsPageState<T> extends State<SettingsPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 4.0),
+                  const SizedBox(height: 5.0),
                   SizedBox(
                     width: 262,
                     height: 28,
                     child: TextFormField(
+                      // should be filled here
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(53.0),
                             borderSide:
                                 const BorderSide(color: Color(0xFFDFDFDF))),
                       ),
-                      // controller: _passController,
-                      obscureText: true,
+                       controller: retypepasswordController,
+                       obscureText: true,
                     ),
                   ),
                   const SizedBox(height: 16.0),
+                  SizedBox(
+                      child: TextButton(
+                    style: ButtonStyle(
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(36.0),
+                                    side: const BorderSide(
+                                        color: Color(0xFFDFDFDF))))),
+                    onPressed: () async {
+                      try{
+                        if(passwordController != null){
+                         
+                          if(passwordController.text == retypepasswordController.text){
+                          await updatePassword( passwordController.text);
+                          print('password updated');
+                          //passwordMessage = "Password Updated";
+
+                          setState(() {
+                                        passwordMessage =
+                                            "Password Updated";
+                                      });
+
+                          Future.delayed(Duration(seconds: 3), () {
+                              setState(() {
+                                passwordMessage =
+                                            "";
+                              });
+                            });
+                          } else {
+                            print('password text field and retype password text field not eqaul');
+                          }
+                        } else {
+                          print('password text field null');
+                        }
+                        
+                        
+                      }catch (e){
+                        print('Error updating password for RSO at button: $e');
+                      }
+                    },
+                    
+                   child: Text(
+                      'Update Password',
+                      style: GoogleFonts.rubik(
+                        textStyle: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      ),
+                    ),
+                      )),
+                      Text(
+                        passwordMessage,
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                  const Divider(
+                    color: Colors.black,
+                  ),
+                  const SizedBox(height: 10.0),
                   SizedBox(
                     width: 186,
                     height: 40,

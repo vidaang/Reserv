@@ -24,3 +24,21 @@ Future<void> fetchData() async {
 void setData(Map<String, dynamic> data)  {
     rsoInfo = data;
 }
+
+Future<void> updatePassword(String password) async {
+  try{
+    String? RSOID = await JWTToken.getToken('RSOID');
+ await ApiService.updateRSOLoginInfo(password, RSOID)
+    .then((result) {
+  if (result.containsKey('success')) {
+    print('RSOLoginInfo updated successfully');
+  } else if (result.containsKey('error')) {
+    print('Error: ${result['error']}');
+  }
+});
+  } catch(e){
+    // Handle exceptions
+      print('Error updating password for RSO: $e');
+  }
+
+}

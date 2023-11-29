@@ -382,4 +382,36 @@ class ApiService {
       print('Exception during RSO deletion: $e');
     }
   }
+
+  static Future<Map<String, dynamic>> updateRSOLoginInfo(
+      String password, String? rsoID) async {
+    final String apiUrl = "$baseUrl/api/updateRSOLoginInfo";
+    //final Uri url = Uri.parse('$baseUrl/api/updateRSOLoginInfo');
+
+    final Map<String, dynamic> requestData = {
+      "Password": password,
+      "RSOID": rsoID,
+    };
+
+    try {
+      final http.Response response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(requestData),
+      );
+
+      if (response.statusCode == 200) {
+        return {'success': true};
+      } else if (response.statusCode == 400) {
+        return {'error': 'No document updated. RSOID may not exist.'};
+      } else {
+        return {'error': 'Failed to update RSOLoginInfo'};
+      }
+    } catch (e) {
+      return {'error': e.toString()};
+    }
+  }
+  
 }
