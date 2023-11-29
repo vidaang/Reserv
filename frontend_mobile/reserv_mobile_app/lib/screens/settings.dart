@@ -694,7 +694,79 @@ class _SettingsPageState<T> extends State<SettingsPage> {
                                       side: const BorderSide(
                                           color: Color(0xFFDFDFDF))))),
                       onPressed: () async {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) => _buildPopupDialog(context),
+                          );
+                        // try {
+
+                          
+                        //   rsoName = rsoNameController.text;
+                        //   await ApiService.deleteRSO(rsoName);
+                        //   Navigator.of(context).push(
+                        //     MaterialPageRoute(
+                        //         builder: (context) => const LandingPage()),
+                        //   );
+                        // } catch (e) {
+                        //   // Handle network or other errors
+                        //   print('Delete RSO failed: $e');
+                        // }
+                      },
+                      child: Text(
+                        'Delete Account',
+                        style: GoogleFonts.rubik(
+                          textStyle: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )),
+          ]),
+        )));
+  }
+
+  Widget _buildPopupDialog(BuildContext context) {
+  return AlertDialog(
+    //title: const Text('Popup example'),
+    content:  Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+     
+      children: <Widget>[
+        Text(
+                        'Are you sure you want to delete account?',
+                        style: GoogleFonts.rubik(
+                          textStyle: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                        )),
+        //Text("Are you sure you want to delete account?"),
+        
+         const SizedBox(height: 16.0),
+         Align(
+                    alignment: const Alignment(0, 0),
+                  child: SizedBox(
+                    width: 186,
+                    height: 40,
+                    child: TextButton(
+                      style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(36.0),
+                                      side: const BorderSide(
+                                          color: Color(0xFFDFDFDF))))),
+                      onPressed: () async {
+                        
                         try {
+
+                          
                           rsoName = rsoNameController.text;
                           await ApiService.deleteRSO(rsoName);
                           Navigator.of(context).push(
@@ -716,11 +788,17 @@ class _SettingsPageState<T> extends State<SettingsPage> {
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            )),
-          ]),
-        )));
-  }
+         )),
+      ],
+  ),
+    actions: <Widget>[
+       TextButton(
+        onPressed: () async {
+          Navigator.of(context).pop();
+        },
+        child: const Text('Close'),
+      ),
+    ],
+  );
+}
 }
