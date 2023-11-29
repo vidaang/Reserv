@@ -359,6 +359,7 @@ class ApiService {
     }
   }
 
+  // deletes rso
   static Future<void> deleteRSO(String? rsoName) async {
     final Uri url = Uri.parse('$baseUrl/api/deleteRSO');
 
