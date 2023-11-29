@@ -104,7 +104,7 @@ class _SettingsPageState<T> extends State<SettingsPage> {
                   ),
                   borderRadius: const BorderRadius.all(Radius.circular(11))),
               width: 310.0,
-              height: 1710.0,
+              height: 1010.0,
               child: Column(
                 children: <Widget>[
                   const SizedBox(height: 16.0),
@@ -652,6 +652,7 @@ class _SettingsPageState<T> extends State<SettingsPage> {
                       obscureText: true,
                     ),
                   ),
+                  const SizedBox(height: 16.0),
                   SizedBox(
                     width: 186,
                     height: 40,
@@ -680,6 +681,7 @@ class _SettingsPageState<T> extends State<SettingsPage> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 16.0),
                   SizedBox(
                     width: 186,
                     height: 40,

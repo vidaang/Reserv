@@ -7,10 +7,11 @@ Map<String, dynamic> rsoInfo = new Map<String, dynamic>();
 
 Future<void> fetchData() async {
     try {
+      String? RSOID = await JWTToken.getToken('RSOID');
       Map<String, dynamic> result = await ApiService.retrieveRSO(
         uniID: '655673b363bf110ce2b499ee',
         verificationFlag: true,
-        rsoID: '655804c90b1c5c3f460dd45e',
+        rsoID: RSOID,
       );
       print('RSO retrieved successfully: $result');
       setData(result);  

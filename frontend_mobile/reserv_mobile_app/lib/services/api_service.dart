@@ -363,7 +363,7 @@ class ApiService {
   static Future<void> deleteRSO(String? rsoName) async {
     final Uri url = Uri.parse('$baseUrl/api/deleteRSO');
 
-    final Map<String, dynamic> requestBody = {'RSOName': 'please'};
+    final Map<String, dynamic> requestBody = {'RSOName': rsoName};
 
     try {
       final http.Response response = await http.delete(
