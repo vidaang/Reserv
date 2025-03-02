@@ -22,6 +22,9 @@ const localizer = dateFnsLocalizer({
    locales
 });
 
+// const baseUrl = "https://knightsreserv-00cde8777914.herokuapp.com";
+const baseUrl = "http://localhost:5000";
+
 function LargeCalendar()
 {
     const [selectedEvent, setSelectedEvent] = useState(null);
@@ -87,8 +90,7 @@ function LargeCalendar()
             console.log(js);
             try
             {
-                const response = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/RetrieveEvents',
-                // const response = await fetch('http://localhost:5000/api/RetrieveEvents',
+                const response = await fetch(`${baseUrl}/api/RetrieveEvents`,
                 {method:'POST',
                 body:js,
                 headers:{'Content-Type':'application/json'}});

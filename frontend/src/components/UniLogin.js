@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/index.css";
 
+// const baseUrl = "https://knightsreserv-00cde8777914.herokuapp.com";
+const baseUrl = "http://localhost:5000";
+
 function UniLogin() {
   var loginName;
   var loginPassword;
@@ -15,9 +18,7 @@ function UniLogin() {
     console.log(js);
 
     try {
-      // CHANGE THIS BACK TO HEROKU ON DEV
-      const response = await fetch("https://knightsreserv-00cde8777914.herokuapp.com/api/adminLogin", {
-      // const response = await fetch('http://localhost:5000/api/adminLogin', {
+      const response = await fetch(`${baseUrl}/api/adminLogin`, {
         method: "POST",
         body: js,
         headers: { "Content-Type": "application/json" },
@@ -50,9 +51,8 @@ function UniLogin() {
 
           try {
             // Call the checkFieldsNotEmpty endpoint
-            const checkResponse = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/checkUniFields', {
-            // const checkResponse = await fetch('http://localhost:5000/api/checkUniFields', {
-              method: "POST",
+            const checkResponse = await fetch(`${baseUrl}/api/checkUniFields`, {
+               method: "POST",
               headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`, // Include the token in the Authorization header

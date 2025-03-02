@@ -18,7 +18,11 @@ import Lecture from '../../../images/lecture-hall-3.jpg';
 
 const localizer = momentLocalizer(moment);
 
+// const baseUrl = "https://knightsreserv-00cde8777914.herokuapp.com";
+const baseUrl = "http://localhost:5000";
+
 function RoomDetails(props) {
+
   const { room, handleCloseModal } = props;
 
   const [view, setView] = useState('month');
@@ -48,8 +52,7 @@ function RoomDetails(props) {
     
     try
     {  
-       response = await fetch(`https://knightsreserv-00cde8777914.herokuapp.com/api/availability/${room.RoomID}/${apiFormattedDate}/${intervals}`, {
-       // response = await fetch(`http://localhost:5000/api/availability/${room.RoomID}/${apiFormattedDate}/${intervals}`, {
+       response = await fetch(`${baseUrl}/api/availability/${room.RoomID}/${apiFormattedDate}/${intervals}`, {
         method: 'GET',
         headers: {
           'Content-Type':'application/json',
@@ -116,9 +119,6 @@ function RoomDetails(props) {
       e.preventDefault();
       setFormattedDate(formatDate());
       getAvailability();
-      // console.log("Date:", selectedDate);
-      // console.log("Time Range:", `${timeRange.hours} hours, ${timeRange.minutes} minutes`);
-      // console.log("# of Intervals = " + intervals);
   };
   
   const formatRoomData = (room) => {
@@ -184,8 +184,7 @@ function RoomDetails(props) {
     console.log(js);
     try
     {  
-       var response = await fetch(`https://knightsreserv-00cde8777914.herokuapp.com/api/createEvent`, {
-       //var response = await fetch(`http://localhost:5000/api/createEvent`, {
+       var response = await fetch(`${baseUrl}/api/createEvent`, {
         method: 'POST',
         body: js,
         headers: {

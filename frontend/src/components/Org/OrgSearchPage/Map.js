@@ -4,9 +4,11 @@ import { useMemo } from "react";
 import RoomList from './RoomList';
 import '../../../styles/index.css';
 
+// const baseUrl = "https://knightsreserv-00cde8777914.herokuapp.com";
+const baseUrl = "http://localhost:5000";
+
 function Map( { toggleList, isListOpen} )
 {
-
     const initialLatLng = {
         lat: 28.602333068847656,
         lng: -81.20020294189453
@@ -64,8 +66,7 @@ function Map( { toggleList, isListOpen} )
             var js = JSON.stringify(obj);
             console.log(js);
 
-            const response = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/RetrieveRooms',
-            // const response = await fetch('http://localhost:5000/api/RetrieveRooms',
+            const response = await fetch(`${baseUrl}/api/RetrieveRooms`,
             {method:'POST',
             body:js,
             headers:{'Content-Type':'application/json'}});

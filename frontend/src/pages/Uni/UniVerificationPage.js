@@ -3,6 +3,9 @@ import VerificationList from '../../components/Uni/UniVerificationPage/Verificat
 import NavBar from '../../components/NavBar';
 import "../../styles/index.css";
 
+// const baseUrl = "https://knightsreserv-00cde8777914.herokuapp.com";
+const baseUrl = "http://localhost:5000";
+
 // Get orgs based on boolean database "verified" value, send list of orgs to VerificationList
 function UniVerificationPage()
 {
@@ -38,8 +41,7 @@ function UniVerificationPage()
             console.log(js);
             try
             {   
-                const response = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/RetrieveRSO',
-                //const response = await fetch('http://localhost:5000/api/RetrieveRSO',
+                const response = await fetch(`${baseUrl}/api/RetrieveRSO`,
                 {
                     method:'POST',
                     body:js,

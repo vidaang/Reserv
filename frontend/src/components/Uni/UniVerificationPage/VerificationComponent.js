@@ -2,6 +2,9 @@ import React from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import { Modal, Button } from '@mantine/core';
 
+// const baseUrl = "https://knightsreserv-00cde8777914.herokuapp.com";
+const baseUrl = "http://localhost:5000";
+
 const handleClick = () =>
 {
     alert("Clicked.");
@@ -17,8 +20,7 @@ function VerificationComponent({ org })
         console.log(js);
         try
         {
-            await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/VerifyRSO',
-            // await fetch('http://localhost:5000/api/VerifyRSO',
+            await fetch(`${baseUrl}/api/VerifyRSO`,
             {
                 method:'PUT',
                 body:js,

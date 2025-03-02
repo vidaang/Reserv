@@ -18,8 +18,8 @@ const data = [
   // { link: '', label: 'Other Settings', icon: IconSettings },
 ];
 
-
-
+// const baseUrl = "https://knightsreserv-00cde8777914.herokuapp.com";
+const baseUrl = "http://localhost:5000";
 
 function UniversityInfo() {
 
@@ -41,8 +41,7 @@ function UniversityInfo() {
         var js = JSON.stringify(obj);
         try
         {
-            const response = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/GetUniInfo',
-            //const response = await fetch('http://localhost:5000/api/GetUniInfo',
+            const response = await fetch(`${baseUrl}/api/GetUniInfo`,
             {method:'POST',
             body:js,
             headers:{'Content-Type':'application/json'}});
@@ -79,8 +78,7 @@ function UniversityInfo() {
     console.log(js);
 
     try {
-      const response = await fetch("https://knightsreserv-00cde8777914.herokuapp.com/api/updateUniversityInfo", {
-      //const response = await fetch('http://localhost:5000/api/updateUniInfo', {
+      const response = await fetch("${baseUrl}/api/updateUniversityInfo", {
         method: "POST",
         body: js,
         headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${userToken}`, },
@@ -179,7 +177,7 @@ function LoginInfo() {
     alert(js);
     try
     {
-        const response = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/adminChangePassword',
+        const response = await fetch(`${baseUrl}/api/adminChangePassword`,
         {method:'PUT',
         body:js,
         headers:{'Content-Type':'application/json'}});

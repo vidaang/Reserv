@@ -4,6 +4,9 @@ import { useDisclosure } from '@mantine/hooks';
 import { Modal, Button } from '@mantine/core';
 import "../styles/index.css";
 
+// const baseUrl = "https://knightsreserv-00cde8777914.herokuapp.com";
+const baseUrl = "http://localhost:5000";
+
 function OrgLogin() {
   var loginName;
   var loginPassword;
@@ -20,9 +23,7 @@ function OrgLogin() {
     console.log(js);
 
     try {
-      // CHANGE THIS BACK TO HEROKU ON DEV
-      const response = await fetch("https://knightsreserv-00cde8777914.herokuapp.com/api/login", {
-      //const response = await fetch('http://localhost:5000/api/login', {
+      const response = await fetch(`${baseUrl}/api/login`, {
         method: "POST",
         body: js,
         headers: { "Content-Type": "application/json" },
@@ -61,8 +62,7 @@ function OrgLogin() {
 
           try {
             // Call the checkFieldsNotEmpty endpoint
-            const checkResponse = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/checkRSOFields', {
-            //const checkResponse = await fetch('http://localhost:5000/api/checkRSOFields', {
+            const checkResponse = await fetch(`${baseUrl}/api/checkRSOFields`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -103,8 +103,7 @@ function OrgLogin() {
     //console.log(js);
     var response;
     try {
-      response = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/request-password-reset', {
-      // response = await fetch('http://localhost:5000/api/request-password-reset', {
+      response = await fetch(`${baseUrl}/api/request-password-reset`, {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",

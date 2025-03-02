@@ -17,7 +17,11 @@ const data = [
   { link: '', label: 'Login Info', icon: IconKey },
 ];
 
+// const baseUrl = "https://knightsreserv-00cde8777914.herokuapp.com";
+const baseUrl = "http://localhost:5000";
+
 function OrganizationInfo() {
+
   const [organizationData, setOrganizationData] = useState({
     organizationName: '',
     description: '',
@@ -38,8 +42,7 @@ function OrganizationInfo() {
     var response;
 
     try {
-      response = await fetch("https://knightsreserv-00cde8777914.herokuapp.com/api/RetrieveRSO", {
-      //response = await fetch('http://localhost:5000/api/RetrieveRSO', {
+      response = await fetch(`${baseUrl}/api/RetrieveRSO`, {
         method: "POST",
         body: js,
         headers: { "Content-Type": "application/json", },
@@ -95,8 +98,7 @@ function OrganizationInfo() {
     console.log(js);
 
     try {
-      const response = await fetch("https://knightsreserv-00cde8777914.herokuapp.com/api/updateRSOInfo", {
-      //const response = await fetch('http://localhost:5000/api/updateRSOInfo', {
+      const response = await fetch("${baseUrl}/api/updateRSOInfo", {
         method: "POST",
         body: js,
         headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${userToken}`, },

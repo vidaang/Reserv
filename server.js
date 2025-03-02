@@ -186,8 +186,8 @@ app.post("/api/request-password-reset", async (req, res) => {
     { expiresIn: "1h" } // Token expires in 1 hour
   );
 
-  const resetPasswordUrl = `https://knightsreserv-00cde8777914.herokuapp.com/ResetPassword?token=${token}`;
-  //const resetPasswordUrl = `http://localhost:3000/ResetPassword?token=${token}`;
+  // const resetPasswordUrl = `https://knightsreserv-00cde8777914.herokuapp.com/ResetPassword?token=${token}`;
+  const resetPasswordUrl = `http://localhost:3000/ResetPassword?token=${token}`;
 
   const msg = {
     to: user.Email,

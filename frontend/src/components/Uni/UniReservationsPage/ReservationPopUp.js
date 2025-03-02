@@ -5,6 +5,9 @@ import { useDisclosure } from '@mantine/hooks';
 import { Modal, Button } from '@mantine/core';
 import '../../../styles/index.css';
 
+// const baseUrl = "https://knightsreserv-00cde8777914.herokuapp.com";
+const baseUrl = "http://localhost:5000";
+
 function ReservationPopUp({ event }) {
 
     const formattedDate = format(event.date, "MMMM d, yyyy");
@@ -43,8 +46,7 @@ function ReservationPopUp({ event }) {
         console.log(js);
         try
         {
-            const response = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/DeleteEvent',
-            // const response = await fetch('http://localhost:5000/api/DeleteEvent',
+            const response = await fetch(`${baseUrl}/api/DeleteEvent`,
             {method:'DELETE',
             body:js,
             headers:{'Content-Type':'application/json'}});

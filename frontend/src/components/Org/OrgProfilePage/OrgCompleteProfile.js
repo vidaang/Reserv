@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import "../../../styles/index.css";
 
+// const baseUrl = "https://knightsreserv-00cde8777914.herokuapp.com";
+const baseUrl = "http://localhost:5000";
+
 function OrgCompleteProfile() {
+
   const [OrgInfo, setOrgInfo] = useState({
     RSOName: "",
     OfficerFirstName: "",
@@ -48,8 +52,7 @@ function OrgCompleteProfile() {
         return;
       }
 
-      //const response = await fetch('http://localhost:5000/api/updateRSOInfo', {
-      const response = await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/updateRSOInfo', {
+      const response = await fetch(`${baseUrl}/api/updateRSOInfo`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

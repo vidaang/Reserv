@@ -4,6 +4,9 @@ import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import EmailArt from "../../images/email-art.png";
 
+// const baseUrl = "https://knightsreserv-00cde8777914.herokuapp.com";
+const baseUrl = "http://localhost:5000";
+
 function OrgEmailVerification()
 {
 
@@ -19,8 +22,7 @@ function OrgEmailVerification()
         console.log(js);
 
         try {
-            //await fetch('http://localhost:5000/api/verify-email',
-            await fetch('https://knightsreserv-00cde8777914.herokuapp.com/api/verify-email',
+            await fetch(`${baseUrl}/api/verify-email`,
               {
                 method: 'POST',
                 body: js,

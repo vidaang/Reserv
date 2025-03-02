@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+// const baseUrl = "https://knightsreserv-00cde8777914.herokuapp.com";
+const baseUrl = "http://localhost:5000";
+
 function UniCreateAccount() {
   var createAccountEmail;
   var createAccountPassword;
@@ -42,7 +45,7 @@ function UniCreateAccount() {
 
     try {
       const response = await fetch(
-        'https://knightsreserv-00cde8777914.herokuapp.com/api/createAdmin',
+        '${baseUrl}/api/createAdmin',
         {
           method: 'PUT',
           body: js,
